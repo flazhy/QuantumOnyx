@@ -1,4 +1,4 @@
-local Nofitication = {}
+local Notification = {}
 
 local function CreateInstance(class, properties, parent)
     local instance = Instance.new(class)
@@ -197,4 +197,4 @@ function Nofitication:Notify(nofdebug, middledebug, all)
     end
 end
 
-return Nofitication
+return Notification
