@@ -14,13 +14,8 @@ end
 local function loadFor(placeId)
     local url = Scripts[placeId]
     if not url then return end
-
     local source = fetch(url)
-    if not source then return warn(("Loader: could not fetch %s"):format(url)) end
-
     local fn, err = loadstring(source)
-    if not fn then return warn(("Loader: compile error – %s"):format(err)) end
-
     task.spawn(fn)
 end
 
