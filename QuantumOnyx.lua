@@ -3,7 +3,7 @@ getgenv().GamesTables = (function()
         [2753915549] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
         [4442272183] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
         [7449423635] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
-        [126884695634066] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/GAG.lua" 
+        [7436755782] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/GAG.lua" 
     }
 
     local function ReverseTable(tbl)
