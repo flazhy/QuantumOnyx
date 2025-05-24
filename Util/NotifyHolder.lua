@@ -1,7 +1,3 @@
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local PlayerGui = player:WaitForChild("PlayerGui")
-
 local function CreateInstance(class, properties, parent)
     local instance = Instance.new(class)
     for key, value in pairs(properties) do
@@ -11,14 +7,14 @@ local function CreateInstance(class, properties, parent)
     return instance
 end
 
-local GUI = PlayerGui:FindFirstChild("STX_Nofitication")
+local GUI = game:GetService("CoreGui"):FindFirstChild("STX_Nofitication")
 
 if not GUI then
     GUI = CreateInstance("ScreenGui", {
         Name = "STX_Nofitication",
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
         ResetOnSpawn = false
-    }, playerGui)
+    }, game.CoreGui)
 
     CreateInstance("UIListLayout", {
         Name = "STX_NofiticationUIListLayout",
