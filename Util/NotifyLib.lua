@@ -1,6 +1,5 @@
 local Nofitication = {}
 
--- Helper to create instances with properties
 local function CreateInstance(class, properties, parent)
     local instance = Instance.new(class)
     for key, value in pairs(properties) do
@@ -10,7 +9,6 @@ local function CreateInstance(class, properties, parent)
     return instance
 end
 
--- Ensure GUI exists
 local GUI = game:GetService("CoreGui"):FindFirstChild("STX_Nofitication")
 if not GUI then
     GUI = CreateInstance("ScreenGui", {
@@ -27,7 +25,6 @@ if not GUI then
     }, GUI)
 end
 
--- Apply stroke to UI elements
 local function ApplyUIStroke(parent, color, transparency, size, mode)
     return CreateInstance("UIStroke", {
         Parent = parent,
@@ -38,7 +35,6 @@ local function ApplyUIStroke(parent, color, transparency, size, mode)
     }, parent)
 end
 
--- Notification function
 function Nofitication:Notify(nofdebug, middledebug, all)
     local SelectedType = string.lower(tostring(middledebug.Type))
 
