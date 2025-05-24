@@ -1,5 +1,24 @@
 local Nofitication = {}
 
+-- Safe GUI parent getter
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local function safeGetGuiParent()
+    if RunService:IsStudio() then
+        return LocalPlayer:WaitForChild("PlayerGui")
+    end
+
+    local success, gui = pcall(function()
+        return gethui and gethui() or game:GetService("CoreGui")
+    end)
+
+    return (success and gui) or LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local guiParent = safeGetGuiParent()
+
 local function CreateInstance(class, properties, parent)
     local instance = Instance.new(class)
     for key, value in pairs(properties) do
@@ -9,23 +28,6 @@ local function CreateInstance(class, properties, parent)
     return instance
 end
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local LocalPlayer = Players.LocalPlayer
-
-local function getGuiParent()
-    if RunService:IsStudio() then
-        return LocalPlayer:WaitForChild("PlayerGui")
-    end
-    local success, gui = pcall(function()
-        return gethui and gethui() or game:GetService("CoreGui")
-    end)
-
-    return (success and gui) or LocalPlayer:WaitForChild("PlayerGui")
-end
-
-local guiParent = getGuiParent()
-
 local GUI = guiParent:FindFirstChild("STX_Nofitication")
 if not GUI then
     GUI = CreateInstance("ScreenGui", {
@@ -33,8 +35,14 @@ if not GUI then
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
         ResetOnSpawn = false
     }, guiParent)
-end
 
+    CreateInstance("UIListLayout", {
+        Name = "STX_NofiticationUIListLayout",
+        HorizontalAlignment = Enum.HorizontalAlignment.Right,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        VerticalAlignment = Enum.VerticalAlignment.Bottom
+    }, GUI)
+end
 
 local function ApplyUIStroke(parent, color, transparency, size, mode)
     return CreateInstance("UIStroke", {
