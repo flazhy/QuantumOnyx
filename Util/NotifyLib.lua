@@ -35,7 +35,7 @@ local function ApplyUIStroke(parent, color, transparency, size, mode)
     }, parent)
 end
 
-function Nofitication:Notify(nofdebug, middledebug, all)
+function Notification:Notify(nofdebug, middledebug, all)
     local SelectedType = string.lower(tostring(middledebug.Type))
 
     local Shadow = CreateInstance("ImageLabel", {
