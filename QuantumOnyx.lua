@@ -1,45 +1,27 @@
-getgenv().GamesTables = (function()
-    local GameList = {
-        [2753915549] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
-        [4442272183] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
-        [7449423635] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
-        [7436755782] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/GAG.lua"
-    }
-    local function ReverseTable(tbl)
-        local proxy = {}
-        for key, value in pairs(tbl) do
-            proxy[key * 3 - 1] = value:reverse()
-        end
-        return proxy
-    end
+local Scripts = {
+    [2753915549] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
+    [4442272183] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
+    [7449423635] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
 
-    return ReverseTable(GameList)
-end)()
+    [7436755782] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua",
+}
 
-local Games = (function(tbl)
-    local Lookup = {}
-    for key, value in pairs(tbl) do
-        Lookup[(key + 1) / 3] = value:reverse()
-    end
-    return Lookup
-end)(getgenv().GamesTables)
-
-local function FetchScript(url)
-    local success, result = pcall(game.HttpGet, game, url)
-    return success and result or nil
+local function fetch(url)
+    local ok, data = pcall(game.HttpGet, game, url)
+    return ok and data or nil
 end
 
-local function LoadGameScript(placeId)
-    local URL = Games[placeId]
-    if not URL then return end
+local function loadFor(placeId)
+    local url = Scripts[placeId]
+    if not url then return end
 
-    local Script = FetchScript(URL)
-    if Script then
-        local execute = loadstring(Script)
-        if execute then
-            execute()
-        end
-    end
+    local source = fetch(url)
+    if not source then return warn(("Loader: could not fetch %s"):format(url)) end
+
+    local fn, err = loadstring(source)
+    if not fn then return warn(("Loader: compile error – %s"):format(err)) end
+
+    task.spawn(fn)
 end
 
-pcall(LoadGameScript, game.PlaceId)
+loadFor(game.PlaceId)
