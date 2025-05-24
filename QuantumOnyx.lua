@@ -3,7 +3,7 @@ local Scripts = {
     [4442272183] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
     [7449423635] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
 
-    [7436755782] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua",
+    [126884695634066] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua",
 }
 
 local function fetch(url)
