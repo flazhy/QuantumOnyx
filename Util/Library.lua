@@ -1120,13 +1120,12 @@ function Library:CreateWindow(namehub)
 					game:GetService("UserInputService").InputEnded:Connect(onInputEnded)
 				end
 
+-- Updated Dropdown Function with Fixed Callback, Background Color, and Default Handling
 function Funcs:addDropdown(title, default, options, multi, callback)
 	options = options or {}
 	callback = callback or function() end
 
-	local OriginalDefault = default
 	local Index = 1
-
 	if type(default) == "number" then
 		Index = math.clamp(default, 1, math.max(1, #options))
 	elseif type(default) == "string" then
@@ -1147,7 +1146,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		BorderSizePixel = 1,
 		Size = UDim2.new(1, -25, 0, 32)
 	}, InnerSection)
-
 	CreateInstance("UICorner", { CornerRadius = UDim.new(0, 6) }, DropdownFrame)
 
 	local Gradient = CreateInstance("UIGradient", {
@@ -1164,7 +1162,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 			ColorSequenceKeypoint.new(1, Color3.fromRGB(110, 10, 200))
 		}
 	end)
-
 	DropdownFrame.MouseLeave:Connect(function()
 		Gradient.Color = ColorSequence.new{
 			ColorSequenceKeypoint.new(0, Color3.fromRGB(170, 0, 255)),
@@ -1183,11 +1180,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		TextScaled = true,
 		ClipsDescendants = true
 	}, DropdownFrame)
-
-	CreateInstance("UITextSizeConstraint", {
-		MaxTextSize = 16,
-		MinTextSize = 8
-	}, DropdownTitle)
+	CreateInstance("UITextSizeConstraint", { MaxTextSize = 16, MinTextSize = 8 }, DropdownTitle)
 
 	local SelectedBox = CreateInstance("Frame", {
 		BackgroundColor3 = Color3.fromRGB(19, 19, 25),
@@ -1207,11 +1200,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		TextYAlignment = Enum.TextYAlignment.Center,
 		Text = multi and (#Selected > 0 and table.concat(Selected, ", ") or "None") or Selected
 	}, SelectedBox)
-
-	CreateInstance("UITextSizeConstraint", {
-		MaxTextSize = 14,
-		MinTextSize = 10
-	}, SelectedText)
+	CreateInstance("UITextSizeConstraint", { MaxTextSize = 14, MinTextSize = 10 }, SelectedText)
 
 	local DropIcon = CreateInstance("ImageButton", {
 		BackgroundTransparency = 1,
@@ -1222,13 +1211,12 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 
 	local DropdownScroll = CreateInstance("Frame", {
 		Name = "ScrollDown",
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundColor3 = Color3.fromRGB(26, 25, 25),
 		BorderColor3 = Color3.fromRGB(255, 255, 255),
 		BorderSizePixel = 1,
 		Size = UDim2.new(0.8, -10, 0, 0),
 		ClipsDescendants = true
 	}, InnerSection)
-
 	CreateInstance("UICorner", { CornerRadius = UDim.new(0, 6) }, DropdownScroll)
 	ApplyUIStroke(DropdownScroll, Color3.fromRGB(255, 255, 255), 0.8, 1, Enum.ApplyStrokeMode.Border)
 
@@ -1252,11 +1240,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 	DropIcon.MouseButton1Click:Connect(ToggleDropdown)
 
 	local function UpdateSelectedText()
-		if multi then
-			SelectedText.Text = #Selected > 0 and table.concat(Selected, ", ") or "None"
-		else
-			SelectedText.Text = Selected or "None"
-		end
+		SelectedText.Text = multi and (#Selected > 0 and table.concat(Selected, ", ") or "None") or Selected
 	end
 
 	local function AddOption(value)
@@ -1270,7 +1254,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 			Text = value,
 			TextColor3 = Color3.fromRGB(255, 255, 255)
 		}, DropdownScroll)
-
 		CreateInstance("UICorner", { CornerRadius = UDim.new(0, 6) }, Option)
 		CreateInstance("UIGradient", {
 			Color = ColorSequence.new{
@@ -1303,7 +1286,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 					SelectionFrame.Visible = true
 				end
 				UpdateSelectedText()
-				callback(Selected)
+				callback(table.clone(Selected))
 			else
 				for _, Other in ipairs(DropdownScroll:GetChildren()) do
 					if Other:IsA("TextButton") then
@@ -1325,35 +1308,27 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 	end
 
 	UpdateSelectedText()
-	callback(Selected)
+	callback(multi and table.clone(Selected) or Selected)
 
 	local ResetDropFunc = {}
-
 	function ResetDropFunc:Clear()
 		for _, child in ipairs(DropdownScroll:GetChildren()) do
 			if child:IsA("TextButton") then child:Destroy() end
 		end
-		if multi then
-			Selected = {}
-		else
-			Selected = "None"
-		end
+		Selected = multi and {} or "None"
 		UpdateSelectedText()
-		callback(Selected)
+		callback(multi and table.clone(Selected) or Selected)
 		UISettings:Tween(DropdownScroll, { Size = UDim2.new(0.8, -10, 0, 0) }, 0.15)
 		RotateIcon(false)
 	end
-
 	function ResetDropFunc:Refresh(NewList)
 		self:Clear()
 		for _, v in ipairs(NewList or {}) do
 			AddOption(v)
 		end
 	end
-
 	return ResetDropFunc
 end
-
 
 				function Funcs:addTextbox(text_tile, callback)
 					callback = callback or function() end
