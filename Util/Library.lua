@@ -1125,21 +1125,33 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 	options = options or {}
 	callback = callback or function() end
 
-	local Index = 1
-	if type(default) == "number" then
-		Index = math.clamp(default, 1, math.max(1, #options))
-	elseif type(default) == "string" then
-		for i, v in ipairs(options) do
-			if v == default then
-				Index = i
-				break
+	-- Ensure default(s) are respected
+	local Selected
+	if multi then
+		Selected = {}
+		if type(default) == "table" then
+			for _, v in ipairs(default) do
+				if table.find(options, v) then
+					table.insert(Selected, v)
+				end
 			end
 		end
+	else
+		local Index = 1
+		if type(default) == "number" then
+			Index = math.clamp(default, 1, #options)
+		elseif type(default) == "string" then
+			for i, v in ipairs(options) do
+				if v == default then
+					Index = i
+					break
+				end
+			end
+		end
+		Selected = options[Index] or options[1] or "None"
 	end
 
-	local Selected = multi and {} or (options[Index] or options[1] or "None")
-
-	-- UI creation
+	-- UI Elements Setup
 	local DropdownFrame = CreateInstance("Frame", {
 		BackgroundColor3 = Color3.fromRGB(26, 25, 25),
 		BorderColor3 = Color3.fromRGB(255, 255, 255),
@@ -1169,7 +1181,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		}
 	end)
 
-	local DropdownTitle = CreateInstance("TextLabel", {
+	CreateInstance("TextLabel", {
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 6),
 		Size = UDim2.new(1, -150, 0, 20),
@@ -1180,7 +1192,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		TextScaled = true,
 		ClipsDescendants = true
 	}, DropdownFrame)
-	CreateInstance("UITextSizeConstraint", { MaxTextSize = 16, MinTextSize = 8 }, DropdownTitle)
 
 	local SelectedBox = CreateInstance("Frame", {
 		BackgroundColor3 = Color3.fromRGB(19, 19, 25),
@@ -1198,7 +1209,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		TextScaled = true,
 		TextYAlignment = Enum.TextYAlignment.Center,
-		Text = multi and (#Selected > 0 and table.concat(Selected, ", ") or "None") or Selected
+		Text = ""
 	}, SelectedBox)
 	CreateInstance("UITextSizeConstraint", { MaxTextSize = 14, MinTextSize = 10 }, SelectedText)
 
@@ -1226,22 +1237,25 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		Padding = UDim.new(0, 2)
 	}, DropdownScroll)
 
+	local function UpdateSelectedText()
+		if multi then
+			SelectedText.Text = (#Selected > 0) and table.concat(Selected, ", ") or "None"
+		else
+			SelectedText.Text = Selected
+		end
+	end
+
 	local function RotateIcon(open)
-		UISettings:Tween(DropIcon, { Rotation = open and 180 or 0 }, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+		UISettings:Tween(DropIcon, { Rotation = open and 180 or 0 }, 0.3)
 	end
 
 	local function ToggleDropdown()
 		local isOpen = DropdownScroll.Size.Y.Offset > 0
 		local newSize = isOpen and 0 or DropdownListLayout.AbsoluteContentSize.Y + 5
-		UISettings:Tween(DropdownScroll, { Size = UDim2.new(0.8, -10, 0, newSize) }, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+		UISettings:Tween(DropdownScroll, { Size = UDim2.new(0.8, -10, 0, newSize) }, 0.3)
 		RotateIcon(not isOpen)
 	end
-
 	DropIcon.MouseButton1Click:Connect(ToggleDropdown)
-
-	local function UpdateSelectedText()
-		SelectedText.Text = multi and (#Selected > 0 and table.concat(Selected, ", ") or "None") or Selected
-	end
 
 	local function AddOption(value)
 		local Option = CreateInstance("TextButton", {
@@ -1255,13 +1269,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 			TextColor3 = Color3.fromRGB(255, 255, 255)
 		}, DropdownScroll)
 		CreateInstance("UICorner", { CornerRadius = UDim.new(0, 6) }, Option)
-		CreateInstance("UIGradient", {
-			Color = ColorSequence.new{
-				ColorSequenceKeypoint.new(0, Color3.fromRGB(90, 11, 159)),
-				ColorSequenceKeypoint.new(0.5, Color3.fromRGB(130, 16, 229)),
-				ColorSequenceKeypoint.new(1, Color3.fromRGB(67, 0, 134))
-			}
-		}, Option)
 
 		local SelectionFrame = CreateInstance("Frame", {
 			BackgroundColor3 = Color3.fromRGB(150, 100, 255),
@@ -1329,6 +1336,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 	end
 	return ResetDropFunc
 end
+
 
 				function Funcs:addTextbox(text_tile, callback)
 					callback = callback or function() end
