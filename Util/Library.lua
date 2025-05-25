@@ -1120,12 +1120,10 @@ function Library:CreateWindow(namehub)
 					game:GetService("UserInputService").InputEnded:Connect(onInputEnded)
 				end
 
--- Updated Dropdown Function with Fixed Callback, Background Color, and Default Handling
-function Funcs:addDropdown(title, default, options, multi, callback)
+				function Funcs:addDropdown(title, default, options, multi, callback)
 	options = options or {}
 	callback = callback or function() end
 
-	-- Ensure default(s) are respected
 	local Selected
 	if multi then
 		Selected = {}
@@ -1151,7 +1149,6 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		Selected = options[Index] or options[1] or "None"
 	end
 
-	-- UI Elements Setup
 	local DropdownFrame = CreateInstance("Frame", {
 		BackgroundColor3 = Color3.fromRGB(26, 25, 25),
 		BorderColor3 = Color3.fromRGB(255, 255, 255),
@@ -1217,7 +1214,8 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -30, 0, 4),
 		Size = UDim2.new(0, 20, 0, 20),
-		Image = "rbxassetid://95968409641902"
+		Image = "rbxassetid://95968409641902",
+		Rotation = 0
 	}, DropdownFrame)
 
 	local DropdownScroll = CreateInstance("Frame", {
@@ -1241,7 +1239,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		if multi then
 			SelectedText.Text = (#Selected > 0) and table.concat(Selected, ", ") or "None"
 		else
-			SelectedText.Text = Selected
+			SelectedText.Text = Selected or "None"
 		end
 	end
 
@@ -1265,7 +1263,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 			Font = Enum.Font.Gotham,
 			AutoButtonColor = false,
 			TextSize = 14,
-			Text = value,
+			Text = tostring(value),
 			TextColor3 = Color3.fromRGB(255, 255, 255)
 		}, DropdownScroll)
 		CreateInstance("UICorner", { CornerRadius = UDim.new(0, 6) }, Option)
@@ -1318,6 +1316,7 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 	callback(multi and table.clone(Selected) or Selected)
 
 	local ResetDropFunc = {}
+
 	function ResetDropFunc:Clear()
 		for _, child in ipairs(DropdownScroll:GetChildren()) do
 			if child:IsA("TextButton") then child:Destroy() end
@@ -1328,12 +1327,14 @@ function Funcs:addDropdown(title, default, options, multi, callback)
 		UISettings:Tween(DropdownScroll, { Size = UDim2.new(0.8, -10, 0, 0) }, 0.15)
 		RotateIcon(false)
 	end
+
 	function ResetDropFunc:Refresh(NewList)
 		self:Clear()
 		for _, v in ipairs(NewList or {}) do
 			AddOption(v)
 		end
 	end
+
 	return ResetDropFunc
 end
 
