@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 local Config = {}
-local GameID = tostring(game.PlaceId)
+local GameID = tostring(game.GameId)
 Config.ConfigFolder = "QuantumOnyxHub/" .. GameID
 Config.ConfigFile = Config.ConfigFolder .. "/Settings.json"
 Config.SaveDelay = 0.5
