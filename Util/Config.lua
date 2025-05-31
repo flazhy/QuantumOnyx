@@ -1,7 +1,10 @@
 local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
 
 local Config = {}
-local GameID = tostring(game.PlaceId)
+
+-- Use GameId for proper multi-place support
+local GameID = tostring(game.GameId)
 Config.ConfigFolder = "QuantumOnyxHub/" .. GameID
 Config.ConfigFile = Config.ConfigFolder .. "/Settings.json"
 Config.SaveDelay = 0.5
@@ -21,16 +24,57 @@ local function CleanKey(label)
 	return label:gsub("%s+", ""):gsub("[^%w_.]", "")
 end
 
-local function SyncGlobalsFromConfig()
-	for key, value in pairs(config) do
-		getgenv()[key] = value
+local function MakePath(section, label)
+	return section .. "." .. CleanKey(label)
+end
+
+local function DeepSet(tbl, path, value)
+	local segments = {}
+	for segment in string.gmatch(path, "[^%.]+") do
+		table.insert(segments, segment)
+	end
+	for i = 1, #segments - 1 do
+		local seg = segments[i]
+		tbl[seg] = tbl[seg] or {}
+		tbl = tbl[seg]
+	end
+	tbl[segments[#segments]] = value
+end
+
+local function DeepGet(tbl, path)
+	for segment in string.gmatch(path, "[^%.]+") do
+		tbl = tbl[segment]
+		if tbl == nil then return nil end
+	end
+	return tbl
+end
+
+local function DeepDelete(tbl, path)
+	local segments = {}
+	for segment in string.gmatch(path, "[^%.]+") do
+		table.insert(segments, segment)
+	end
+	for i = 1, #segments - 1 do
+		local seg = segments[i]
+		tbl = tbl[seg]
+		if not tbl then return end
+	end
+	tbl[segments[#segments]] = nil
+end
+
+local function SyncGlobalsFromConfig(tbl, prefix)
+	prefix = prefix or ""
+	for k, v in pairs(tbl) do
+		if typeof(v) == "table" then
+			SyncGlobalsFromConfig(v, prefix .. k .. ".")
+		else
+			getgenv()[prefix .. k] = v
+		end
 	end
 end
 
 local function LoadConfig()
-	if not isfolder("QuantumOnyxHub") then
-		makefolder("QuantumOnyxHub")
-	end
+	if not isfolder("QuantumOnyxHub") then makefolder("QuantumOnyxHub") end
 	if not isfolder(Config.ConfigFolder) then
 		makefolder(Config.ConfigFolder)
 		dbgPrint("Created folder:", Config.ConfigFolder)
@@ -43,7 +87,7 @@ local function LoadConfig()
 			if success and typeof(decoded) == "table" then
 				config = decoded
 				dbgPrint("Config loaded")
-				SyncGlobalsFromConfig()
+				SyncGlobalsFromConfig(config)
 				return
 			else
 				warn("[Config] Failed to decode config JSON")
@@ -58,12 +102,22 @@ local function LoadConfig()
 end
 
 local function CleanUnusedKeys()
-	for key in pairs(config) do
-		if not usedKeys[key] then
-			config[key] = nil
-			dbgPrint("Removed unused config key:", key)
+	local function clean(tbl, path)
+		for k, v in pairs(tbl) do
+			local full = path ~= "" and path .. "." .. k or k
+			if typeof(v) == "table" then
+				clean(v, full)
+				if next(v) == nil then
+					tbl[k] = nil
+					dbgPrint("Removed empty section:", full)
+				end
+			elseif not usedKeys[full] then
+				tbl[k] = nil
+				dbgPrint("Removed unused config key:", full)
+			end
 		end
 	end
+	clean(config, "")
 end
 
 local function SaveConfig()
@@ -74,7 +128,6 @@ local function SaveConfig()
 		return
 	end
 
-	-- Pretty print the JSON
 	local success, formatted = pcall(function()
 		return HttpService:JSONEncode(HttpService:JSONDecode(encoded))
 	end)
@@ -104,38 +157,36 @@ ConfigProxy.__index = function(_, key)
 	return config[key]
 end
 ConfigProxy.__newindex = function(_, key, value)
-	if config[key] ~= value then
-		config[key] = value
-		getgenv()[key] = value
-		ScheduleSave()
-		dbgPrint("Config updated and scheduled save:", key, value)
-	end
+	config[key] = value
+	getgenv()[key] = value
+	ScheduleSave()
+	dbgPrint("Config updated and scheduled save:", key, value)
 end
 config = setmetatable(config, ConfigProxy)
 
 local patchedSections = {}
 
-local function ApplyConfig(section)
+local function ApplyConfig(section, sectionName)
 	if patchedSections[section] then return end
 	patchedSections[section] = true
 
 	assert(type(section) == "table", "ApplyConfig expects a table")
+	assert(type(sectionName) == "string", "sectionName must be a string")
 
 	local OrigToggle = section.addToggle
 	local OrigSlider = section.addSlider
 	local OrigDropdown = section.addDropdown
 
 	function section:addToggle(label, default, callback)
-		local key = CleanKey(label)
-		usedKeys[key] = true
-
-		local value = config[key]
+		local path = MakePath(sectionName, label)
+		usedKeys[path] = true
+		local value = DeepGet(config, path)
 		if value == nil then value = default end
-		getgenv()[key] = value
+		getgenv()[path] = value
 
 		return OrigToggle(self, label, value, function(val)
-			config[key] = val
-			getgenv()[key] = val
+			DeepSet(config, path, val)
+			getgenv()[path] = val
 			ScheduleSave()
 			if callback then
 				local ok, err = pcall(callback, val)
@@ -145,16 +196,15 @@ local function ApplyConfig(section)
 	end
 
 	function section:addSlider(label, min, max, default, callback, increment)
-		local key = CleanKey(label)
-		usedKeys[key] = true
-
-		local value = config[key]
+		local path = MakePath(sectionName, label)
+		usedKeys[path] = true
+		local value = DeepGet(config, path)
 		if value == nil then value = default end
-		getgenv()[key] = value
+		getgenv()[path] = value
 
 		return OrigSlider(self, label, min, max, value, function(val)
-			config[key] = val
-			getgenv()[key] = val
+			DeepSet(config, path, val)
+			getgenv()[path] = val
 			ScheduleSave()
 			if callback then
 				local ok, err = pcall(callback, val)
@@ -164,16 +214,15 @@ local function ApplyConfig(section)
 	end
 
 	function section:addDropdown(label, default, options, callback, multi)
-		local key = CleanKey(label)
-		usedKeys[key] = true
-
-		local value = config[key]
+		local path = MakePath(sectionName, label)
+		usedKeys[path] = true
+		local value = DeepGet(config, path)
 		if value == nil then value = default end
-		getgenv()[key] = value
+		getgenv()[path] = value
 
 		return OrigDropdown(self, label, value, options, function(val)
-			config[key] = val
-			getgenv()[key] = val
+			DeepSet(config, path, val)
+			getgenv()[path] = val
 			ScheduleSave()
 			if callback then
 				local ok, err = pcall(callback, val)
@@ -182,21 +231,21 @@ local function ApplyConfig(section)
 		end, multi)
 	end
 
-	dbgPrint("Section patched:", section)
+	dbgPrint("Section patched:", sectionName)
 end
 
-function Config.Toggle(section, label, default, callback)
-	ApplyConfig(section)
+function Config.Toggle(section, sectionName, label, default, callback)
+	ApplyConfig(section, sectionName)
 	return section:addToggle(label, default, callback)
 end
 
-function Config.Slider(section, label, min, max, default, callback, increment)
-	ApplyConfig(section)
+function Config.Slider(section, sectionName, label, min, max, default, callback, increment)
+	ApplyConfig(section, sectionName)
 	return section:addSlider(label, min, max, default, callback, increment)
 end
 
-function Config.Dropdown(section, label, default, options, callback, multi)
-	ApplyConfig(section)
+function Config.Dropdown(section, sectionName, label, default, options, callback, multi)
+	ApplyConfig(section, sectionName)
 	return section:addDropdown(label, default, options, callback, multi)
 end
 
