@@ -20,7 +20,6 @@ local function CleanKey(label)
     return label
 end
 
--- Add this helper function to sync loaded config values to getgenv()
 local function SyncGlobalsFromConfig()
     for key, value in pairs(config) do
         getgenv()[key] = value
