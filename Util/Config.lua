@@ -20,6 +20,13 @@ local function CleanKey(label)
     return label
 end
 
+-- Add this helper function to sync loaded config values to getgenv()
+local function SyncGlobalsFromConfig()
+    for key, value in pairs(config) do
+        getgenv()[key] = value
+    end
+end
+
 local function LoadConfig()
     if not isfolder(Config.ConfigFolder) then
         makefolder(Config.ConfigFolder)
@@ -33,6 +40,10 @@ local function LoadConfig()
             if success and typeof(decoded) == "table" then
                 config = decoded
                 dbgPrint("Config loaded")
+
+                -- Sync loaded config values into getgenv() immediately
+                SyncGlobalsFromConfig()
+
                 return
             else
                 warn("[Config] Failed to decode config JSON")
