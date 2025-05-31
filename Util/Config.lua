@@ -70,11 +70,8 @@ end
 local function ScheduleSave()
     if SavedConfig then return end
     SavedConfig = true
-    spawn(function()
-        wait(Config.SaveDelay)
-        SaveConfig()
-        SavedConfig = false
-    end)
+    SaveConfig()
+    SavedConfig = false
 end
 
 local ConfigProxy = {}
