@@ -39,10 +39,7 @@ local function LoadConfig()
             if success and typeof(decoded) == "table" then
                 config = decoded
                 dbgPrint("Config loaded")
-
-                -- Sync loaded config values into getgenv() immediately
                 SyncGlobalsFromConfig()
-
                 return
             else
                 warn("[Config] Failed to decode config JSON")
