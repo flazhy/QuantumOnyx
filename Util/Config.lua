@@ -189,7 +189,6 @@ local function ApplyConfig(section)
 	dbgPrint("Section patched:", section)
 end
 
--- Public API
 function Config.Toggle(section, label, default, callback)
 	ApplyConfig(section)
 	return section:addToggle(label, default, callback)
