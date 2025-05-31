@@ -85,11 +85,12 @@ ConfigProxy.__newindex = function(_, key, value)
     if config[key] ~= value then
         config[key] = value
         getgenv()[key] = value
-        ScheduleSave()
-        dbgPrint("Config updated:", key, value)
+        SaveConfig()
+        dbgPrint("Config updated and saved:", key, value)
     end
 end
 config = setmetatable(config, ConfigProxy)
+
 
 local patchedSections = {}
 
