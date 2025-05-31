@@ -7,7 +7,7 @@ Config.SaveDelay = 0.5
 Config.Debug = false
 
 local config = {}
-local SavedConfig = false
+local SaveScheduled = false
 
 local function dbgPrint(...)
     if Config.Debug then
@@ -16,8 +16,7 @@ local function dbgPrint(...)
 end
 
 local function CleanKey(label)
-    label = label:gsub("%s+", ""):gsub("[^%w_.]", "")
-    return label
+    return label:gsub("%s+", ""):gsub("[^%w_.]", "")
 end
 
 local function SyncGlobalsFromConfig()
@@ -68,10 +67,12 @@ local function SaveConfig()
 end
 
 local function ScheduleSave()
-    if SavedConfig then return end
-    SavedConfig = true
-    SaveConfig()
-    SavedConfig = false
+    if SaveScheduled then return end
+    SaveScheduled = true
+    task.delay(Config.SaveDelay, function()
+        SaveConfig()
+        SaveScheduled = false
+    end)
 end
 
 local ConfigProxy = {}
@@ -82,12 +83,11 @@ ConfigProxy.__newindex = function(_, key, value)
     if config[key] ~= value then
         config[key] = value
         getgenv()[key] = value
-        SaveConfig()
-        dbgPrint("Config updated and saved:", key, value)
+        ScheduleSave()
+        dbgPrint("Config updated and scheduled save:", key, value)
     end
 end
 config = setmetatable(config, ConfigProxy)
-
 
 local patchedSections = {}
 
@@ -113,12 +113,15 @@ local function ApplyConfig(section)
 
         return OrigToggle(self, label, value, function(val)
             config[key] = val
+            getgenv()[key] = val
+            ScheduleSave()
             if callback then
                 local ok, err = pcall(callback, val)
                 if not ok then warn("[Config] addToggle callback error:", err) end
             end
         end)
     end
+
     function section:addSlider(label, min, max, default, callback, increment)
         local key = CleanKey(label)
         local value = config[key]
@@ -127,6 +130,8 @@ local function ApplyConfig(section)
 
         return OrigSlider(self, label, min, max, value, function(val)
             config[key] = val
+            getgenv()[key] = val
+            ScheduleSave()
             if callback then
                 local ok, err = pcall(callback, val)
                 if not ok then warn("[Config] addSlider callback error:", err) end
@@ -142,6 +147,8 @@ local function ApplyConfig(section)
 
         return OrigDropdown(self, label, value, options, function(val)
             config[key] = val
+            getgenv()[key] = val
+            ScheduleSave()
             if callback then
                 local ok, err = pcall(callback, val)
                 if not ok then warn("[Config] addDropdown callback error:", err) end
