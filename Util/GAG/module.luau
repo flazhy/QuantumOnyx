@@ -180,19 +180,16 @@ Module.CollectModule = function(): nil
 					break
 				end
 			end
-
 			if Garden then
 				local Batch = {}
 				local SelectedMut = ExecCmd.SelectedMutations
 				local SelectedVar = ExecCmd.SelectedVariants
-
 				for _, Prompt in ipairs(Garden:GetDescendants()) do
 					if #Batch >= 10 then break end
 					if Prompt:IsA("ProximityPrompt") and Prompt.Enabled and CollectionService:HasTag(Prompt, "CollectPrompt") then
 						local Crop = Prompt.Parent and Prompt.Parent.Parent
 						if Crop then
 							local Allow = false
-
 							local MutationMatch = false
 							if SelectedMut == "Any" or (typeof(SelectedMut) == "table" and table.find(SelectedMut, "Any")) then
 								MutationMatch = true
@@ -211,11 +208,9 @@ Module.CollectModule = function(): nil
 									end
 								end
 							end
-
 							local VariantMatch = false
 							local Variant = Crop:FindFirstChild("Variant")
 							local VariantValue = Variant and Variant:IsA("StringValue") and Variant.Value
-
 							if SelectedVar == "Any" or (typeof(SelectedVar) == "table" and table.find(SelectedVar, "Any")) then
 								VariantMatch = true
 							elseif typeof(SelectedVar) == "string" then
@@ -230,7 +225,6 @@ Module.CollectModule = function(): nil
 						end
 					end
 				end
-
 				if #Batch > 0 then
 					pcall(function()
 						Remotes.Crops.Collect.send(Batch)
@@ -337,31 +331,36 @@ end
 
 Module.AutoSell = function(): nil
 	task.spawn(function()
-		while task.wait() do
-			local char = lp.Character or lp.CharacterAdded:Wait()
-			local backpack = lp.Backpack
-			local farm = char and GetFarm(lp)
-			local SpawnPoint = farm and farm:FindFirstChild("Spawn_Point")
-			local hrp = char and char:FindFirstChild("HumanoidRootPart")
+		while ExecCmd.AutoSell or ExecCmd.AutoTickSell do
+			local Char = lp.Character or lp.CharacterAdded:Wait()
+			local Backpack = lp.Backpack
+			local Farm = GetFarm(lp)
+			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
+			local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
 
-			if not (char and hrp and backpack and SpawnPoint and StevenHRP) then continue end
-			local Count = #backpack:GetChildren()
-			if Count < 200 then continue end
+			if Char and HRP and Backpack and SpawnPoint and StevenHRP then
+				local Count = #Backpack:GetChildren()
+				local ShouldSell = (ExecCmd.AutoSell and Count >= 200) or ExecCmd.AutoTickSell
 
-			local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
-			char:PivotTo(SellPos)
-			task.wait(0.25)
+				if ShouldSell then
+					local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
+					Char:PivotTo(SellPos)
+					task.wait(0.25)
+					task.spawn(function()
+						pcall(SellRemote.FireServer, SellRemote)
+					end)
+					task.wait(0.25)
+					Char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
+				end
+			end
 
-			task.spawn(function()
-				pcall(SellRemote.FireServer, SellRemote)
-			end)
-
-			task.wait(0.25)
-			char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
+			task.wait((ExecCmd.AutoTickSell and ExecCmd.DelaySell / 100) or 0.1)
 		end
 	end)
+
 	return nil
 end
+
 
 
 return Module
