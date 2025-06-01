@@ -18,17 +18,16 @@ return {
         "Lightning Rod", "Master Sprinkler", "Favorite Tool", "Harvest Tool"
     },
 
+
     CratesList = {
         "Rock Pile", "Small Circle Tile", "BookShelf", "Light On Ground", "Shovel Grave", "Orange Umbrella",
-        "Small Wood Arbour", "Sign Crate", "Common Gnome Crate"
+        "Small Wood Arbour", "Sign Crate", "Common Gnome Crate", "Fun Crate", "Statue Crate", "Classic Gnome Crate", "Farmer Gnome Crate", "Red Tractor", "Green Tractor", "Brown Well", "Blue Well",
+        "Red Well", "Frog Fountain", "Ring Walkway", "Viney Ring Walkway", "Round Metal Arbour", "Large Wood Arbour", "Flat Canopy", "Curved Canopy", "Square Metal Arbour", "Lamp Post", "Bird Bath",
+        "Large Wood Table", "Small Wood Table", "Clothesline", "Wheelbarrow", "Bamboo Wind Chime", "Metal Wind Chime", "Grey Stone Pillar", "Brown Stone Pillar", "Dark Stone Pillar", "Campfire", "Cooking Pot",
+        "Log Bench", "White Bench", "Brown Bench", "Wood Fence", "Small Stone Pad", "Large Stone Pad", "Medium Stone Table", "Stone Lantern", "Small Stone Lantern", "Small Stone Table", "Long Stone Table", 
+        "Axe Stump", "Bookshelf", "Mini TV", "Hay Bale", "Small Wood Flooring", "Medium Wood Flooring", "Large Wood Flooring", "Viney Beam", "Water Trough", 
+        "Light on Ground", "Log", "Small Path Tile", "Medium Circle Tile", "Medium Path Tile", "Large Path Tile", "Yellow Umbrella", "Red Pottery", "White Pottery", "Brick Stack",
+        "Shovel", "Rake", "Compost Bin", "Torch"
     },
 
-    BMList = {
-        "Bloodmoon Crate", "Night Egg", "Night Seed Pack", "Blood Banana", "Moon Melon",
-        "Star Caller", "Blood Hedgehog", "Blood Kiwi", "Blood Owl"
-    },
-
-    TwilightList = {
-        "Night Egg", "Night Seed Pack", "Twilight Crate", "Star Caller", "Moon Cat", "Celestiberry", "Moon Mango"
-    }
 }
