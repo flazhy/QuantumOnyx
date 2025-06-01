@@ -128,153 +128,154 @@ function Module.AutoHatchEggs(opts: {AutoHatchEggs: boolean?})
 	end)
 end
 
-function Module.AutoPlant() : nil
-	task.spawn(function()
+function Module.AutoPlantModule() : nil
+    task.spawn(function()
+        type Container = Tool | BasePart | Vector3 | Humanoid | Model | Backpack
 		local PlantRemote = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE") :: RemoteEvent
-		local BackpackFolder = opts.BackpackFolder or lp:WaitForChild("Backpack")
-		local CharacterFolder = opts.CharacterFolder or (lp.Character or lp.CharacterAdded:Wait())
 
-		local Containers = { BackpackFolder, CharacterFolder }
-		local CharParts = {}
+        local Containers: {Container} = { lp.Backpack, lp.Character or lp.CharacterAdded:Wait() }
+        local CharParts: {BasePart} = {}
 
-		local function FindTool(seed: string): Tool?
-			for _, container in ipairs(Containers) do
-				for _, tool in ipairs(container:GetChildren()) do
-					if tool:IsA("Tool") and string.find(tool.Name, seed) and string.find(tool.Name, "Seed") then
-						return tool :: Tool
-					end
-				end
-			end
-			return nil
-		end
+        local function FindTool(seed: string): Tool?
+            for _, container in ipairs(Containers) do
+                for _, tool in ipairs(container:GetChildren()) do
+                    if tool:IsA("Tool") and string.find(tool.Name, seed) and string.find(tool.Name, "Seed") then
+                        return tool :: Tool
+                    end
+                end
+            end
+            return nil
+        end
 
-		while opts.AutoPlant do
-			local Character = lp.Character or lp.CharacterAdded:Wait()
-			Containers[2] = Character
+        while ExecCmd.AutoPlant do
+            local Character: Model? = lp.Character or lp.CharacterAdded:Wait()
+            Containers[2] = Character
 
-			local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-			local Root = Character:FindFirstChild("HumanoidRootPart")
-			if not Humanoid or not Root then
-				task.wait(1)
-				continue
-			end
+            local Humanoid: Humanoid? = Character:FindFirstChildOfClass("Humanoid")
+            local Root: BasePart? = Character:FindFirstChild("HumanoidRootPart")
 
-			local Farm = GetFarm(lp)
-			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
+            if not Humanoid or not Root then
+                task.wait(1)
+                continue
+            end
 
-			if SpawnPoint and (Root.Position - SpawnPoint.Position).Magnitude > 30 then
-				Root.CFrame = SpawnPoint.CFrame
-				task.wait(1.5)
-			end
+            local Farm: Model? = GetFarm(lp)
+            local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
 
-			local PlantLocations = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
-			local Spots = {}
+            if SpawnPoint and (Root.Position - SpawnPoint.Position).Magnitude > 30 then
+                Root.CFrame = SpawnPoint.CFrame
+                task.wait(1.5)
+            end
 
-			if PlantLocations then
-				for _, part in ipairs(PlantLocations:GetDescendants()) do
-					if part:IsA("BasePart") and string.find(part.Name, "Can_Plant") then
-						table.insert(Spots, part :: BasePart)
-					end
-				end
-			end
+            local PlantLocations: Model? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
+            local Spots: {BasePart} = {}
 
-			if #Spots == 0 then
-				task.wait(1)
-				continue
-			end
+            if PlantLocations then
+                for _, part in ipairs(PlantLocations:GetDescendants()) do
+                    if part:IsA("BasePart") and string.find(part.Name, "Can_Plant") then
+                        table.insert(Spots, part :: BasePart)
+                    end
+                end
+            end
 
-			local SeedName = opts.SeedName or "Any"
-			local PlantMode = opts.PlantMode or "Pathways"
-			local PlantStyle = opts.PlantStyle or "Random"
+            if #Spots == 0 then
+                task.wait(1)
+                continue
+            end
 
-			local SeedList = {}
+            local SeedName: string = ExecCmd.SeedName or "Any"
+            local PlantMode: string = ExecCmd.PlantMode or "Pathways"
+            local PlantStyle: string = ExecCmd.PlantStyle or "Random"
 
-			if SeedName == "Any" then
-				local Seen = {}
-				for _, container in ipairs(Containers) do
-					for _, tool in ipairs(container:GetChildren()) do
-						if tool:IsA("Tool") and string.find(tool.Name, "Seed") then
-							local CleanName = string.gsub(tool.Name, " Seed.*", "")
-							if not Seen[CleanName] then
-								Seen[CleanName] = true
-								table.insert(SeedList, CleanName)
-							end
-						end
-					end
-				end
-			else
-				SeedList[1] = SeedName
-			end
+            local SeedList: {string} = {}
 
-			for _, Seed in ipairs(SeedList) do
-				local Tool = FindTool(Seed)
-				local LastPos = nil
-				local Random = math.random
-				local Vector3New = Vector3.new
+            if SeedName == "Any" then
+                local Seen = {}
+                for _, container in ipairs(Containers) do
+                    for _, tool in ipairs(container:GetChildren()) do
+                        if tool:IsA("Tool") and string.find(tool.Name, "Seed") then
+                            local CleanName = string.gsub(tool.Name, " Seed.*", "")
+                            if not Seen[CleanName] then
+                                Seen[CleanName] = true
+                                table.insert(SeedList, CleanName)
+                            end
+                        end
+                    end
+                end
+            else
+                SeedList[1] = SeedName
+            end
 
-				while opts.AutoPlant and Tool do
-					local Target = Spots[Random(1, #Spots)]
-					local Size = Target.Size
-					local BasePos
+            for _, Seed in ipairs(SeedList) do
+                local Tool: Tool? = FindTool(Seed)
+                local LastPos: Vector3? = nil
+                local Random = math.random
+                local Vector3New = Vector3.new
 
-					if PlantStyle == "Stacked" and LastPos then
-						BasePos = LastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3))
-					else
-						BasePos = Target.Position + Vector3New(
-							Random(-Size.X / 2, Size.X / 2),
-							2,
-							Random(-Size.Z / 2, Size.Z / 2)
-						)
-					end
+                while ExecCmd.AutoPlant and Tool do
+                    local Target: BasePart = Spots[Random(1, #Spots)]
+                    local Size: Vector3 = Target.Size
+                    local BasePos: Vector3
 
-					if not Tool:IsDescendantOf(Character) then
-						Tool.Parent = Character
-						repeat task.wait() until Character:FindFirstChild(Tool.Name)
-					end
+                    if PlantStyle == "Stacked" and LastPos then
+                        BasePos = LastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3))
+                    else
+                        BasePos = Target.Position + Vector3New(
+                            Random(-Size.X / 2, Size.X / 2),
+                            2,
+                            Random(-Size.Z / 2, Size.Z / 2)
+                        )
+                    end
 
-					if PlantMode == "Bypass" then
-						PlantRemote:FireServer(BasePos, Seed)
-					else
-						table.clear(CharParts)
-						for _, part in ipairs(Character:GetDescendants()) do
-							if part:IsA("BasePart") then
-								part.CanCollide = false
-								table.insert(CharParts, part)
-							end
-						end
+                    if not Tool:IsDescendantOf(Character) then
+                        Tool.Parent = Character
+                        repeat task.wait() until Character:FindFirstChild(Tool.Name)
+                    end
 
-						local Done = false
-						local Conn = Humanoid.MoveToFinished:Connect(function()
-							Done = true
-						end)
+                    if PlantMode == "Bypass" then
+                        PlantRemote:FireServer(BasePos, Seed)
+                    else
+                        table.clear(CharParts)
+                        for _, part in ipairs(Character:GetDescendants()) do
+                            if part:IsA("BasePart") then
+                                local basePart = part :: BasePart
+                                basePart.CanCollide = false
+                                table.insert(CharParts, basePart)
+                            end
+                        end
 
-						Humanoid:MoveTo(BasePos)
+                        local Done = false
+                        local Conn = Humanoid.MoveToFinished:Connect(function()
+                            Done = true
+                        end)
 
-						for _ = 1, 30 do
-							if Done then break end
-							task.wait(0.1)
-						end
+                        Humanoid:MoveTo(BasePos)
 
-						Conn:Disconnect()
+                        for _ = 1, 30 do
+                            if Done then break end
+                            task.wait(0.1)
+                        end
 
-						for _, part in ipairs(CharParts) do
-							part.CanCollide = true
-						end
+                        Conn:Disconnect()
 
-						PlantRemote:FireServer(BasePos, Seed)
-					end
+                        for _, part in ipairs(CharParts) do
+                            part.CanCollide = true
+                        end
 
-					LastPos = BasePos
-					task.wait(0.05)
-					Humanoid:UnequipTools()
-					task.wait(0.03)
+                        PlantRemote:FireServer(BasePos, Seed)
+                    end
+                    LastPos = BasePos
+                    task.wait(0.05)
+                    Humanoid:UnequipTools()
+                    task.wait(0.03)
 
-					Tool = FindTool(Seed)
-				end
-			end
-			task.wait(0.05)
-		end
-	end)
+                    Tool = FindTool(Seed)
+                end
+            end
+
+            task.wait(0.05)
+        end
+    end)
 end
 
 return Module
