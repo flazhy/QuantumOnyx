@@ -12,6 +12,8 @@ local GetFarm = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local FavoriteToolRemote = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
 local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+local FavoriteToolRemote = game:GetService("ReplicatedStorage").GameEvents:WaitForChild("Favorite_Item")
+local Backpack = lp.Backpack
 
 local lp = Players.LocalPlayer
 local ExecCmd = getgenv()
