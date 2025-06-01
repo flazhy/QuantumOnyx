@@ -183,7 +183,8 @@ Module.CollectModule = function(): nil
 
 			if Garden then
 				local Batch = {}
-				local Selected = ExecCmd.SelectedMutations
+				local SelectedMut = ExecCmd.SelectedMutations
+				local SelectedVar = ExecCmd.SelectedVariants
 
 				for _, Prompt in ipairs(Garden:GetDescendants()) do
 					if #Batch >= 10 then break end
@@ -191,25 +192,39 @@ Module.CollectModule = function(): nil
 						local Crop = Prompt.Parent and Prompt.Parent.Parent
 						if Crop then
 							local Allow = false
-							if Selected == "Any" or (typeof(Selected) == "table" and table.find(Selected, "Any")) then
-								Allow = true
-							elseif typeof(Selected) == "string" then
+
+							local MutationMatch = false
+							if SelectedMut == "Any" or (typeof(SelectedMut) == "table" and table.find(SelectedMut, "Any")) then
+								MutationMatch = true
+							elseif typeof(SelectedMut) == "string" then
 								for Name, Value in pairs(Crop:GetAttributes()) do
-									if Value == true and Name == Selected then
-										Allow = true
+									if Value == true and Name == SelectedMut then
+										MutationMatch = true
 										break
 									end
 								end
-							elseif typeof(Selected) == "table" then
+							elseif typeof(SelectedMut) == "table" then
 								for Name, Value in pairs(Crop:GetAttributes()) do
-									if Value == true and table.find(Selected, Name) then
-										Allow = true
+									if Value == true and table.find(SelectedMut, Name) then
+										MutationMatch = true
 										break
 									end
 								end
 							end
 
-							if Allow then
+							local VariantMatch = false
+							local Variant = Crop:FindFirstChild("Variant")
+							local VariantValue = Variant and Variant:IsA("StringValue") and Variant.Value
+
+							if SelectedVar == "Any" or (typeof(SelectedVar) == "table" and table.find(SelectedVar, "Any")) then
+								VariantMatch = true
+							elseif typeof(SelectedVar) == "string" then
+								VariantMatch = VariantValue == SelectedVar
+							elseif typeof(SelectedVar) == "table" then
+								VariantMatch = table.find(SelectedVar, VariantValue) ~= nil
+							end
+
+							if MutationMatch and VariantMatch then
 								table.insert(Batch, Crop)
 							end
 						end
