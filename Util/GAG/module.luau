@@ -191,12 +191,18 @@ Module.CollectModule = function(): nil
 						local Crop = Prompt.Parent and Prompt.Parent.Parent
 						if Crop then
 							local Allow = false
-
-							if Selected == "Any" then
+							if Selected == "Any" or (typeof(Selected) == "table" and table.find(Selected, "Any")) then
 								Allow = true
-							else
+							elseif typeof(Selected) == "string" then
 								for Name, Value in pairs(Crop:GetAttributes()) do
 									if Value == true and Name == Selected then
+										Allow = true
+										break
+									end
+								end
+							elseif typeof(Selected) == "table" then
+								for Name, Value in pairs(Crop:GetAttributes()) do
+									if Value == true and table.find(Selected, Name) then
 										Allow = true
 										break
 									end
@@ -224,6 +230,7 @@ Module.CollectModule = function(): nil
 		end
 	end)
 end
+
 
 
 
