@@ -258,4 +258,37 @@ Module.AutoHatchEggs = function(): nil
 	end)
 end
 
+Module.FavoriteMutations = function(): nil
+	task.spawn(function()
+		while task.wait(0.3) do
+			local List: {string} = ExecCmd.SelectedFavMutations or {}
+			local AutoFav: boolean = ExecCmd.AutoFavMutate
+			local AutoUnfav: boolean = ExecCmd.AutoUnfavMutate
+			if not (AutoFav or AutoUnfav) then continue end
+			local MutationSet: {[string]: boolean} = {}
+			for _, mutation: string in ipairs(List) do
+				MutationSet[mutation] = true
+			end
+			for _, Tool: Tool in ipairs(Backpack:GetChildren()) do
+				if not Tool:IsA("Tool") then continue end
+				local Matched: boolean = false
+				for mutation: string in pairs(MutationSet) do
+					if Tool:GetAttribute(mutation) == true then
+						Matched = true
+					end
+				end
+
+				local IsFavorite: boolean = Tool:GetAttribute("Favorite") == true
+				if AutoFav and Matched and not IsFavorite then
+					FavoriteToolRemote:FireServer(Tool)
+				elseif AutoUnfav and not Matched and IsFavorite then
+					FavoriteToolRemote:FireServer(Tool)
+				end
+			end
+		end
+	end)
+	return nil
+end
+
+
 return Module
