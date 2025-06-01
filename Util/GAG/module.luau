@@ -153,6 +153,7 @@ Module.CollectModule = function(): nil
 		RemoteModule: { Crops: { Collect: { send: (batch: {Instance}) -> () } } },
 		PlantCollectionContex: { Plot: Model, Prompt: ProximityPrompt, Crop: Model }
 	}
+
 	task.spawn(function()
 		local Remotes = nil
 		while true do
@@ -182,25 +183,27 @@ Module.CollectModule = function(): nil
 
 			if Garden then
 				local Batch = {}
+				local Selected = ExecCmd.SelectedMutations
+
 				for _, Prompt in ipairs(Garden:GetDescendants()) do
 					if #Batch >= 10 then break end
 					if Prompt:IsA("ProximityPrompt") and Prompt.Enabled and CollectionService:HasTag(Prompt, "CollectPrompt") then
 						local Crop = Prompt.Parent and Prompt.Parent.Parent
 						if Crop then
-							local AllowCollect = false
-							local SelectedMutations = ExecCmd.SelectedMutations
-							if SelectedMutations == "Any" then
-								AllowCollect = true
+							local Allow = false
+
+							if Selected == "Any" then
+								Allow = true
 							else
-								for _, Attr in ipairs(Crop:GetAttributes()) do
-									if Crop:GetAttribute(Attr) == true and Attr == SelectedMutations then
-										AllowCollect = true
+								for Name, Value in pairs(Crop:GetAttributes()) do
+									if Value == true and Name == Selected then
+										Allow = true
 										break
 									end
 								end
 							end
 
-							if AllowCollect then
+							if Allow then
 								table.insert(Batch, Crop)
 							end
 						end
@@ -221,6 +224,7 @@ Module.CollectModule = function(): nil
 		end
 	end)
 end
+
 
 
 Module.AutoBuyEggs = function(): nil
