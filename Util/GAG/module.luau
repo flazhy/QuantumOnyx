@@ -128,14 +128,7 @@ function Module.AutoHatchEggs(opts: {AutoHatchEggs: boolean?})
 	end)
 end
 
-function Module.AutoPlant(opts: {
-	AutoPlant: boolean?,
-	SeedName: string?,
-	PlantMode: string?,
-	PlantStyle: string?,
-	BackpackFolder: Folder?,
-	CharacterFolder: Model?,
-})
+function Module.AutoPlant() : nil
 	task.spawn(function()
 		local PlantRemote = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE") :: RemoteEvent
 		local BackpackFolder = opts.BackpackFolder or lp:WaitForChild("Backpack")
