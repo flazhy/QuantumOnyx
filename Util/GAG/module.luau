@@ -1,14 +1,21 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-local lp = Players.LocalPlayer
-local Backpack = lp:WaitForChild("Backpack")
-
-local FavoriteToolRemote = ReplicatedStorage:WaitForChild("FavoriteToolRemote")
-local BuyPetEgg = ReplicatedStorage:WaitForChild("BuyPetEgg")
-local DataService = ReplicatedStorage:WaitForChild("DataService")
-local GetFarm = require(ReplicatedStorage:WaitForChild("GetFarm"))
 
 local Module = {}
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CollectionService = game:GetService("CollectionService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+local SellRemote = ReplicatedStorage.GameEvents:WaitForChild("Sell_Inventory")
+local StevenHRP = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
+local GetFarm = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
+local FavoriteToolRemote = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
+local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
+local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+
+local lp = Players.LocalPlayer
+
 
 function Module.HasAnyMutation(tool: Tool, mutations: {string}): boolean
 	for _, mutation in ipairs(mutations) do
