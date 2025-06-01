@@ -343,6 +343,9 @@ Module.AutoSell = function(): nil
 				local ShouldSell = (ExecCmd.AutoSell and Count >= 200) or ExecCmd.AutoTickSell
 
 				if ShouldSell then
+					if ExecCmd.AutoTickSell then
+						task.wait(ExecCmd.DelaySell / 100)
+					end
 					local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
 					Char:PivotTo(SellPos)
 					task.wait(0.25)
@@ -353,7 +356,6 @@ Module.AutoSell = function(): nil
 					Char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
 				end
 			end
-
 			task.wait((ExecCmd.AutoTickSell and ExecCmd.DelaySell / 100) or 0.1)
 		end
 	end)
