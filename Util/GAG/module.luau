@@ -269,7 +269,7 @@ Module.FavoriteMutations = function(): nil
 			for _, mutation: string in ipairs(List) do
 				MutationSet[mutation] = true
 			end
-			for _, Tool: Tool in ipairs(Backpack:GetChildren()) do
+			for _, Tool: Tool in ipairs(lp.Backpack:GetChildren()) do
 				if not Tool:IsA("Tool") then continue end
 				local Matched: boolean = false
 				for mutation: string in pairs(MutationSet) do
