@@ -12,8 +12,6 @@ local GetFarm = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local FavoriteToolRemote = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
 local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
-local FavoriteToolRemote = game:GetService("ReplicatedStorage").GameEvents:WaitForChild("Favorite_Item")
-local Backpack = lp.Backpack
 
 local lp = Players.LocalPlayer
 local ExecCmd = getgenv()
@@ -153,7 +151,7 @@ end
 Module.CollectModule = function(): nil
 	type Types = {
 		RemoteModule: { Crops: { Collect: { send: (batch: {Instance}) -> () } } },
-		PlantCollectionContext: { Plot: Model, Prompt: ProximityPrompt, Crop: Model }
+		PlantCollectionContex: { Plot: Model, Prompt: ProximityPrompt, Crop: Model }
 	}
 	task.spawn(function()
 		local Remotes = nil
@@ -289,6 +287,42 @@ Module.FavoriteMutations = function(): nil
 			end
 		end
 	end)
+	return nil
+end
+
+Module.AutoSell = function(): nil
+    type Types = { Character: Model?, HumanoidRootPart: BasePart?, Backpack: Instance?, Farm: Instance?, SpawnPoint: BasePart?, }
+
+	task.spawn(function()
+		while task.wait() do
+			local state: Types = {}
+			state.Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+			state.HumanoidRootPart = state.Character and state.Character:FindFirstChild("HumanoidRootPart")
+			state.Backpack = LocalPlayer:FindFirstChild("Backpack")
+			state.Farm = state.Character and GetFarm(LocalPlayer)
+			state.SpawnPoint = state.Farm and state.Farm:FindFirstChild("Spawn_Point")
+
+			if not (state.Character and state.HumanoidRootPart and state.Backpack and state.Farm and state.SpawnPoint and StevenHRP) then
+				continue
+			end
+
+			local BackpackChildren: {Instance} = state.Backpack:GetChildren()
+			if #BackpackChildren < 200 then continue end
+
+			local ReturnCFrame: CFrame = state.SpawnPoint.CFrame + Vector3.new(0, 3, 0)
+			local SellPos: Vector3 = StevenHRP.Position + StevenHRP.CFrame.LookVector * 5 + Vector3.new(0, 2, 0)
+			local SellCFrame: CFrame = CFrame.new(SellPos)
+
+			state.Character:PivotTo(SellCFrame)
+			task.wait(0.25)
+			pcall(function()
+				SellRemote:FireServer()
+			end)
+			task.wait(0.25)
+			state.Character:PivotTo(ReturnCFrame)
+		end
+	end)
+
 	return nil
 end
 
