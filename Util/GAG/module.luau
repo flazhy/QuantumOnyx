@@ -211,7 +211,7 @@ function Module.CollectModule(): nil
     end)
 end
 
-Module.function AutoBuyEggs(): nil
+function Module.AutoBuyEggs(): nil
 	type Types = { EggStock = { EggName: string, Stock: number }, Data = { PetEggStock: { Stocks: { Types.EggStock } } } }
 	task.spawn(function()
 		while task.wait() do
