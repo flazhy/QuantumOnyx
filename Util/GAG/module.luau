@@ -128,7 +128,6 @@ function Module.AutoHatchEggs(opts: {AutoHatchEggs: boolean?})
 	end)
 end
 
--- Auto plant seeds on player farm
 function Module.AutoPlant(opts: {
 	AutoPlant: boolean?,
 	SeedName: string?,
