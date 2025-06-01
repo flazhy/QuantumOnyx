@@ -291,32 +291,28 @@ Module.FavoriteMutations = function(): nil
 end
 
 Module.AutoSell = function(): nil
-    type Types = { Character: Model?, HumanoidRootPart: BasePart?, Backpack: Instance?, Farm: Instance?, SpawnPoint: BasePart?, }
-
 	task.spawn(function()
 		while task.wait() do
-			local state: Types = {}
-			state.Character = lp.Character or lp.CharacterAdded:Wait()
-			state.HumanoidRootPart = state.Character and state.Character:FindFirstChild("HumanoidRootPart")
-			state.Backpack = lp:FindFirstChild("Backpack")
-			state.Farm = state.Character and GetFarm(lp)
-			state.SpawnPoint = state.Farm and state.Farm:FindFirstChild("Spawn_Point")
-			if not (state.Character and state.HumanoidRootPart and state.Backpack and state.Farm and state.SpawnPoint and StevenHRP) then
-				continue
-			end
+			local char = lp.Character or lp.CharacterAdded:Wait()
+			local backpack = lp.Backpack
+			local farm = char and GetFarm(lp)
+			local SpawnPoint = farm and farm:FindFirstChild("Spawn_Point")
+			local hrp = char and char:FindFirstChild("HumanoidRootPart")
 
-			local BackpackChildren: {Instance} = state.Backpack:GetChildren()
-			if #BackpackChildren < 200 then continue end
-			local ReturnCFrame: CFrame = state.SpawnPoint.CFrame + Vector3.new(0, 3, 0)
-			local SellPos: Vector3 = StevenHRP.Position + StevenHRP.CFrame.LookVector * 5 + Vector3.new(0, 2, 0)
-			local SellCFrame: CFrame = CFrame.new(SellPos)
-			state.Character:PivotTo(SellCFrame)
+			if not (char and hrp and backpack and SpawnPoint and StevenHRP) then continue end
+			local Count = #backpack:GetChildren()
+			if Count < 200 then continue end
+
+			local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
+			char:PivotTo(SellPos)
 			task.wait(0.25)
-			pcall(function()
-				SellRemote:FireServer()
+
+			task.spawn(function()
+				pcall(SellRemote.FireServer, SellRemote)
 			end)
+
 			task.wait(0.25)
-			state.Character:PivotTo(ReturnCFrame)
+			char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
 		end
 	end)
 	return nil
