@@ -211,5 +211,33 @@ function Module.CollectModule(): nil
     end)
 end
 
+function Module.AutoHatchEggs(): nil
+	type Types = {
+		ProximityPrompt: Instance & { ActionText: string, Enabled: boolean },
+		StringValue: Instance & { Value: string },
+	}
+	task.spawn(function()
+		while task.wait(1) do
+			if not ExecCmd.AutoHatchEggs then continue end
+			pcall(function()
+				for _, Farm in ipairs(GetFarm()) do
+					local Owner = Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Data") and Farm.Important.Data:FindFirstChild("Owner") :: Types.StringValue?
+					if Owner and Owner.Value == lp.Name then
+						local EggFolder = Farm.Important:FindFirstChild("Objects_Physical") and Farm.Important.Objects_Physical:FindFirstChild("PetEgg")
+						if not EggFolder then continue end
+						for _, Egg in ipairs(EggFolder:GetChildren()) do
+							local Prompt = Egg:FindFirstChildOfClass("ProximityPrompt") :: Types.ProximityPrompt?
+							if Prompt and Prompt.Enabled and Prompt.ActionText == "Hatch!" then
+								fireproximityprompt(Prompt)
+							end
+						end
+					end
+				end
+			end)
+		end
+	end)
+end
+
+
 
 return Module
