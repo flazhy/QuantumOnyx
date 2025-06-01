@@ -211,11 +211,38 @@ function Module.CollectModule(): nil
     end)
 end
 
+Module.function AutoBuyEggs(): nil
+	type Types = { EggStock = { EggName: string, Stock: number }, Data = { PetEggStock: { Stocks: { Types.EggStock } } } }
+	task.spawn(function()
+		while task.wait() do
+			local AutoBuyEgg = ExecCmd.AutoBuyEgg
+			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
+			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
+
+			local RawList = ExecCmd.SelectedEggList
+			local SelectedEggList: { string } = typeof(RawList) == "string" and { RawList } or typeof(RawList) == "table" and RawList or {}
+
+			pcall(function()
+				local Data: Types.Data = DataService:GetData()
+				local Stocks = Data.PetEggStock.Stocks
+				local Normalized: { [string]: boolean } = {}
+				for _, Name in ipairs(SelectedEggList) do
+					Normalized[string.lower(Name):gsub("%s+", "")] = true
+				end
+				for Index, Stock in ipairs(Stocks) do
+					if Stock.Stock > 0 then
+						if AutoBuyAllEggs or Normalized[string.lower(Stock.EggName):gsub("%s+", "")] then
+							BuyPetEgg:FireServer(Index)
+						end
+					end
+				end
+			end)
+		end
+	end)
+end
+
 function Module.AutoHatchEggs(): nil
-	type Types = {
-		ProximityPrompt: Instance & { ActionText: string, Enabled: boolean },
-		StringValue: Instance & { Value: string },
-	}
+	type Types = { ProximityPrompt: Instance & { ActionText: string, Enabled: boolean }, StringValue: Instance & { Value: string },}
 	task.spawn(function()
 		while task.wait(1) do
 			if not ExecCmd.AutoHatchEggs then continue end
@@ -237,7 +264,5 @@ function Module.AutoHatchEggs(): nil
 		end
 	end)
 end
-
-
 
 return Module
