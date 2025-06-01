@@ -186,9 +186,27 @@ Module.CollectModule = function(): nil
 					if #Batch >= 10 then break end
 					if Prompt:IsA("ProximityPrompt") and Prompt.Enabled and CollectionService:HasTag(Prompt, "CollectPrompt") then
 						local Crop = Prompt.Parent and Prompt.Parent.Parent
-						if Crop then table.insert(Batch, Crop) end
+						if Crop then
+							local AllowCollect = false
+							local SelectedMutations = ExecCmd.SelectedMutations
+							if SelectedMutations == "Any" then
+								AllowCollect = true
+							else
+								for _, Attr in ipairs(Crop:GetAttributes()) do
+									if Crop:GetAttribute(Attr) == true and Attr == SelectedMutations then
+										AllowCollect = true
+										break
+									end
+								end
+							end
+
+							if AllowCollect then
+								table.insert(Batch, Crop)
+							end
+						end
 					end
 				end
+
 				if #Batch > 0 then
 					pcall(function()
 						Remotes.Crops.Collect.send(Batch)
@@ -203,6 +221,7 @@ Module.CollectModule = function(): nil
 		end
 	end)
 end
+
 
 Module.AutoBuyEggs = function(): nil
 	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
