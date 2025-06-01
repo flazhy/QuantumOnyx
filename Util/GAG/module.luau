@@ -296,23 +296,20 @@ Module.AutoSell = function(): nil
 	task.spawn(function()
 		while task.wait() do
 			local state: Types = {}
-			state.Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+			state.Character = lp.Character or lp.CharacterAdded:Wait()
 			state.HumanoidRootPart = state.Character and state.Character:FindFirstChild("HumanoidRootPart")
-			state.Backpack = LocalPlayer:FindFirstChild("Backpack")
-			state.Farm = state.Character and GetFarm(LocalPlayer)
+			state.Backpack = lp:FindFirstChild("Backpack")
+			state.Farm = state.Character and GetFarm(lp)
 			state.SpawnPoint = state.Farm and state.Farm:FindFirstChild("Spawn_Point")
-
 			if not (state.Character and state.HumanoidRootPart and state.Backpack and state.Farm and state.SpawnPoint and StevenHRP) then
 				continue
 			end
 
 			local BackpackChildren: {Instance} = state.Backpack:GetChildren()
 			if #BackpackChildren < 200 then continue end
-
 			local ReturnCFrame: CFrame = state.SpawnPoint.CFrame + Vector3.new(0, 3, 0)
 			local SellPos: Vector3 = StevenHRP.Position + StevenHRP.CFrame.LookVector * 5 + Vector3.new(0, 2, 0)
 			local SellCFrame: CFrame = CFrame.new(SellPos)
-
 			state.Character:PivotTo(SellCFrame)
 			task.wait(0.25)
 			pcall(function()
@@ -322,7 +319,6 @@ Module.AutoSell = function(): nil
 			state.Character:PivotTo(ReturnCFrame)
 		end
 	end)
-
 	return nil
 end
 
