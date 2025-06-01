@@ -6,19 +6,15 @@ return {
         "Orange Tulip", "Papaya", "Passionfruit", "Peach", "Pear", "Pineapple", "Pumpkin", "Raspberry", "Red Lollipop",
         "Soul Fruit", "Strawberry", "Tomato", "Venus Fly Trap", "Watermelon", "Cacao", "Beanstalk"
     },
-
     SeedStock = {
         "Carrot", "Strawberry", "Blueberry", "Orange Tulip", "Tomato", "Corn", "Daffodil", "Watermelon",
         "Pumpkin", "Apple", "Bamboo", "Coconut", "Cactus", "Dragon Fruit", "Mango", "Grape",
         "Mushroom", "Pepper", "Cacao", "Beanstalk"
     },
-
     Gears = {
         "Watering Can", "Trowel", "Recall Wrench", "Basic Sprinkler", "Advanced Sprinkler", "Godly Sprinkler",
         "Lightning Rod", "Master Sprinkler", "Favorite Tool", "Harvest Tool"
     },
-
-
     CratesList = {
         "Rock Pile", "Small Circle Tile", "BookShelf", "Light On Ground", "Shovel Grave", "Orange Umbrella",
         "Small Wood Arbour", "Sign Crate", "Common Gnome Crate", "Fun Crate", "Statue Crate", "Classic Gnome Crate", "Farmer Gnome Crate", "Red Tractor", "Green Tractor", "Brown Well", "Blue Well",
@@ -29,5 +25,7 @@ return {
         "Light on Ground", "Log", "Small Path Tile", "Medium Circle Tile", "Medium Path Tile", "Large Path Tile", "Yellow Umbrella", "Red Pottery", "White Pottery", "Brick Stack",
         "Shovel", "Rake", "Compost Bin", "Torch"
     },
-
+    HoneyList = {
+        "Honey Comb", "Bee Chair", "Honey Torch", "Flower Seed Pack", "Nectarine", "Hive Fruit", "Honey Sprinkler", "Bee Egg", "Bee Crate", "Honey Walkway"
+    },
 }
