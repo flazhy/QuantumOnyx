@@ -35,7 +35,6 @@ function Module.AutoPlantModule() : nil
             end
             return nil
         end
-
         while ExecCmd.AutoPlant do
             local Character: Model? = lp.Character or lp.CharacterAdded:Wait()
             Containers[2] = Character
@@ -67,8 +66,7 @@ function Module.AutoPlantModule() : nil
                 end
             end
 
-            if #Spots == 0 then
-                task.wait(1)
+            if #Spots == 0 then task.wait(1)
                 continue
             end
 
@@ -94,7 +92,6 @@ function Module.AutoPlantModule() : nil
             else
                 SeedList[1] = SeedName
             end
-
             for _, Seed in ipairs(SeedList) do
                 local Tool: Tool? = FindTool(Seed)
                 local LastPos: Vector3? = nil
@@ -109,13 +106,8 @@ function Module.AutoPlantModule() : nil
                     if PlantStyle == "Stacked" and LastPos then
                         BasePos = LastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3))
                     else
-                        BasePos = Target.Position + Vector3New(
-                            Random(-Size.X / 2, Size.X / 2),
-                            2,
-                            Random(-Size.Z / 2, Size.Z / 2)
-                        )
+                        BasePos = Target.Position + Vector3New(Random(-Size.X / 2, Size.X / 2), 2, Random(-Size.Z / 2, Size.Z / 2))
                     end
-
                     if not Tool:IsDescendantOf(Character) then
                         Tool.Parent = Character
                         repeat task.wait() until Character:FindFirstChild(Tool.Name)
@@ -137,34 +129,87 @@ function Module.AutoPlantModule() : nil
                         local Conn = Humanoid.MoveToFinished:Connect(function()
                             Done = true
                         end)
-
                         Humanoid:MoveTo(BasePos)
-
                         for _ = 1, 30 do
                             if Done then break end
                             task.wait(0.1)
                         end
-
                         Conn:Disconnect()
-
                         for _, part in ipairs(CharParts) do
                             part.CanCollide = true
                         end
-
                         PlantRemote:FireServer(BasePos, Seed)
                     end
                     LastPos = BasePos
                     task.wait(0.05)
                     Humanoid:UnequipTools()
                     task.wait(0.03)
-
                     Tool = FindTool(Seed)
                 end
             end
-
             task.wait(0.05)
         end
     end)
 end
+
+function Module.CollectModule(): nil
+    type Types = {
+        RemoteModule: {Crops: {Collect: {send: (batch: {Instance}) -> ()}}},
+        PlantCollectionContext: {Plot: Model,Prompt: ProximityPrompt,Crop: Model,}
+    }
+    task.spawn(function()
+        local Remotes: Types.RemoteModule? = nil
+        while true do
+            if pcall(function()
+                Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes")) :: Types.RemoteModule
+                return Remotes and Remotes.Crops and Remotes.Crops.Collect and typeof(Remotes.Crops.Collect.send) == "function"
+            end) then
+                break
+            end
+            task.wait(1)
+        end
+        while ExecCmd.AutoCollect == true do
+            if #lp.Backpack:GetChildren() >= 200 then
+                task.wait(0.3)
+                continue
+            end
+            local Garden: Model? = nil
+            for _, Plot in ipairs(workspace:WaitForChild("Farm"):GetChildren()) do
+                local Important = Plot:FindFirstChild("Important")
+                local Data = Important and Important:FindFirstChild("Data")
+                local Owner = Data and Data:FindFirstChild("Owner")
+                if Owner and typeof(Owner.Value) == "string" and Owner.Value == lp.Name then
+                    Garden = Important:FindFirstChild("Plants_Physical")
+                    break
+                end
+            end
+            if Garden then
+                local Batch: {Model} = {}
+                for _, Prompt in ipairs(Garden:GetDescendants()) do
+                    if #Batch >= 10 then break end
+                    if Prompt:IsA("ProximityPrompt")
+                        and Prompt.Enabled
+                        and CollectionService:HasTag(Prompt, "CollectPrompt") then
+                        local Crop = Prompt.Parent and Prompt.Parent.Parent
+                        if Crop then
+                            table.insert(Batch, Crop)
+                        end
+                    end
+                end
+                if #Batch > 0 then
+                    pcall(function()
+                        Remotes.Crops.Collect.send(Batch)
+                    end)
+                    task.wait(0.15)
+                else
+                    task.wait(0.2)
+                end
+            else
+                task.wait(0.3)
+            end
+        end
+    end)
+end
+
 
 return Module
