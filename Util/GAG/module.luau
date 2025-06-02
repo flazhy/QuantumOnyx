@@ -313,7 +313,7 @@ end
 
 Module.AutoBuyEggs = function(): nil
 	if Threads.AutoBuyEggs then return end
-
+	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
 	Threads.AutoBuyEggs = task.spawn(function()
 		while task.wait() do
 			local AutoBuyEgg = ExecCmd.AutoBuyEgg
@@ -321,12 +321,10 @@ Module.AutoBuyEggs = function(): nil
 			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
 
 			local RawList = ExecCmd.SelectedEggList
-			local SelectedEggList = typeof(RawList) == "string" and { RawList }
-				or typeof(RawList) == "table" and RawList
-				or {}
+			local SelectedEggList = typeof(RawList) == "string" and { RawList } or typeof(RawList) == "table" and RawList or {}
 
 			pcall(function()
-				local Data = DataService:GetData()
+				local Data: Types.Data = DataService:GetData()
 				local Stocks = Data.PetEggStock.Stocks
 				local Normalized = {}
 				for _, Name in ipairs(SelectedEggList) do
@@ -344,6 +342,5 @@ Module.AutoBuyEggs = function(): nil
 		Threads.AutoBuyEggs = nil
 	end)
 end
-
 
 return Module
