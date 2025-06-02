@@ -331,7 +331,7 @@ end
 
 function Module:AutoSell()
 	CreateThread("AutoSell", function()
-		while ExecCmd.AutoSell or ExecCmd.AutoTickSell do
+		while task.wait() do
 			local Char = lp.Character or lp.CharacterAdded:Wait()
 			local Backpack = lp.Backpack
 			local Farm = GetFarm(lp)
