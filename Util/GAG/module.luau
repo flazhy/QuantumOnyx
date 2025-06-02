@@ -91,11 +91,11 @@ Module.AutoPlantModule = function(): nil
 		end
 
 		while ExecCmd.AutoPlant do
-			local Character: Model = lp.Character or lp.CharacterAdded:Wait()
+			local Character = lp.Character or lp.CharacterAdded:Wait()
 			Containers[2] = Character
 
-			local Humanoid: Humanoid? = Character:FindFirstChildOfClass("Humanoid")
-			local RootPart: BasePart? = Character:FindFirstChild("HumanoidRootPart")
+			local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+			local RootPart = Character:FindFirstChild("HumanoidRootPart")
 			if not Humanoid or not RootPart then
 				Wait(1)
 				continue
@@ -103,15 +103,15 @@ Module.AutoPlantModule = function(): nil
 
 			CacheCharacterParts(Character)
 
-			local Farm: Model? = GetFarm(lp)
-			local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
+			local Farm = GetFarm(lp)
+			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
 
 			if SpawnPoint and (RootPart.Position - SpawnPoint.Position).Magnitude > 30 then
 				RootPart.CFrame = SpawnPoint.CFrame
 				Wait(1.5)
 			end
 
-			local PlantingFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
+			local PlantingFolder = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
 			if not PlantingFolder then
 				Wait(1)
 				continue
@@ -129,9 +129,9 @@ Module.AutoPlantModule = function(): nil
 				continue
 			end
 
-			local SeedName: string = ExecCmd.SeedName or "Any"
-			local PlantMode: string = ExecCmd.PlantMode or "Pathways"
-			local PlantStyle: string = ExecCmd.PlantStyle or "Random"
+			local SeedName = ExecCmd.SeedName or "Any"
+			local PlantMode = ExecCmd.PlantMode or "Pathways"
+			local PlantStyle = ExecCmd.PlantStyle or "Random"
 
 			local SeedsToPlant = {}
 
@@ -159,21 +159,11 @@ Module.AutoPlantModule = function(): nil
 				local LastPosition
 
 				while ExecCmd.AutoPlant and Tool do
-					if not ExecCmd.AutoPlant then break end
-
 					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
 					local Size = Spot.Size
-					local TargetPosition
 
-					if PlantStyle == "Stacked" and LastPosition then
-						TargetPosition = LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
-					else
-						TargetPosition = Spot.Position + Vector3New(
-							Random(-Size.X / 2, Size.X / 2),
-							2,
-							Random(-Size.Z / 2, Size.Z / 2)
-						)
-					end
+					local TargetPosition = (PlantStyle == "Stacked" and LastPosition) and LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
+						or Spot.Position + Vector3New(Random(-Size.X / 2, Size.X / 2), 2, Random(-Size.Z / 2, Size.Z / 2))
 
 					if not Tool:IsDescendantOf(Character) then
 						Tool.Parent = Character
@@ -181,8 +171,6 @@ Module.AutoPlantModule = function(): nil
 					end
 
 					if CanFire and os.clock() - LastFireTime >= MinFireInterval then
-						if not ExecCmd.AutoPlant then break end
-
 						if PlantMode == "Bypass" then
 							PlantRemote:FireServer(TargetPosition, Seed)
 						else
@@ -212,6 +200,7 @@ Module.AutoPlantModule = function(): nil
 							CanFire = true
 						end)
 					end
+
 					LastPosition = TargetPosition
 					Wait(0.1)
 					Humanoid:UnequipTools()
@@ -220,11 +209,14 @@ Module.AutoPlantModule = function(): nil
 					if not Tool then break end
 				end
 			end
+
 			Wait(0.1)
 		end
+
 		Threads.AutoPlant = nil
 	end)
 end
+
 
 
 Module.CollectModule = function(): nil
@@ -318,5 +310,40 @@ Module.CollectModule = function(): nil
 		Threads.AutoCollect = nil
     end)
 end
+
+Module.AutoBuyEggs = function()
+	if Threads.AutoBuyEggs then return end
+
+	Threads.AutoBuyEggs = task.spawn(function()
+		while task.wait() do
+			local AutoBuyEgg = ExecCmd.AutoBuyEgg
+			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
+			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
+
+			local RawList = ExecCmd.SelectedEggList
+			local SelectedEggList = typeof(RawList) == "string" and { RawList }
+				or typeof(RawList) == "table" and RawList
+				or {}
+
+			pcall(function()
+				local Data = DataService:GetData()
+				local Stocks = Data.PetEggStock.Stocks
+				local Normalized = {}
+				for _, Name in ipairs(SelectedEggList) do
+					Normalized[string.lower(Name):gsub("%s+", "")] = true
+				end
+				for Index, Stock in ipairs(Stocks) do
+					if Stock.Stock > 0 then
+						if AutoBuyAllEggs or Normalized[string.lower(Stock.EggName):gsub("%s+", "")] then
+							BuyPetEgg:FireServer(Index)
+						end
+					end
+				end
+			end)
+		end
+		Threads.AutoBuyEggs = nil
+	end)
+end
+
 
 return Module
