@@ -50,178 +50,181 @@ local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
 
 local Threads = {}
+
 Module.AutoPlantModule = function(): nil
 	if Threads.AutoPlant then return end
-	Threads.AutoPlant = true
 
-	local Wait = task.wait
-	local Random = math.random
-	local Vector3New = Vector3.new
-	local Containers = { lp.Backpack }
-	local CharParts = {}
-	local CanFire = true
-	local LastFireTime = 0
-	local MinFireInterval = 0.25
+	Threads.AutoPlant = task.spawn(function()
+		local Wait = task.wait
+		local Random = math.random
+		local Vector3New = Vector3.new
+		local Containers = { lp.Backpack }
+		local CharParts = {}
+		local CanFire = true
+		local LastFireTime = 0
+		local MinFireInterval = 0.25
 
-	local function FindSeedTool(SeedName: string): Tool?
-		for _, Container in ipairs(Containers) do
-			for _, Item in ipairs(Container:GetChildren()) do
-				if Item:IsA("Tool") and string.find(Item.Name, SeedName) and string.find(Item.Name, "Seed") then
-					return Item
-				end
-			end
-		end
-		return nil
-	end
-
-	local function CacheCharacterParts(Character: Model)
-		table.clear(CharParts)
-		for _, Part in ipairs(Character:GetDescendants()) do
-			if Part:IsA("BasePart") then
-				table.insert(CharParts, Part)
-			end
-		end
-	end
-
-	local function SetCollision(Parts, CanCollide)
-		for _, Part in ipairs(Parts) do
-			Part.CanCollide = CanCollide
-		end
-	end
-
-	while ExecCmd.AutoPlant do
-		local Character: Model = lp.Character or lp.CharacterAdded:Wait()
-		Containers[2] = Character
-
-		local Humanoid: Humanoid? = Character:FindFirstChildOfClass("Humanoid")
-		local RootPart: BasePart? = Character:FindFirstChild("HumanoidRootPart")
-		if not Humanoid or not RootPart then
-			Wait(1)
-			continue
-		end
-
-		CacheCharacterParts(Character)
-
-		local Farm: Model? = GetFarm(lp)
-		local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
-
-		if SpawnPoint and (RootPart.Position - SpawnPoint.Position).Magnitude > 30 then
-			RootPart.CFrame = SpawnPoint.CFrame
-			Wait(1.5)
-		end
-
-		local PlantingFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
-		if not PlantingFolder then
-			Wait(1)
-			continue
-		end
-
-		local PlantingSpots = {}
-		for _, Descendant in ipairs(PlantingFolder:GetDescendants()) do
-			if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
-				table.insert(PlantingSpots, Descendant)
-			end
-		end
-
-		if #PlantingSpots == 0 then
-			Wait(1)
-			continue
-		end
-
-		local SeedName: string = ExecCmd.SeedName or "Any"
-		local PlantMode: string = ExecCmd.PlantMode or "Pathways"
-		local PlantStyle: string = ExecCmd.PlantStyle or "Random"
-
-		local SeedsToPlant = {}
-
-		if SeedName == "Any" then
-			local SeenSeeds = {}
+		local function FindSeedTool(SeedName: string): Tool?
 			for _, Container in ipairs(Containers) do
 				for _, Item in ipairs(Container:GetChildren()) do
-					if Item:IsA("Tool") and string.find(Item.Name, "Seed") then
-						local CleanName = string.gsub(Item.Name, " Seed.*", "")
-						if not SeenSeeds[CleanName] then
-							SeenSeeds[CleanName] = true
-							table.insert(SeedsToPlant, CleanName)
-						end
+					if Item:IsA("Tool") and string.find(Item.Name, SeedName) and string.find(Item.Name, "Seed") then
+						return Item
 					end
 				end
 			end
-		else
-			table.insert(SeedsToPlant, SeedName)
+			return nil
 		end
 
-		for _, Seed in ipairs(SeedsToPlant) do
-			local Tool = FindSeedTool(Seed)
-			if not Tool then continue end
-
-			local LastPosition
-
-			while ExecCmd.AutoPlant and Tool do
-				local Spot = PlantingSpots[Random(1, #PlantingSpots)]
-				local Size = Spot.Size
-				local TargetPosition
-
-				if PlantStyle == "Stacked" and LastPosition then
-					TargetPosition = LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
-				else
-					TargetPosition = Spot.Position + Vector3New(
-						Random(-Size.X / 2, Size.X / 2),
-						2,
-						Random(-Size.Z / 2, Size.Z / 2)
-					)
+		local function CacheCharacterParts(Character: Model)
+			table.clear(CharParts)
+			for _, Part in ipairs(Character:GetDescendants()) do
+				if Part:IsA("BasePart") then
+					table.insert(CharParts, Part)
 				end
+			end
+		end
 
-				if not Tool:IsDescendantOf(Character) then
-					Tool.Parent = Character
-					repeat Wait() until Character:FindFirstChild(Tool.Name)
+		local function SetCollision(Parts, CanCollide)
+			for _, Part in ipairs(Parts) do
+				Part.CanCollide = CanCollide
+			end
+		end
+
+		while ExecCmd.AutoPlant do
+			local Character: Model = lp.Character or lp.CharacterAdded:Wait()
+			Containers[2] = Character
+
+			local Humanoid: Humanoid? = Character:FindFirstChildOfClass("Humanoid")
+			local RootPart: BasePart? = Character:FindFirstChild("HumanoidRootPart")
+			if not Humanoid or not RootPart then
+				Wait(1)
+				continue
+			end
+
+			CacheCharacterParts(Character)
+
+			local Farm: Model? = GetFarm(lp)
+			local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
+
+			if SpawnPoint and (RootPart.Position - SpawnPoint.Position).Magnitude > 30 then
+				RootPart.CFrame = SpawnPoint.CFrame
+				Wait(1.5)
+			end
+
+			local PlantingFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
+			if not PlantingFolder then
+				Wait(1)
+				continue
+			end
+
+			local PlantingSpots = {}
+			for _, Descendant in ipairs(PlantingFolder:GetDescendants()) do
+				if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
+					table.insert(PlantingSpots, Descendant)
 				end
+			end
 
-				if CanFire and os.clock() - LastFireTime >= MinFireInterval then
-					if PlantMode == "Bypass" then
-						PlantRemote:FireServer(TargetPosition, Seed)
-					else
-						local Distance = (RootPart.Position - TargetPosition).Magnitude
-						if Distance > 1 then
-							SetCollision(CharParts, false)
-							local Done = false
-							local Conn = Humanoid.MoveToFinished:Connect(function()
-								Done = true
-							end)
-							Humanoid:MoveTo(TargetPosition)
-							for _ = 1, 30 do
-								if Done or not ExecCmd.AutoPlant then break end
-								Wait(0.1)
+			if #PlantingSpots == 0 then
+				Wait(1)
+				continue
+			end
+
+			local SeedName: string = ExecCmd.SeedName or "Any"
+			local PlantMode: string = ExecCmd.PlantMode or "Pathways"
+			local PlantStyle: string = ExecCmd.PlantStyle or "Random"
+
+			local SeedsToPlant = {}
+
+			if SeedName == "Any" then
+				local SeenSeeds = {}
+				for _, Container in ipairs(Containers) do
+					for _, Item in ipairs(Container:GetChildren()) do
+						if Item:IsA("Tool") and string.find(Item.Name, "Seed") then
+							local CleanName = string.gsub(Item.Name, " Seed.*", "")
+							if not SeenSeeds[CleanName] then
+								SeenSeeds[CleanName] = true
+								table.insert(SeedsToPlant, CleanName)
 							end
-							Conn:Disconnect()
-							SetCollision(CharParts, true)
-						end
-
-						if ExecCmd.AutoPlant then
-							PlantRemote:FireServer(TargetPosition, Seed)
 						end
 					end
-					CanFire = false
-					LastFireTime = os.clock()
-					task.delay(MinFireInterval, function()
-						CanFire = true
-					end)
 				end
-
-				LastPosition = TargetPosition
-				Wait(0.1)
-				Humanoid:UnequipTools()
-				Wait(0.1)
-				Tool = FindSeedTool(Seed)
+			else
+				table.insert(SeedsToPlant, SeedName)
 			end
+
+			for _, Seed in ipairs(SeedsToPlant) do
+				local Tool = FindSeedTool(Seed)
+				if not Tool then continue end
+
+				local LastPosition
+
+				while ExecCmd.AutoPlant and Tool do
+					if not ExecCmd.AutoPlant then break end
+
+					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
+					local Size = Spot.Size
+					local TargetPosition
+
+					if PlantStyle == "Stacked" and LastPosition then
+						TargetPosition = LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
+					else
+						TargetPosition = Spot.Position + Vector3New(
+							Random(-Size.X / 2, Size.X / 2),
+							2,
+							Random(-Size.Z / 2, Size.Z / 2)
+						)
+					end
+
+					if not Tool:IsDescendantOf(Character) then
+						Tool.Parent = Character
+						repeat Wait() until Character:FindFirstChild(Tool.Name)
+					end
+
+					if CanFire and os.clock() - LastFireTime >= MinFireInterval then
+						if not ExecCmd.AutoPlant then break end
+
+						if PlantMode == "Bypass" then
+							PlantRemote:FireServer(TargetPosition, Seed)
+						else
+							local Distance = (RootPart.Position - TargetPosition).Magnitude
+							if Distance > 1 then
+								SetCollision(CharParts, false)
+								local Done = false
+								local Conn = Humanoid.MoveToFinished:Connect(function()
+									Done = true
+								end)
+								Humanoid:MoveTo(TargetPosition)
+								for _ = 1, 30 do
+									if Done or not ExecCmd.AutoPlant then break end
+									Wait(0.1)
+								end
+								Conn:Disconnect()
+								SetCollision(CharParts, true)
+							end
+
+							if ExecCmd.AutoPlant then
+								PlantRemote:FireServer(TargetPosition, Seed)
+							end
+						end
+						CanFire = false
+						LastFireTime = os.clock()
+						task.delay(MinFireInterval, function()
+							CanFire = true
+						end)
+					end
+					LastPosition = TargetPosition
+					Wait(0.1)
+					Humanoid:UnequipTools()
+					Wait(0.1)
+					Tool = FindSeedTool(Seed)
+					if not Tool then break end
+				end
+			end
+			Wait(0.1)
 		end
-
-		Wait(0.1)
-	end
-
-	Threads.AutoPlant = nil
+		Threads.AutoPlant = nil
+	end)
 end
-
 
 
 Module.CollectModule = function(): nil
