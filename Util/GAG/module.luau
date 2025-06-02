@@ -365,7 +365,32 @@ function Module:AutoSell()
 	end)
 end
 
+function Module:AutoGivePollinated()
+	CreateThread("AutoGivePollinated", function()
+		while task.wait() do
+			local Character = lp.Character or lp.CharacterAdded:Wait()
+			local Backpack = lp:FindFirstChild("Backpack")
 
+			if Character and Backpack then
+				for _, Tool in ipairs(Backpack:GetChildren()) do
+					if Tool:IsA("Tool") and string.find(string.lower(Tool.Name), "pollinated") then
+						Tool.Parent = Character
+						task.wait(0.5)
+						for _ = 1, 2 do
+							pcall(function()
+								HoneyRemote:FireServer("MachineInteract")
+							end)
+						end
+
+						task.wait(0.5)
+					end
+				end
+			end
+
+			task.wait(0.25)
+		end
+	end)
+end
 
 
 return Automation
