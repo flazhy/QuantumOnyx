@@ -12,8 +12,8 @@ local HoneyRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Hone
 local PlantRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE")
 local BuyPetEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local StevenHRP: BasePart? = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
-local GetFarm: {} = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
-local DataService: {} = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+local GetFarm: any = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
+local DataService: any = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
 
 local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
