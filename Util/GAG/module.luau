@@ -25,6 +25,7 @@ Module.AutoPlantModule = function(): nil
 		local Vector3New = Vector3.new
 		local Containers = { lp.Backpack }
 		local CharParts = {}
+		local CanFire = true
 		local LastFireTime = 0
 		local MinFireInterval = 0.25
 
@@ -48,9 +49,9 @@ Module.AutoPlantModule = function(): nil
 			end
 		end
 
-		local function SetCollision(parts, canCollide)
-			for _, part in ipairs(parts) do
-				part.CanCollide = canCollide
+		local function SetCollision(Parts, CanCollide)
+			for _, Part in ipairs(Parts) do
+				Part.CanCollide = CanCollide
 			end
 		end
 
@@ -75,14 +76,14 @@ Module.AutoPlantModule = function(): nil
 				Wait(1.5)
 			end
 
-			local PlantLocationsFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
-			if not PlantLocationsFolder then
+			local PlantingFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
+			if not PlantingFolder then
 				Wait(1)
 				continue
 			end
 
 			local PlantingSpots = {}
-			for _, Descendant in ipairs(PlantLocationsFolder:GetDescendants()) do
+			for _, Descendant in ipairs(PlantingFolder:GetDescendants()) do
 				if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
 					table.insert(PlantingSpots, Descendant)
 				end
@@ -123,6 +124,8 @@ Module.AutoPlantModule = function(): nil
 				local LastPosition
 
 				while ExecCmd.AutoPlant and Tool do
+					if not ExecCmd.AutoPlant then break end
+
 					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
 					local Size = Spot.Size
 					local TargetPosition
@@ -142,36 +145,38 @@ Module.AutoPlantModule = function(): nil
 						repeat Wait() until Character:FindFirstChild(Tool.Name)
 					end
 
-					if PlantMode == "Bypass" then
-						local CurrentTime = os.clock()
-						if CurrentTime - LastFireTime >= MinFireInterval then
+					if CanFire and os.clock() - LastFireTime >= MinFireInterval then
+						if not ExecCmd.AutoPlant then break end
+
+						if PlantMode == "Bypass" then
 							PlantRemote:FireServer(TargetPosition, Seed)
-							LastFireTime = CurrentTime
-						end
-					else
-						local distance = (RootPart.Position - TargetPosition).Magnitude
-						if distance > 1 then
-							SetCollision(CharParts, false)
-							local Done = false
-							local Conn = Humanoid.MoveToFinished:Connect(function()
-								Done = true
-							end)
-							Humanoid:MoveTo(TargetPosition)
-							for _ = 1, 30 do
-								if Done then break end
-								Wait(0.1)
+						else
+							local Distance = (RootPart.Position - TargetPosition).Magnitude
+							if Distance > 1 then
+								SetCollision(CharParts, false)
+								local Done = false
+								local Conn = Humanoid.MoveToFinished:Connect(function()
+									Done = true
+								end)
+								Humanoid:MoveTo(TargetPosition)
+								for _ = 1, 30 do
+									if Done or not ExecCmd.AutoPlant then break end
+									Wait(0.1)
+								end
+								Conn:Disconnect()
+								SetCollision(CharParts, true)
 							end
-							Conn:Disconnect()
-							SetCollision(CharParts, true)
-						end
 
-						local CurrentTime = os.clock()
-						if CurrentTime - LastFireTime >= MinFireInterval then
-							PlantRemote:FireServer(TargetPosition, Seed)
-							LastFireTime = CurrentTime
+							if ExecCmd.AutoPlant then
+								PlantRemote:FireServer(TargetPosition, Seed)
+							end
 						end
+						CanFire = false
+						LastFireTime = os.clock()
+						task.delay(MinFireInterval, function()
+							CanFire = true
+						end)
 					end
-
 					LastPosition = TargetPosition
 					Wait(0.1)
 					Humanoid:UnequipTools()
@@ -180,7 +185,6 @@ Module.AutoPlantModule = function(): nil
 					if not Tool then break end
 				end
 			end
-
 			Wait(0.1)
 		end
 	end)
