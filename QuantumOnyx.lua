@@ -1,22 +1,31 @@
-local Scripts = {
-    [2753915549] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
-    [4442272183] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
-    [7449423635] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua",
+local ScriptLoader = {}
 
-    [126884695634066] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua",
+ScriptLoader.Scripts = {
+    [2753915549] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
+    [4442272183] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
+    [7449423635] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
+    [126884695634066] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua", Title = "Grow A Garden" },
 }
 
-local function fetch(url)
-    local ok, data = pcall(game.HttpGet, game, url)
-    return ok and data or nil
+function ScriptLoader:GetScriptEntry(PlaceId: number)
+    return self.Scripts[PlaceId]
 end
 
-local function loadFor(placeId)
-    local url = Scripts[placeId]
-    if not url then return end
-    local source = fetch(url)
-    local fn, err = loadstring(source)
-    task.spawn(fn)
+function ScriptLoader:LoadScript(entry: {Url: string, Title: string})
+    if not entry then return end
+    local ok, fn = pcall(function()
+        return loadstring(game:HttpGet(entry.Url))
+    end)
+    if ok and fn then
+        task.spawn(fn)
+    end
 end
 
-loadFor(game.PlaceId)
+function ScriptLoader:LoadForPlace(PlaceId: number)
+    local entry = self:GetScriptEntry(PlaceId)
+    self:LoadScript(entry)
+end
+
+ScriptLoader:LoadForPlace(game.PlaceId)
+
+return ScriptLoader
