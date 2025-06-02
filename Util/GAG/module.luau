@@ -1,36 +1,5 @@
 local Module = {}
 
-Module.Signal = {}
-Module.Signal.__index = Module.Signal
-
-function Module.Signal.new()
-	local self = setmetatable({}, Module.Signal)
-	self.Connections = {}
-	return self
-end
-
-function Module.Signal:Connect(Func)
-	local Conn = {Func = Func}
-	table.insert(self.Connections, Conn)
-
-	return {
-		Disconnect = function()
-			for i, v in ipairs(self.Connections) do
-				if v == Conn then
-					table.remove(self.Connections, i)
-					break
-				end
-			end
-		end
-	}
-end
-
-function Module.Signal:Fire(...)
-	for _, Conn in ipairs(self.Connections) do
-		task.spawn(Conn.Func, ...)
-	end
-end
-
 local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService: CollectionService = game:GetService("CollectionService")
 local HttpService: HttpService = game:GetService("HttpService")
