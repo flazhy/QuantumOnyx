@@ -322,7 +322,7 @@ end
 Module.AutoBuyEggs = function(): nil
 	if Threads.AutoBuyEggs then return end
 	Threads.AutoBuyEggs = task.spawn(function()
-		while task.wait() do
+		while true do
 			local AutoBuyEgg = ExecCmd.AutoBuyEgg
 			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
 			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
