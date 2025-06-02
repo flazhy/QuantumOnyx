@@ -319,35 +319,4 @@ Module.CollectModule = function(): nil
     end)
 end
 
-Module.AutoBuyEggs = function(): nil
-	if Threads.AutoBuyEggs then return end
-	Threads.AutoBuyEggs = task.spawn(function()
-		while true do
-			local AutoBuyEgg = ExecCmd.AutoBuyEgg
-			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
-			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
-
-			local RawList = ExecCmd.SelectedEggList
-			local SelectedEggList = typeof(RawList) == "string" and { RawList } or typeof(RawList) == "table" and RawList or {}
-
-			pcall(function()
-				local Data = DataService:GetData()
-				local Stocks = Data.PetEggStock.Stocks
-				local Normalized = {}
-				for _, Name in ipairs(SelectedEggList) do
-					Normalized[string.lower(Name):gsub("%s+", "")] = true
-				end
-				for Index, Stock in ipairs(Stocks) do
-					if Stock.Stock > 0 then
-						if AutoBuyAllEggs or Normalized[string.lower(Stock.EggName):gsub("%s+", "")] then
-							BuyPetEgg:FireServer(Index)
-						end
-					end
-				end
-			end)
-		end
-		Threads.AutoBuyEggs = nil
-	end)
-end
-
 return Module
