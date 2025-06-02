@@ -392,5 +392,29 @@ function Module:AutoGivePollinated()
 	end)
 end
 
+function Module:AutoHatchEggs()
+	CreateThread("AutoHatchEggs", function()
+		while task.wait() do
+			pcall(function()
+				for _, Farm in ipairs(GetFarm()) do
+					local Owner = Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Data") and Farm.Important.Data:FindFirstChild("Owner")
+
+					if Owner and Owner.Value == lp.Name then
+						local EggFolder = Farm.Important:FindFirstChild("Objects_Physical") and Farm.Important.Objects_Physical:FindFirstChild("PetEgg")
+
+						for _, Egg in ipairs(EggFolder:GetChildren()) do
+							local Prompt = Egg:FindFirstChildOfClass("ProximityPrompt")
+							if Prompt and Prompt.Enabled and Prompt.ActionText == "Hatch!" then
+								fireproximityprompt(Prompt)
+							end
+						end
+					end
+				end
+			end)
+		end
+	end)
+end
+
+
 
 return Automation
