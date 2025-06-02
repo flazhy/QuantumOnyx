@@ -15,7 +15,7 @@ local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
 
 local lp = Players.LocalPlayer
-local ExecCmd = getgenv()
+local ExecCmd = getgenv() or {}
 
 Module.AutoPlantModule = function(): nil
 	task.spawn(function()
