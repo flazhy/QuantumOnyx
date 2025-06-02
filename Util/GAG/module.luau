@@ -311,7 +311,7 @@ Module.CollectModule = function(): nil
     end)
 end
 
-Module.AutoBuyEggs = function()
+Module.AutoBuyEggs = function(): nil
 	if Threads.AutoBuyEggs then return end
 
 	Threads.AutoBuyEggs = task.spawn(function()
