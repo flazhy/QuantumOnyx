@@ -371,7 +371,7 @@ Module.AutoGivePollinated = function(): nil
 
 			if Character and Backpack then
 				for _, Tool: Tool in ipairs(Backpack:GetChildren()) do
-					if Tool:IsA("Tool") and string.find(Tool.Name, "%[Pollinated%]") then
+					if Tool:IsA("Tool") and string.find(string.lower(Tool.Name), "pollinated") then
 						Tool.Parent = Character
 						task.wait(0.5)
 
