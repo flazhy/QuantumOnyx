@@ -1,5 +1,36 @@
 local Module = {}
 
+Module.Signal = {}
+Module.Signal.__index = Module.Signal
+
+function Module.Signal.new()
+	local self = setmetatable({}, Module.Signal)
+	self.Connections = {}
+	return self
+end
+
+function Module.Signal:Connect(Func)
+	local Conn = {Func = Func}
+	table.insert(self.Connections, Conn)
+
+	return {
+		Disconnect = function()
+			for i, v in ipairs(self.Connections) do
+				if v == Conn then
+					table.remove(self.Connections, i)
+					break
+				end
+			end
+		end
+	}
+end
+
+function Module.Signal:Fire(...)
+	for _, Conn in ipairs(self.Connections) do
+		task.spawn(Conn.Func, ...)
+	end
+end
+
 local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService: CollectionService = game:GetService("CollectionService")
 local HttpService: HttpService = game:GetService("HttpService")
@@ -18,8 +49,12 @@ local DataService: any = require(ReplicatedStorage.Modules:WaitForChild("DataSer
 local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
 
+local Threads = {}
+
 Module.AutoPlantModule = function(): nil
-	task.spawn(function()
+	if Threads.AutoPlant then return end
+
+	Threads.AutoPlant = task.spawn(function()
 		local Wait = task.wait
 		local Random = math.random
 		local Vector3New = Vector3.new
@@ -187,11 +222,13 @@ Module.AutoPlantModule = function(): nil
 			end
 			Wait(0.1)
 		end
+		Threads.AutoPlant = nil
 	end)
 end
 
 
 Module.CollectModule = function(): nil
+	if Threads.AutoCollect then return end
     local Remotes = nil
     while true do
         local success, result = pcall(function()
@@ -233,7 +270,7 @@ Module.CollectModule = function(): nil
         return false
     end
 
-    task.spawn(function()
+    Threads.AutoCollect = task.spawn(function()
         while ExecCmd.AutoCollect do
             if #lp.Backpack:GetChildren() >= 200 then
                 task.wait(0.3)
@@ -278,12 +315,14 @@ Module.CollectModule = function(): nil
                 task.wait(0.3)
             end
         end
+		Threads.AutoCollect = nil
     end)
 end
 
 Module.AutoBuyEggs = function(): nil
+	Threads.AutoBuyEggs
 	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
-	task.spawn(function()
+	Threads.AutoBuyEggs = task.spawn(function()
 		while task.wait() do
 			local AutoBuyEgg = ExecCmd.AutoBuyEgg
 			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
@@ -308,6 +347,7 @@ Module.AutoBuyEggs = function(): nil
 				end
 			end)
 		end
+		Threads.AutoBuyEggs = nil
 	end)
 end
 
@@ -317,7 +357,7 @@ Module.AutoHatchEggs = function(): nil
 		while task.wait(1) do
 			if not ExecCmd.AutoHatchEggs then continue end
 			pcall(function()
-				for _, Farm in ipairs(GetFarm()) do
+				for _, Farm in ipairs(GetFarm(lp)) do
 					local Owner = Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Data") and Farm.Important.Data:FindFirstChild("Owner") :: Types.StringValue?
 					if Owner and Owner.Value == lp.Name then
 						local EggFolder = Farm.Important:FindFirstChild("Objects_Physical") and Farm.Important.Objects_Physical:FindFirstChild("PetEgg")
