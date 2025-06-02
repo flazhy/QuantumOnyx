@@ -10,6 +10,8 @@ function Module.Signal.new()
 end
 
 function Module.Signal:Connect(Func)
+	assert(typeof(Func) == "function", "Signal:Connect expects a function")
+
 	local Conn = {Func = Func}
 	table.insert(self.Connections, Conn)
 
@@ -27,9 +29,12 @@ end
 
 function Module.Signal:Fire(...)
 	for _, Conn in ipairs(self.Connections) do
-		task.spawn(Conn.Func, ...)
+		if Conn and typeof(Conn.Func) == "function" then
+			task.spawn(Conn.Func, ...)
+		end
 	end
 end
+
 
 local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService: CollectionService = game:GetService("CollectionService")
