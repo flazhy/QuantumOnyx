@@ -23,9 +23,10 @@ Module.AutoPlantModule = function(): nil
 		local Wait = task.wait
 		local Random = math.random
 		local Vector3New = Vector3.new
-		local Containers: {Instance} = { lp.Backpack }
-		local CharParts: {BasePart} = {}
-
+		local Containers = { lp.Backpack }
+		local CharParts = {}
+		local LastFireTime = 0
+		local MinFireInterval = 0.25
 
 		local function FindSeedTool(SeedName: string): Tool?
 			for _, Container in ipairs(Containers) do
@@ -47,6 +48,12 @@ Module.AutoPlantModule = function(): nil
 			end
 		end
 
+		local function SetCollision(parts, canCollide)
+			for _, part in ipairs(parts) do
+				part.CanCollide = canCollide
+			end
+		end
+
 		while ExecCmd.AutoPlant do
 			local Character: Model = lp.Character or lp.CharacterAdded:Wait()
 			Containers[2] = Character
@@ -57,7 +64,9 @@ Module.AutoPlantModule = function(): nil
 				Wait(1)
 				continue
 			end
+
 			CacheCharacterParts(Character)
+
 			local Farm: Model? = GetFarm(lp)
 			local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
 
@@ -71,7 +80,8 @@ Module.AutoPlantModule = function(): nil
 				Wait(1)
 				continue
 			end
-			local PlantingSpots: {BasePart} = {}
+
+			local PlantingSpots = {}
 			for _, Descendant in ipairs(PlantLocationsFolder:GetDescendants()) do
 				if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
 					table.insert(PlantingSpots, Descendant)
@@ -82,11 +92,12 @@ Module.AutoPlantModule = function(): nil
 				Wait(1)
 				continue
 			end
+
 			local SeedName: string = ExecCmd.SeedName or "Any"
 			local PlantMode: string = ExecCmd.PlantMode or "Pathways"
 			local PlantStyle: string = ExecCmd.PlantStyle or "Random"
 
-			local SeedsToPlant: {string} = {}
+			local SeedsToPlant = {}
 
 			if SeedName == "Any" then
 				local SeenSeeds = {}
@@ -104,16 +115,17 @@ Module.AutoPlantModule = function(): nil
 			else
 				table.insert(SeedsToPlant, SeedName)
 			end
+
 			for _, Seed in ipairs(SeedsToPlant) do
-				local Tool: Tool? = FindSeedTool(Seed)
-				if not Tool then
-					continue
-				end
-				local LastPosition: Vector3?
+				local Tool = FindSeedTool(Seed)
+				if not Tool then continue end
+
+				local LastPosition
+
 				while ExecCmd.AutoPlant and Tool do
 					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
 					local Size = Spot.Size
-					local TargetPosition: Vector3
+					local TargetPosition
 
 					if PlantStyle == "Stacked" and LastPosition then
 						TargetPosition = LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
@@ -124,33 +136,42 @@ Module.AutoPlantModule = function(): nil
 							Random(-Size.Z / 2, Size.Z / 2)
 						)
 					end
+
 					if not Tool:IsDescendantOf(Character) then
 						Tool.Parent = Character
 						repeat Wait() until Character:FindFirstChild(Tool.Name)
 					end
+
 					if PlantMode == "Bypass" then
-						PlantRemote:FireServer(TargetPosition, Seed)
+						local CurrentTime = os.clock()
+						if CurrentTime - LastFireTime >= MinFireInterval then
+							PlantRemote:FireServer(TargetPosition, Seed)
+							LastFireTime = CurrentTime
+						end
 					else
-						for _, Part in ipairs(CharParts) do
-							Part.CanCollide = false
+						local distance = (RootPart.Position - TargetPosition).Magnitude
+						if distance > 1 then
+							SetCollision(CharParts, false)
+							local Done = false
+							local Conn = Humanoid.MoveToFinished:Connect(function()
+								Done = true
+							end)
+							Humanoid:MoveTo(TargetPosition)
+							for _ = 1, 30 do
+								if Done then break end
+								Wait(0.1)
+							end
+							Conn:Disconnect()
+							SetCollision(CharParts, true)
 						end
 
-						local Done = false
-						local Conn = Humanoid.MoveToFinished:Connect(function()
-							Done = true
-						end)
-						Humanoid:MoveTo(TargetPosition)
-						for _ = 1, 30 do
-							if Done then break end
-							Wait(0.1)
+						local CurrentTime = os.clock()
+						if CurrentTime - LastFireTime >= MinFireInterval then
+							PlantRemote:FireServer(TargetPosition, Seed)
+							LastFireTime = CurrentTime
 						end
-						Conn:Disconnect()
-						for _, Part in ipairs(CharParts) do
-							Part.CanCollide = true
-						end
-
-						PlantRemote:FireServer(TargetPosition, Seed)
 					end
+
 					LastPosition = TargetPosition
 					Wait(0.1)
 					Humanoid:UnequipTools()
@@ -160,11 +181,10 @@ Module.AutoPlantModule = function(): nil
 				end
 			end
 
-			Wait(0.05)
+			Wait(0.1)
 		end
 	end)
 end
-
 
 
 Module.CollectModule = function(): nil
