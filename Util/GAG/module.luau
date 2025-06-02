@@ -10,6 +10,7 @@ local SellRemote = ReplicatedStorage.GameEvents:WaitForChild("Sell_Inventory")
 local StevenHRP = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
 local GetFarm = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local FavoriteToolRemote = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
+local HoneyRemote: RemoteEvent = ReplicatedStorage:WaitForChild("GameEvents"):WaitForChild("HoneyMachineService_RE")
 local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
 
@@ -362,10 +363,11 @@ Module.AutoSell = function(): nil
 end
 
 Module.AutoGivePollinated = function(): nil
+	type Tool = ToolInstance & { Name: string }
 	task.spawn(function()
 		while ExecCmd.AutoGivePollinated do
-			local Character = Lp.Character or Lp.CharacterAdded:Wait()
-			local Backpack = Lp:FindFirstChild("Backpack")
+			local Character = lp.Character or lp.CharacterAdded:Wait()
+			local Backpack = lp:FindFirstChild("Backpack")
 
 			if Character and Backpack then
 				for _, Tool: Tool in ipairs(Backpack:GetChildren()) do
