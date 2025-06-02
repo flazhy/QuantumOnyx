@@ -451,16 +451,19 @@ function Module:AutoPlaceEggs()
 			Containers[2] = character
 
 			local root = character:FindFirstChild("HumanoidRootPart")
-			if not root then Wait(1) continue end
+			local humanoid = character:FindFirstChildOfClass("Humanoid")
+			if not root or not humanoid then Wait(1) continue end
 
 			local selectedEgg = ExecCmd.SelectedEggList
 			local eggs = {}
 
 			if selectedEgg == "Any" then
 				eggs = GetAvailableEggTools()
-			else
+			elseif selectedEgg then
 				table.insert(eggs, selectedEgg)
 			end
+
+			if #eggs == 0 then Wait(1) continue end
 
 			for _, eggName in ipairs(eggs) do
 				if not ExecCmd.AutoPlaceEggs then break end
@@ -469,8 +472,9 @@ function Module:AutoPlaceEggs()
 				if not tool then continue end
 
 				if not tool:IsDescendantOf(character) then
-					tool.Parent = character
-					repeat Wait() until character:FindFirstChild(tool.Name)
+					pcall(function() tool.Parent = character end)
+					local attempts = 0
+					repeat Wait(0.1) attempts += 1 until character:FindFirstChild(tool.Name) or attempts > 20
 				end
 
 				local offset = Vector3New(Random(-FAR_DISTANCE, FAR_DISTANCE), 1, Random(-FAR_DISTANCE, FAR_DISTANCE))
@@ -481,16 +485,13 @@ function Module:AutoPlaceEggs()
 				end)
 
 				Wait(0.1)
-				local humanoid = character:FindFirstChildOfClass("Humanoid")
-				if humanoid then
-					humanoid:UnequipTools()
-				end
+				humanoid:UnequipTools()
 				Wait(0.1)
 			end
+
+			Wait(0.2)
 		end
 	end)
 end
-
-
 
 return Automation
