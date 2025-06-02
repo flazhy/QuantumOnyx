@@ -188,99 +188,94 @@ end
 
 
 Module.CollectModule = function(): nil
-	type Types = {
-		RemoteModule: { Crops: { Collect: { send: (batch: {Instance}) -> () } } },
-		PlantCollectionContex: { Plot: Model, Prompt: ProximityPrompt, Crop: Model }
-	}
+    local Remotes = nil
+    while true do
+        local success, result = pcall(function()
+            Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes"))
+            return Remotes and Remotes.Crops and Remotes.Crops.Collect and typeof(Remotes.Crops.Collect.send) == "function"
+        end)
+        if success and result then break end
+        task.wait(1)
+    end
+    local CropCollectRemote = Remotes.Crops.Collect
+    local function Mutations_(crop: Model, SelectedMut: string | {string}): boolean
+        if SelectedMut == "Any" or (typeof(SelectedMut) == "table" and table.find(SelectedMut, "Any")) then
+            return true
+        end
+        local attrs = crop:GetAttributes()
+        if typeof(SelectedMut) == "string" then
+            return attrs[SelectedMut] == true
+        elseif typeof(SelectedMut) == "table" then
+            for name, value in pairs(attrs) do
+                if value == true and table.find(SelectedMut, name) then
+                    return true
+                end
+            end
+        end
+        return false
+    end
 
-	task.spawn(function()
-		local Remotes = nil
-		while true do
-			if pcall(function()
-				Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes")) :: Types.RemoteModule
-				return Remotes and Remotes.Crops and Remotes.Crops.Collect and typeof(Remotes.Crops.Collect.send) == "function"
-			end) then break end
-			task.wait(1)
-		end
+    local function Variant_(crop: Model, SelectedVar: string | {string}): boolean
+        if SelectedVar == "Any" or (typeof(SelectedVar) == "table" and table.find(SelectedVar, "Any")) then
+            return true
+        end
+        local variant = crop:FindFirstChild("Variant")
+        local VariantVal = variant and variant:IsA("StringValue") and variant.Value or nil
+        if typeof(SelectedVar) == "string" then
+            return VariantVal == SelectedVar
+        elseif typeof(SelectedVar) == "table" then
+            return VariantVal and table.find(SelectedVar, VariantVal) ~= nil
+        end
+        return false
+    end
 
-		while ExecCmd.AutoCollect do
-			if #lp.Backpack:GetChildren() >= 200 then
-				task.wait(0.3)
-				continue
-			end
+    task.spawn(function()
+        while ExecCmd.AutoCollect do
+            if #lp.Backpack:GetChildren() >= 200 then
+                task.wait(0.3)
+                continue
+            end
 
-			local Garden = nil
-			for _, Plot in ipairs(workspace:WaitForChild("Farm"):GetChildren()) do
-				local Important = Plot:FindFirstChild("Important")
-				local Data = Important and Important:FindFirstChild("Data")
-				local Owner = Data and Data:FindFirstChild("Owner")
-				if Owner and typeof(Owner.Value) == "string" and Owner.Value == lp.Name then
-					Garden = Important:FindFirstChild("Plants_Physical")
-					break
-				end
-			end
-			if Garden then
-				local Batch = {}
-				local SelectedMut = ExecCmd.SelectedMutations
-				local SelectedVar = ExecCmd.SelectedVariants
-				for _, Prompt in ipairs(Garden:GetDescendants()) do
-					if #Batch >= 10 then break end
-					if Prompt:IsA("ProximityPrompt") and Prompt.Enabled and CollectionService:HasTag(Prompt, "CollectPrompt") then
-						local Crop = Prompt.Parent and Prompt.Parent.Parent
-						if Crop then
-							local Allow = false
-							local MutationMatch = false
-							if SelectedMut == "Any" or (typeof(SelectedMut) == "table" and table.find(SelectedMut, "Any")) then
-								MutationMatch = true
-							elseif typeof(SelectedMut) == "string" then
-								for Name, Value in pairs(Crop:GetAttributes()) do
-									if Value == true and Name == SelectedMut then
-										MutationMatch = true
-										break
-									end
-								end
-							elseif typeof(SelectedMut) == "table" then
-								for Name, Value in pairs(Crop:GetAttributes()) do
-									if Value == true and table.find(SelectedMut, Name) then
-										MutationMatch = true
-										break
-									end
-								end
-							end
-							local VariantMatch = false
-							local Variant = Crop:FindFirstChild("Variant")
-							local VariantValue = Variant and Variant:IsA("StringValue") and Variant.Value
-							if SelectedVar == "Any" or (typeof(SelectedVar) == "table" and table.find(SelectedVar, "Any")) then
-								VariantMatch = true
-							elseif typeof(SelectedVar) == "string" then
-								VariantMatch = VariantValue == SelectedVar
-							elseif typeof(SelectedVar) == "table" then
-								VariantMatch = table.find(SelectedVar, VariantValue) ~= nil
-							end
+			local garden: Model? = nil
+            for _, plot in ipairs(workspace:WaitForChild("Farm"):GetChildren()) do
+                local important = plot:FindFirstChild("Important")
+                local data = important and important:FindFirstChild("Data")
+                local owner = data and data:FindFirstChild("Owner")
+                if owner and owner.Value == lp.Name then
+                    garden = important and important:FindFirstChild("Plants_Physical")
+                    break
+                end
+            end
 
-							if MutationMatch and VariantMatch then
-								table.insert(Batch, Crop)
-							end
-						end
-					end
-				end
-				if #Batch > 0 then
-					pcall(function()
-						Remotes.Crops.Collect.send(Batch)
-					end)
-					task.wait(0.15)
-				else
-					task.wait(0.2)
-				end
-			else
-				task.wait(0.3)
-			end
-		end
-	end)
+            if garden then
+                local batch = {}
+                local SelectedMut = ExecCmd.SelectedMutations
+                local SelectedVar = ExecCmd.SelectedVariants
+
+                for _, prompt in ipairs(garden:GetDescendants()) do
+                    if #batch >= 10 then break end
+                    if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
+                        local crop = prompt.Parent and prompt.Parent.Parent
+                        if crop and Mutations_(crop, SelectedMut) and Variant_(crop, SelectedVar) then
+                            table.insert(batch, crop)
+                        end
+                    end
+                end
+
+                if #batch > 0 then
+                    pcall(function()
+                        CropCollectRemote.send(batch)
+                    end)
+                    task.wait(0.15)
+                else
+                    task.wait(0.2)
+                end
+            else
+                task.wait(0.3)
+            end
+        end
+    end)
 end
-
-
-
 
 Module.AutoBuyEggs = function(): nil
 	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
