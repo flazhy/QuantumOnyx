@@ -436,10 +436,10 @@ function Module:AutoPlaceEggs()
 			return tools
 		end
 
-		local function FindEggTool(eggName)
+		local function FindEggTool(EggName)
 			for _, container in ipairs(Containers) do
 				for _, item in ipairs(container:GetChildren()) do
-					if item:IsA("Tool") and item.Name == eggName then
+					if item:IsA("Tool") and item.Name == EggName then
 						return item
 					end
 				end
@@ -465,11 +465,9 @@ function Module:AutoPlaceEggs()
 
 			if #eggs == 0 then Wait(1) continue end
 
-			for _, eggName in ipairs(eggs) do
-				if not ExecCmd.AutoPlaceEggs then break end
+			for _, EggName in ipairs(eggs) do
 
-				local tool = FindEggTool(eggName)
-				if not tool then continue end
+				local tool = FindEggTool(EggName)
 
 				if not tool:IsDescendantOf(character) then
 					pcall(function() tool.Parent = character end)
