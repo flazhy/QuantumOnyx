@@ -319,7 +319,7 @@ Module.CollectModule = function(): nil
     end)
 end
 
-Module.AutoBuyEggs = function()
+Module.AutoBuyEggs = function(): nil
 	if Threads.AutoBuyEggs then return end
 	Threads.AutoBuyEggs = task.spawn(function()
 		while task.wait() do
@@ -349,6 +349,5 @@ Module.AutoBuyEggs = function()
 		Threads.AutoBuyEggs = nil
 	end)
 end
-
 
 return Module
