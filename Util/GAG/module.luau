@@ -50,116 +50,145 @@ local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
 
 local Threads = {}
+
 Module.AutoPlantModule = function(): nil
 	if Threads.AutoPlant then return end
 	Threads.AutoPlant = true
 
-	local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
+	local Wait, Random, V3, Clock = task.wait, math.random, Vector3.new, os.clock
 	local Containers = { lp.Backpack }
 	local CharParts, SeenSeeds = {}, {}
 	local CanFire, LastFire = true, 0
-	local Delay, DelaySet = 0.25, function() CanFire = false task.delay(Delay, function() CanFire = true end) end
+	local FireDelay = 0.25
 
-	local function FindSeedTool(seed): Tool?
-		for _, c in Containers do
-			for _, i in c:GetChildren() do
-				if i:IsA("Tool") and i.Name:find(seed) and i.Name:find("Seed") then return i end
+	local function DelayFire()
+		CanFire = false
+		task.delay(FireDelay, function() CanFire = true end)
+	end
+
+	local function FindTool(seed): Tool?
+		for _, container in Containers do
+			for _, item in container:GetChildren() do
+				if item:IsA("Tool") and item.Name:find(seed) and item.Name:find("Seed") then
+					return item
+				end
 			end
 		end
 	end
 
-	local function CacheParts(char)
+	local function CacheCharParts(char)
 		table.clear(CharParts)
 		for _, p in char:GetDescendants() do
-			if p:IsA("BasePart") then CharParts[#CharParts+1] = p end
+			if p:IsA("BasePart") then CharParts[#CharParts + 1] = p end
 		end
 	end
 
-	local function SetCollide(parts, state)
-		for _, p in parts do p.CanCollide = state end
+	local function SetCollision(state)
+		for _, part in CharParts do
+			part.CanCollide = state
+		end
 	end
 
 	while ExecCmd.AutoPlant do
 		local char = lp.Character or lp.CharacterAdded:Wait()
 		Containers[2] = char
 
-		local hum: Humanoid? = char:FindFirstChildOfClass("Humanoid")
-		local root: BasePart? = char:FindFirstChild("HumanoidRootPart")
+		local hum = char:FindFirstChildOfClass("Humanoid")
+		local root = char:FindFirstChild("HumanoidRootPart")
 		if not hum or not root then Wait(1) continue end
 
-		CacheParts(char)
+		CacheCharParts(char)
 		local farm = GetFarm(lp)
 		local sp = farm and farm:FindFirstChild("Spawn_Point")
-		if sp and (root.Position - sp.Position).Magnitude > 30 then root.CFrame = sp.CFrame Wait(1.5) end
+		if sp and (root.Position - sp.Position).Magnitude > 30 then
+			root.CFrame = sp.CFrame
+			Wait(1.5)
+		end
 
-		local locs = farm and farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Plant_Locations")
-		if not locs then Wait(1) continue end
+		local plantFolder = farm and farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Plant_Locations")
+		if not plantFolder then Wait(1) continue end
 
 		local spots = {}
-		for _, p in locs:GetDescendants() do
-			if p:IsA("BasePart") and p.Name:find("Can_Plant") then spots[#spots+1] = p end
+		for _, p in plantFolder:GetDescendants() do
+			if p:IsA("BasePart") and p.Name:find("Can_Plant") then
+				spots[#spots + 1] = p
+			end
 		end
 		if #spots == 0 then Wait(1) continue end
 
 		local mode, style = ExecCmd.PlantMode or "Pathways", ExecCmd.PlantStyle or "Random"
-		local seeds, SeedName = {}, ExecCmd.SeedName or "Any"
+		local seeds, seedPref = {}, ExecCmd.SeedName or "Any"
 
-		if SeedName == "Any" then
+		if seedPref == "Any" then
 			table.clear(SeenSeeds)
-			for _, c in Containers do
-				for _, i in c:GetChildren() do
-					if i:IsA("Tool") and i.Name:find("Seed") then
-						local name = i.Name:gsub(" Seed.*", "")
-						if not SeenSeeds[name] then SeenSeeds[name] = true seeds[#seeds+1] = name end
+			for _, container in Containers do
+				for _, item in container:GetChildren() do
+					if item:IsA("Tool") and item.Name:find("Seed") then
+						local name = item.Name:gsub(" Seed.*", "")
+						if not SeenSeeds[name] then
+							SeenSeeds[name] = true
+							seeds[#seeds + 1] = name
+						end
 					end
 				end
 			end
 		else
-			seeds[1] = SeedName
+			seeds[1] = seedPref
 		end
 
 		for _, seed in seeds do
-			local tool, lastPos = FindSeedTool(seed)
+			local tool = FindTool(seed)
+			if not tool then continue end
+			local lastPos
 
-			while ExecCmd.AutoPlant and tool do
+			while ExecCmd.AutoPlant and tool and tool:IsDescendantOf(char) do
 				local spot = spots[Random(1, #spots)]
-				local offset = style == "Stacked" and lastPos and Vector3New(Random(-3, 3), 0, Random(-3, 3)) or Vector3New( Random(-spot.Size.X/2, spot.Size.X/2), 2, Random(-spot.Size.Z/2, spot.Size.Z/2))
-				local pos = style == "Stacked" and (lastPos + offset) or (spot.Position + offset)
-				if not tool:IsDescendantOf(char) then tool.Parent = char repeat Wait() until char:FindFirstChild(tool.Name) end
+				local offset = (style == "Stacked" and lastPos) and V3(Random(-3, 3), 0, Random(-3, 3)) or
+					V3(Random(-spot.Size.X / 2, spot.Size.X / 2), 2, Random(-spot.Size.Z / 2, spot.Size.Z / 2))
+				local pos = (style == "Stacked" and lastPos) and (lastPos + offset) or (spot.Position + offset)
 
-				if CanFire and os.clock() - LastFire >= Delay then
+				if not tool:IsDescendantOf(char) then
+					tool.Parent = char
+					repeat Wait() until char:FindFirstChild(tool.Name)
+				end
+
+				if CanFire and Clock() - LastFire >= FireDelay then
 					if mode == "Bypass" then
 						PlantRemote:FireServer(pos, seed)
 					else
-						if (root.Position - pos).Magnitude > 1 then
-							SetCollide(CharParts, false)
+						local dist = (root.Position - pos).Magnitude
+						if dist > 1 then
+							SetCollision(false)
 							local done = false
 							local conn = hum.MoveToFinished:Connect(function() done = true end)
 							hum:MoveTo(pos)
-							for _ = 1, 30 do if done or not ExecCmd.AutoPlant then break end Wait(0.1) end
+							for _ = 1, 30 do
+								if done or not ExecCmd.AutoPlant then break end
+								Wait(0.1)
+							end
 							conn:Disconnect()
-							SetCollide(CharParts, true)
+							SetCollision(true)
 						end
-						if ExecCmd.AutoPlant then PlantRemote:FireServer(pos, seed) end
+						if ExecCmd.AutoPlant then
+							PlantRemote:FireServer(pos, seed)
+						end
 					end
-					LastFire = os.clock()
-					DelaySet()
+					LastFire = Clock()
+					DelayFire()
 				end
 
 				lastPos = pos
-				Wait(0.1)
+				Wait(0.15)
 				hum:UnequipTools()
-				Wait(0.1)
-				tool = FindSeedTool(seed)
+				tool = FindTool(seed)
 			end
 		end
 
-		Wait(0.1)
+		Wait(0.2)
 	end
 
 	Threads.AutoPlant = nil
 end
-
 
 
 
