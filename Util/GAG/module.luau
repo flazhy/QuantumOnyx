@@ -20,296 +20,252 @@ local ExecCmd = getgenv() or {}
 
 local Threads = {}
 
-Module.AutoPlantModule = function()
-	if Threads.AutoPlant then return end
+Module.__index = Module
 
-	Threads.AutoPlant = task.spawn(function()
-		local Wait = task.wait
-		local Random = math.random
-		local Vector3New = Vector3.new
+local Automation = setmetatable({}, Module)
+
+local function CreateThread(name, fn)
+	if Threads[name] then return end
+	Threads[name] = task.spawn(function()
+		fn()
+		Threads[name] = nil
+	end)
+end
+
+function Module:AutoPlant()
+	CreateThread("AutoPlant", function()
+		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
 		local Containers = { lp.Backpack }
 		local CharParts = {}
-		local CanFire = true
-		local LastFireTime = 0
-		local MinFireInterval = 0.25
+		local CanFire, LastFireTime, MinFireInterval = true, 0, 0.25
 
-		local function FindSeedTool(SeedName: string): Tool?
-			for _, Container in ipairs(Containers) do
-				for _, Item in ipairs(Container:GetChildren()) do
-					if Item:IsA("Tool") and string.find(Item.Name, SeedName) and string.find(Item.Name, "Seed") then
-						return Item
+		local function FindSeedTool(seed)
+			for _, container in ipairs(Containers) do
+				for _, item in ipairs(container:GetChildren()) do
+					if item:IsA("Tool") and string.find(item.Name, seed) and item.Name:find("Seed") then
+						return item
 					end
 				end
 			end
-			return nil
 		end
 
-		local function CacheCharacterParts(Character: Model)
+		local function CacheCharacterParts(character)
 			table.clear(CharParts)
-			for _, Part in ipairs(Character:GetDescendants()) do
-				if Part:IsA("BasePart") then
-					table.insert(CharParts, Part)
+			for _, part in ipairs(character:GetDescendants()) do
+				if part:IsA("BasePart") then
+					table.insert(CharParts, part)
 				end
 			end
 		end
 
-		local function SetCollision(Parts, CanCollide)
-			for _, Part in ipairs(Parts) do
-				Part.CanCollide = CanCollide
+		local function SetCollision(parts, state)
+			for _, part in ipairs(parts) do
+				part.CanCollide = state
 			end
 		end
 
 		while ExecCmd.AutoPlant do
-			local Character = lp.Character or lp.CharacterAdded:Wait()
-			Containers[2] = Character
+			local character = lp.Character or lp.CharacterAdded:Wait()
+			Containers[2] = character
 
-			local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-			local RootPart = Character:FindFirstChild("HumanoidRootPart")
-			if not Humanoid or not RootPart then
-				Wait(1)
-				continue
-			end
+			local humanoid = character:FindFirstChildOfClass("Humanoid")
+			local root = character:FindFirstChild("HumanoidRootPart")
+			if not humanoid or not root then Wait(1) continue end
 
-			CacheCharacterParts(Character)
+			CacheCharacterParts(character)
 
-			local Farm = GetFarm(lp)
-			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
-
-			if SpawnPoint and (RootPart.Position - SpawnPoint.Position).Magnitude > 30 then
-				RootPart.CFrame = SpawnPoint.CFrame
+			local farm = GetFarm(lp)
+			local spawn = farm and farm:FindFirstChild("Spawn_Point")
+			if spawn and (root.Position - spawn.Position).Magnitude > 30 then
+				root.CFrame = spawn.CFrame
 				Wait(1.5)
 			end
 
-			local PlantingFolder = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
-			if not PlantingFolder then
-				Wait(1)
-				continue
-			end
+			local plantingFolder = farm and farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Plant_Locations")
+			if not plantingFolder then Wait(1) continue end
 
-			local PlantingSpots = {}
-			for _, Descendant in ipairs(PlantingFolder:GetDescendants()) do
-				if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
-					table.insert(PlantingSpots, Descendant)
+			local spots = {}
+			for _, d in ipairs(plantingFolder:GetDescendants()) do
+				if d:IsA("BasePart") and d.Name:find("Can_Plant") then
+					table.insert(spots, d)
 				end
 			end
+			if #spots == 0 then Wait(1) continue end
 
-			if #PlantingSpots == 0 then
-				Wait(1)
-				continue
-			end
-
-			local SeedName = ExecCmd.SeedName or "Any"
-			local PlantMode = ExecCmd.PlantMode or "Pathways"
-			local PlantStyle = ExecCmd.PlantStyle or "Random"
-
-			local SeedsToPlant = {}
-
-			if SeedName == "Any" then
-				local SeenSeeds = {}
-				for _, Container in ipairs(Containers) do
-					for _, Item in ipairs(Container:GetChildren()) do
-						if Item:IsA("Tool") and string.find(Item.Name, "Seed") then
-							local CleanName = string.gsub(Item.Name, " Seed.*", "")
-							if not SeenSeeds[CleanName] then
-								SeenSeeds[CleanName] = true
-								table.insert(SeedsToPlant, CleanName)
+			local seeds = {}
+			local selected = ExecCmd.SeedName or "Any"
+			if selected == "Any" then
+				local seen = {}
+				for _, container in ipairs(Containers) do
+					for _, item in ipairs(container:GetChildren()) do
+						if item:IsA("Tool") and item.Name:find("Seed") then
+							local name = item.Name:gsub(" Seed.*", "")
+							if not seen[name] then
+								seen[name] = true
+								table.insert(seeds, name)
 							end
 						end
 					end
 				end
 			else
-				table.insert(SeedsToPlant, SeedName)
+				table.insert(seeds, selected)
 			end
 
-			for _, Seed in ipairs(SeedsToPlant) do
-				local Tool = FindSeedTool(Seed)
-				if not Tool then continue end
+			local mode = ExecCmd.PlantMode or "Pathways"
+			local style = ExecCmd.PlantStyle or "Random"
 
-				local LastPosition
+			for _, seed in ipairs(seeds) do
+				local tool = FindSeedTool(seed)
+				if not tool then continue end
 
-				while ExecCmd.AutoPlant and Tool do
-					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
-					local Size = Spot.Size
+				local lastPos
+				while ExecCmd.AutoPlant and tool do
+					local spot = spots[Random(1, #spots)]
+					local size = spot.Size
+					local target = (style == "Stacked" and lastPos) and lastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3)) or
+						spot.Position + Vector3New(Random(-size.X / 2, size.X / 2), 2, Random(-size.Z / 2, size.Z / 2))
 
-					local TargetPosition = (PlantStyle == "Stacked" and LastPosition) and LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
-						or Spot.Position + Vector3New(Random(-Size.X / 2, Size.X / 2), 2, Random(-Size.Z / 2, Size.Z / 2))
-
-					if not Tool:IsDescendantOf(Character) then
-						Tool.Parent = Character
-						repeat Wait() until Character:FindFirstChild(Tool.Name)
+					if not tool:IsDescendantOf(character) then
+						tool.Parent = character
+						repeat Wait() until character:FindFirstChild(tool.Name)
 					end
 
 					if CanFire and os.clock() - LastFireTime >= MinFireInterval then
-						if PlantMode == "Bypass" then
-							PlantRemote:FireServer(TargetPosition, Seed)
+						if mode == "Bypass" then
+							PlantRemote:FireServer(target, seed)
 						else
-							local Distance = (RootPart.Position - TargetPosition).Magnitude
-							if Distance > 1 then
+							if (root.Position - target).Magnitude > 1 then
 								SetCollision(CharParts, false)
-								local Done = false
-								local Conn = Humanoid.MoveToFinished:Connect(function()
-									Done = true
+								local done = false
+								local conn = humanoid.MoveToFinished:Connect(function()
+									done = true
 								end)
-								Humanoid:MoveTo(TargetPosition)
+								humanoid:MoveTo(target)
 								for _ = 1, 30 do
-									if Done or not ExecCmd.AutoPlant then break end
+									if done or not ExecCmd.AutoPlant then break end
 									Wait(0.1)
 								end
-								Conn:Disconnect()
+								conn:Disconnect()
 								SetCollision(CharParts, true)
 							end
-
 							if ExecCmd.AutoPlant then
-								PlantRemote:FireServer(TargetPosition, Seed)
+								PlantRemote:FireServer(target, seed)
 							end
 						end
 						CanFire = false
 						LastFireTime = os.clock()
-						task.delay(MinFireInterval, function()
-							CanFire = true
-						end)
+						task.delay(MinFireInterval, function() CanFire = true end)
 					end
 
-					LastPosition = TargetPosition
+					lastPos = target
 					Wait(0.1)
-					Humanoid:UnequipTools()
+					humanoid:UnequipTools()
 					Wait(0.1)
-					Tool = FindSeedTool(Seed)
-					if not Tool then break end
+					tool = FindSeedTool(seed)
+					if not tool then break end
 				end
 			end
-
 			Wait(0.1)
 		end
-
-		Threads.AutoPlant = nil
 	end)
 end
 
+function Module:AutoCollect()
+	CreateThread("AutoCollect", function()
+		local Remotes
+		repeat
+			local ok, res = pcall(function()
+				Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes"))
+				return Remotes and Remotes.Crops and Remotes.Crops.Collect
+			end)
+			task.wait(1)
+		until ok and res
 
+		local CropCollectRemote = Remotes.Crops.Collect
 
-Module.CollectModule = function()
-	if Threads.AutoCollect then return end
-    local Remotes = nil
-    while true do
-        local success, result = pcall(function()
-            Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes"))
-            return Remotes and Remotes.Crops and Remotes.Crops.Collect and typeof(Remotes.Crops.Collect.send) == "function"
-        end)
-        if success and result then break end
-        task.wait(1)
-    end
-    local CropCollectRemote = Remotes.Crops.Collect
-    local function Mutations_(crop: Model, SelectedMut: string | {string}): boolean
-        if SelectedMut == "Any" or (typeof(SelectedMut) == "table" and table.find(SelectedMut, "Any")) then
-            return true
-        end
-        local attrs = crop:GetAttributes()
-        if typeof(SelectedMut) == "string" then
-            return attrs[SelectedMut] == true
-        elseif typeof(SelectedMut) == "table" then
-            for name, value in pairs(attrs) do
-                if value == true and table.find(SelectedMut, name) then
-                    return true
-                end
-            end
-        end
-        return false
-    end
+		local function MatchMutations(crop, filter)
+			if filter == "Any" or table.find(filter, "Any") then return true end
+			local attrs = crop:GetAttributes()
+			for name, val in pairs(attrs) do
+				if val == true and table.find(filter, name) then
+					return true
+				end
+			end
+			return false
+		end
 
-    local function Variant_(crop: Model, SelectedVar: string | {string}): boolean
-        if SelectedVar == "Any" or (typeof(SelectedVar) == "table" and table.find(SelectedVar, "Any")) then
-            return true
-        end
-        local variant = crop:FindFirstChild("Variant")
-        local VariantVal = variant and variant:IsA("StringValue") and variant.Value or nil
-        if typeof(SelectedVar) == "string" then
-            return VariantVal == SelectedVar
-        elseif typeof(SelectedVar) == "table" then
-            return VariantVal and table.find(SelectedVar, VariantVal) ~= nil
-        end
-        return false
-    end
+		local function MatchVariants(crop, filter)
+			if filter == "Any" or table.find(filter, "Any") then return true end
+			local var = crop:FindFirstChild("Variant")
+			return var and var:IsA("StringValue") and table.find(filter, var.Value)
+		end
 
-    Threads.AutoCollect = task.spawn(function()
-        while ExecCmd.AutoCollect do
-            if #lp.Backpack:GetChildren() >= 200 then
-                task.wait(0.3)
-                continue
-            end
+		while ExecCmd.AutoCollect do
+			if #lp.Backpack:GetChildren() >= 200 then task.wait(0.3) continue end
 
-			local garden: Model? = nil
-            for _, plot in ipairs(workspace:WaitForChild("Farm"):GetChildren()) do
-                local important = plot:FindFirstChild("Important")
-                local data = important and important:FindFirstChild("Data")
-                local owner = data and data:FindFirstChild("Owner")
-                if owner and owner.Value == lp.Name then
-                    garden = important and important:FindFirstChild("Plants_Physical")
-                    break
-                end
-            end
+			local garden
+			for _, plot in ipairs(workspace.Farm:GetChildren()) do
+				local owner = plot:FindFirstChild("Important") and plot.Important:FindFirstChild("Data") and plot.Important.Data:FindFirstChild("Owner")
+				if owner and owner.Value == lp.Name then
+					garden = plot.Important:FindFirstChild("Plants_Physical")
+					break
+				end
+			end
 
-            if garden then
-                local batch = {}
-                local SelectedMut = ExecCmd.SelectedMutations
-                local SelectedVar = ExecCmd.SelectedVariants
+			if garden then
+				local SelectedMut = ExecCmd.SelectedMutations
+				local SelectedVar = ExecCmd.SelectedVariants
+				local batch = {}
 
-                for _, prompt in ipairs(garden:GetDescendants()) do
-                    if #batch >= 10 then break end
-                    if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
-                        local crop = prompt.Parent and prompt.Parent.Parent
-                        if crop and Mutations_(crop, SelectedMut) and Variant_(crop, SelectedVar) then
-                            table.insert(batch, crop)
-                        end
-                    end
-                end
+				for _, prompt in ipairs(garden:GetDescendants()) do
+					if #batch >= 10 then break end
+					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
+						local crop = prompt.Parent and prompt.Parent.Parent
+						if crop and MatchMutations(crop, SelectedMut) and MatchVariants(crop, SelectedVar) then
+							table.insert(batch, crop)
+						end
+					end
+				end
 
-                if #batch > 0 then
-                    pcall(function()
-                        CropCollectRemote.send(batch)
-                    end)
-                    task.wait(0.15)
-                else
-                    task.wait(0.2)
-                end
-            else
-                task.wait(0.3)
-            end
-        end
-		Threads.AutoCollect = nil
-    end)
+				if #batch > 0 then
+					pcall(function() CropCollectRemote.send(batch) end)
+					task.wait(0.15)
+				else
+					task.wait(0.2)
+				end
+			else
+				task.wait(0.3)
+			end
+		end
+	end)
 end
 
-Module.AutoBuyEggs = function()
-	if Threads.AutoBuyEggs then return end
-	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
-	Threads.AutoBuyEggs = task.spawn(function()
+function Module:AutoBuyEggs()
+	CreateThread("AutoBuyEggs", function()
 		while task.wait() do
-			local AutoBuyEgg = ExecCmd.AutoBuyEgg
-			local AutoBuyAllEggs = ExecCmd.AutoBuyAllEggs
-			if not (AutoBuyEgg or AutoBuyAllEggs) then continue end
+			if not (ExecCmd.AutoBuyEgg or ExecCmd.AutoBuyAllEggs) then continue end
 
-			local RawList = ExecCmd.SelectedEggList
-			local SelectedEggList = typeof(RawList) == "string" and { RawList } or typeof(RawList) == "table" and RawList or {}
+			local Selected = typeof(ExecCmd.SelectedEggList) == "string"
+				and { ExecCmd.SelectedEggList }
+				or ExecCmd.SelectedEggList or {}
 
 			pcall(function()
-				local Data: Types.Data = DataService:GetData()
-				local Stocks = Data.PetEggStock.Stocks
-				local Normalized = {}
-				for _, Name in ipairs(SelectedEggList) do
-					Normalized[string.lower(Name):gsub("%s+", "")] = true
+				local Stocks = DataService:GetData().PetEggStock.Stocks
+				local Normalize = {}
+				for _, name in ipairs(Selected) do
+					Normalize[name:lower():gsub("%s+", "")] = true
 				end
-				for Index, Stock in ipairs(Stocks) do
-					if Stock.Stock > 0 then
-						if AutoBuyAllEggs or Normalized[string.lower(Stock.EggName):gsub("%s+", "")] then
-							BuyPetEgg:FireServer(Index)
+
+				for i, stock in ipairs(Stocks) do
+					if stock.Stock > 0 then
+						if ExecCmd.AutoBuyAllEggs or Normalize[stock.EggName:lower():gsub("%s+", "")] then
+							BuyPetEgg:FireServer(i)
 						end
 					end
 				end
 			end)
 		end
-		Threads.AutoBuyEggs = nil
 	end)
 end
 
-return Module
+return Automation
