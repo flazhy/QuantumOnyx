@@ -251,7 +251,6 @@ end
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
 		while task.wait() do
-			if not (ExecCmd.AutoBuyEgg or ExecCmd.AutoBuyAllEggs) then continue end
 			local Selected = typeof(ExecCmd.SelectedEggList) == "string" and { ExecCmd.SelectedEggList } or ExecCmd.SelectedEggList or {}
 			pcall(function()
 				local Stocks = DataService:GetData().PetEggStock.Stocks
@@ -329,6 +328,43 @@ function Module:AutoUnfavoriteMutations()
 		end
 	end)
 end
+
+function Module:AutoSell()
+	CreateThread("AutoSell", function()
+		while ExecCmd.AutoSell or ExecCmd.AutoTickSell do
+			local Char = lp.Character or lp.CharacterAdded:Wait()
+			local Backpack = lp.Backpack
+			local Farm = GetFarm(lp)
+			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
+			local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+
+			if Char and HRP and Backpack and SpawnPoint and StevenHRP then
+				local Count = #Backpack:GetChildren()
+				local ShouldSell = (ExecCmd.AutoSell and Count >= 200) or ExecCmd.AutoTickSell
+
+				if ShouldSell then
+					if ExecCmd.AutoTickSell then
+						task.wait(ExecCmd.DelaySell / 100)
+					end
+
+					local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
+					Char:PivotTo(SellPos)
+					task.wait(0.25)
+
+					task.spawn(function()
+						pcall(SellRemote.FireServer, SellRemote)
+					end)
+
+					task.wait(0.25)
+					Char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
+				end
+			end
+
+			task.wait((ExecCmd.AutoTickSell and ExecCmd.DelaySell / 100) or 0.1)
+		end
+	end)
+end
+
 
 
 
