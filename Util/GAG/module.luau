@@ -1,153 +1,171 @@
 local Module = {}
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CollectionService = game:GetService("CollectionService")
-local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
-local Players = game:GetService("Players")
+local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CollectionService: CollectionService = game:GetService("CollectionService")
+local HttpService: HttpService = game:GetService("HttpService")
+local TeleportService: TeleportService = game:GetService("TeleportService")
+local Players: Players = game:GetService("Players")
 
-local SellRemote = ReplicatedStorage.GameEvents:WaitForChild("Sell_Inventory")
-local StevenHRP = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
-local GetFarm = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
-local FavoriteToolRemote = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
-local HoneyRemote: RemoteEvent = ReplicatedStorage:WaitForChild("GameEvents"):WaitForChild("HoneyMachineService_RE")
-local BuyPetEgg = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
-local DataService = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+local SellRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Sell_Inventory")
+local FavoriteToolRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
+local HoneyRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("HoneyMachineService_RE")
+local PlantRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE")
+local BuyPetEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
+local StevenHRP: BasePart? = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
+local GetFarm: {} = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
+local DataService: {} = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
 
-local lp = Players.LocalPlayer
+local lp: Player = Players.Localplayer
 local ExecCmd = getgenv() or {}
 
 Module.AutoPlantModule = function(): nil
 	task.spawn(function()
-		type Container = Tool | BasePart | Vector3 | Humanoid | Model | Backpack
-		local PlantRemote = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE") :: RemoteEvent
-
-		local Containers: {Container} = { lp.Backpack, lp.Character or lp.CharacterAdded:Wait() }
+		local Wait = task.wait
+		local Random = math.random
+		local Vector3New = Vector3.new
+		local Containers: {Instance} = { lp.Backpack }
 		local CharParts: {BasePart} = {}
 
-		local function FindTool(seed: string): Tool?
-			for _, container in ipairs(Containers) do
-				for _, tool in ipairs(container:GetChildren()) do
-					if tool:IsA("Tool") and string.find(tool.Name, seed) and string.find(tool.Name, "Seed") then
-						return tool :: Tool
+
+		local function FindSeedTool(SeedName: string): Tool?
+			for _, Container in ipairs(Containers) do
+				for _, Item in ipairs(Container:GetChildren()) do
+					if Item:IsA("Tool") and string.find(Item.Name, SeedName) and string.find(Item.Name, "Seed") then
+						return Item
 					end
 				end
 			end
 			return nil
 		end
 
+		local function CacheCharacterParts(Character: Model)
+			table.clear(CharParts)
+			for _, Part in ipairs(Character:GetDescendants()) do
+				if Part:IsA("BasePart") then
+					table.insert(CharParts, Part)
+				end
+			end
+		end
+
 		while ExecCmd.AutoPlant do
-			local Character = lp.Character or lp.CharacterAdded:Wait()
+			local Character: Model = lp.Character or lp.CharacterAdded:Wait()
 			Containers[2] = Character
 
-			local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-			local Root = Character:FindFirstChild("HumanoidRootPart")
-
-			if not Humanoid or not Root then
-				task.wait(1)
+			local Humanoid: Humanoid? = Character:FindFirstChildOfClass("Humanoid")
+			local RootPart: BasePart? = Character:FindFirstChild("HumanoidRootPart")
+			if not Humanoid or not RootPart then
+				Wait(1)
 				continue
 			end
+			CacheCharacterParts(Character)
+			local Farm: Model? = GetFarm(lp)
+			local SpawnPoint: BasePart? = Farm and Farm:FindFirstChild("Spawn_Point")
 
-			local Farm = GetFarm(lp)
-			local SpawnPoint = Farm and Farm:FindFirstChild("Spawn_Point")
-
-			if SpawnPoint and (Root.Position - SpawnPoint.Position).Magnitude > 30 then
-				Root.CFrame = SpawnPoint.CFrame
-				task.wait(1.5)
+			if SpawnPoint and (RootPart.Position - SpawnPoint.Position).Magnitude > 30 then
+				RootPart.CFrame = SpawnPoint.CFrame
+				Wait(1.5)
 			end
 
-			local PlantLocations = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
-			local Spots = {}
-
-			if PlantLocations then
-				for _, part in ipairs(PlantLocations:GetDescendants()) do
-					if part:IsA("BasePart") and string.find(part.Name, "Can_Plant") then
-						table.insert(Spots, part)
-					end
+			local PlantLocationsFolder: Folder? = Farm and Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Plant_Locations")
+			if not PlantLocationsFolder then
+				Wait(1)
+				continue
+			end
+			local PlantingSpots: {BasePart} = {}
+			for _, Descendant in ipairs(PlantLocationsFolder:GetDescendants()) do
+				if Descendant:IsA("BasePart") and string.find(Descendant.Name, "Can_Plant") then
+					table.insert(PlantingSpots, Descendant)
 				end
 			end
 
-			if #Spots == 0 then task.wait(1) continue end
+			if #PlantingSpots == 0 then
+				Wait(1)
+				continue
+			end
+			local SeedName: string = ExecCmd.SeedName or "Any"
+			local PlantMode: string = ExecCmd.PlantMode or "Pathways"
+			local PlantStyle: string = ExecCmd.PlantStyle or "Random"
 
-			local SeedName = ExecCmd.SeedName or "Any"
-			local PlantMode = ExecCmd.PlantMode or "Pathways"
-			local PlantStyle = ExecCmd.PlantStyle or "Random"
-			local SeedList = {}
+			local SeedsToPlant: {string} = {}
 
 			if SeedName == "Any" then
-				local Seen = {}
-				for _, container in ipairs(Containers) do
-					for _, tool in ipairs(container:GetChildren()) do
-						if tool:IsA("Tool") and string.find(tool.Name, "Seed") then
-							local CleanName = string.gsub(tool.Name, " Seed.*", "")
-							if not Seen[CleanName] then
-								Seen[CleanName] = true
-								table.insert(SeedList, CleanName)
+				local SeenSeeds = {}
+				for _, Container in ipairs(Containers) do
+					for _, Item in ipairs(Container:GetChildren()) do
+						if Item:IsA("Tool") and string.find(Item.Name, "Seed") then
+							local CleanName = string.gsub(Item.Name, " Seed.*", "")
+							if not SeenSeeds[CleanName] then
+								SeenSeeds[CleanName] = true
+								table.insert(SeedsToPlant, CleanName)
 							end
 						end
 					end
 				end
 			else
-				SeedList[1] = SeedName
+				table.insert(SeedsToPlant, SeedName)
 			end
-
-			for _, Seed in ipairs(SeedList) do
-				local Tool = FindTool(Seed)
-				local LastPos = nil
-				local Random = math.random
-				local Vector3New = Vector3.new
-
+			for _, Seed in ipairs(SeedsToPlant) do
+				local Tool: Tool? = FindSeedTool(Seed)
+				if not Tool then
+					continue
+				end
+				local LastPosition: Vector3?
 				while ExecCmd.AutoPlant and Tool do
-					local Target = Spots[Random(1, #Spots)]
-					local Size = Target.Size
-					local BasePos
+					local Spot = PlantingSpots[Random(1, #PlantingSpots)]
+					local Size = Spot.Size
+					local TargetPosition: Vector3
 
-					if PlantStyle == "Stacked" and LastPos then
-						BasePos = LastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3))
+					if PlantStyle == "Stacked" and LastPosition then
+						TargetPosition = LastPosition + Vector3New(Random(-3, 3), 0, Random(-3, 3))
 					else
-						BasePos = Target.Position + Vector3New(Random(-Size.X / 2, Size.X / 2), 2, Random(-Size.Z / 2, Size.Z / 2))
+						TargetPosition = Spot.Position + Vector3New(
+							Random(-Size.X / 2, Size.X / 2),
+							2,
+							Random(-Size.Z / 2, Size.Z / 2)
+						)
 					end
-
 					if not Tool:IsDescendantOf(Character) then
 						Tool.Parent = Character
-						repeat task.wait() until Character:FindFirstChild(Tool.Name)
+						repeat Wait() until Character:FindFirstChild(Tool.Name)
 					end
-
 					if PlantMode == "Bypass" then
-						PlantRemote:FireServer(BasePos, Seed)
+						PlantRemote:FireServer(TargetPosition, Seed)
 					else
-						table.clear(CharParts)
-						for _, part in ipairs(Character:GetDescendants()) do
-							if part:IsA("BasePart") then
-								part.CanCollide = false
-								table.insert(CharParts, part)
-							end
+						for _, Part in ipairs(CharParts) do
+							Part.CanCollide = false
 						end
 
 						local Done = false
-						local Conn = Humanoid.MoveToFinished:Connect(function() Done = true end)
-						Humanoid:MoveTo(BasePos)
-						for _ = 1, 30 do if Done then break end task.wait(0.1) end
+						local Conn = Humanoid.MoveToFinished:Connect(function()
+							Done = true
+						end)
+						Humanoid:MoveTo(TargetPosition)
+						for _ = 1, 30 do
+							if Done then break end
+							Wait(0.1)
+						end
 						Conn:Disconnect()
-
-						for _, part in ipairs(CharParts) do
-							part.CanCollide = true
+						for _, Part in ipairs(CharParts) do
+							Part.CanCollide = true
 						end
 
-						PlantRemote:FireServer(BasePos, Seed)
+						PlantRemote:FireServer(TargetPosition, Seed)
 					end
-
-					LastPos = BasePos
-					task.wait(0.05)
+					LastPosition = TargetPosition
+					Wait(0.1)
 					Humanoid:UnequipTools()
-					task.wait(0.03)
-					Tool = FindTool(Seed)
+					Wait(0.1)
+					Tool = FindSeedTool(Seed)
+					if not Tool then break end
 				end
 			end
-			task.wait(0.05)
+
+			Wait(0.05)
 		end
 	end)
 end
+
+
 
 Module.CollectModule = function(): nil
 	type Types = {
@@ -347,8 +365,8 @@ Module.AutoSell = function(): nil
 					if ExecCmd.AutoTickSell then
 						task.wait(ExecCmd.DelaySell / 100)
 					end
-					local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
-					Char:PivotTo(SellPos)
+					local Sellpos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
+					Char:PivotTo(Sellpos)
 					task.wait(0.25)
 					task.spawn(function()
 						pcall(SellRemote.FireServer, SellRemote)
