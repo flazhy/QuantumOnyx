@@ -359,10 +359,33 @@ Module.AutoSell = function(): nil
 			task.wait((ExecCmd.AutoTickSell and ExecCmd.DelaySell / 100) or 0.1)
 		end
 	end)
-
-	return nil
 end
 
+Module.AutoGivePollinated = function(): nil
+	task.spawn(function()
+		while ExecCmd.AutoGivePollinated do
+			local Character = Lp.Character or Lp.CharacterAdded:Wait()
+			local Backpack = Lp:FindFirstChild("Backpack")
+
+			if Character and Backpack then
+				for _, Tool: Tool in ipairs(Backpack:GetChildren()) do
+					if Tool:IsA("Tool") and string.find(Tool.Name, "%[Pollinated%]") then
+						Tool.Parent = Character
+						task.wait(0.5)
+
+						for _ = 1, 10 do
+							pcall(HoneyRemote.FireServer, HoneyRemote, "MachineInteract")
+						end
+
+						task.wait(0.5)
+					end
+				end
+			end
+
+			task.wait(0.25)
+		end
+	end)
+end
 
 
 return Module
