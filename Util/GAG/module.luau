@@ -11,6 +11,7 @@ local FavoriteToolRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChil
 local HoneyRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("HoneyMachineService_RE")
 local PlantRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE")
 local BuyPetEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
+local PlaceEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("PetEggService")
 local StevenHRP: BasePart? = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
 local GetFarm: any = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local DataService: any = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
@@ -411,6 +412,81 @@ function Module:AutoHatchEggs()
 					end
 				end
 			end)
+		end
+	end)
+end
+
+function Module:AutoPlaceEggs()
+	CreateThread("AutoPlaceEggs", function()
+		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
+		local Containers = { lp.Backpack }
+		local FAR_DISTANCE = 200
+
+		local function GetAvailableEggTools()
+			local tools = {}
+			local seen = {}
+			for _, container in ipairs(Containers) do
+				for _, item in ipairs(container:GetChildren()) do
+					if item:IsA("Tool") and item.Name:find("Egg") and not seen[item.Name] then
+						seen[item.Name] = true
+						table.insert(tools, item.Name)
+					end
+				end
+			end
+			return tools
+		end
+
+		local function FindEggTool(eggName)
+			for _, container in ipairs(Containers) do
+				for _, item in ipairs(container:GetChildren()) do
+					if item:IsA("Tool") and item.Name == eggName then
+						return item
+					end
+				end
+			end
+		end
+
+		while ExecCmd.AutoPlaceEggs do
+			local character = lp.Character or lp.CharacterAdded:Wait()
+			Containers[2] = character
+
+			local root = character:FindFirstChild("HumanoidRootPart")
+			if not root then Wait(1) continue end
+
+			local selectedEgg = ExecCmd.SelectedEggList
+			local eggs = {}
+
+			if selectedEgg == "Any" then
+				eggs = GetAvailableEggTools()
+			else
+				table.insert(eggs, selectedEgg)
+			end
+
+			for _, eggName in ipairs(eggs) do
+				if not ExecCmd.AutoPlaceEggs then break end
+
+				local tool = FindEggTool(eggName)
+				if not tool then continue end
+
+				if not tool:IsDescendantOf(character) then
+					tool.Parent = character
+					repeat Wait() until character:FindFirstChild(tool.Name)
+				end
+
+				local offset = Vector3New(Random(-FAR_DISTANCE, FAR_DISTANCE), 1, Random(-FAR_DISTANCE, FAR_DISTANCE))
+				local position = root.Position + offset
+
+				pcall(function()
+					PlaceEgg:FireServer("CreateEgg", position)
+				end)
+
+				Wait(0.1)
+				local humanoid = character:FindFirstChildOfClass("Humanoid")
+				if humanoid then
+					humanoid:UnequipTools()
+				end
+				Wait(0.1)
+			end
 		end
 	end)
 end
