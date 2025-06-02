@@ -276,7 +276,6 @@ function Module:AutoFavoriteMutations()
 	CreateThread("AutoFavoriteMutations", function()
 		while task.wait(0.3) do
 			local List = ExecCmd.SelectedFavMutations or {}
-			if not ExecCmd.AutoFavMutate then continue end
 
 			local MutationSet = {}
 			for _, mutation in ipairs(List) do
@@ -306,7 +305,6 @@ function Module:AutoUnfavoriteMutations()
 	CreateThread("AutoUnfavoriteMutations", function()
 		while task.wait(0.3) do
 			local List = ExecCmd.SelectedFavMutations or {}
-			if not ExecCmd.AutoUnfavMutate then continue end
 
 			local MutationSet = {}
 			for _, mutation in ipairs(List) do
