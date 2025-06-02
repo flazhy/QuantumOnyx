@@ -51,7 +51,7 @@ local ExecCmd = getgenv() or {}
 
 local Threads = {}
 
-Module.AutoPlantModule = function(): nil
+Module.AutoPlantModule = function()
 	if Threads.AutoPlant then return end
 
 	Threads.AutoPlant = task.spawn(function()
@@ -219,7 +219,7 @@ end
 
 
 
-Module.CollectModule = function(): nil
+Module.CollectModule = function()
 	if Threads.AutoCollect then return end
     local Remotes = nil
     while true do
@@ -311,7 +311,7 @@ Module.CollectModule = function(): nil
     end)
 end
 
-Module.AutoBuyEggs = function(): nil
+Module.AutoBuyEggs = function()
 	if Threads.AutoBuyEggs then return end
 	type Types = { EggStock: { EggName: string, Stock: number }, Data: { PetEggStock: { Stocks: { Types.EggStock } } } }
 	Threads.AutoBuyEggs = task.spawn(function()
