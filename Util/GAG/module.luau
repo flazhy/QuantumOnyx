@@ -31,6 +31,14 @@ local function CreateThread(name, fn)
 		Threads[name] = nil
 	end)
 end
+function Module:StopThread(name)
+	local thread = Threads[name]
+	if thread then
+		task.cancel(thread)
+		Threads[name] = nil
+	end
+end
+
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
