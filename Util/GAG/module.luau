@@ -15,7 +15,7 @@ local StevenHRP: BasePart? = workspace:WaitForChild("NPCS"):WaitForChild("Steven
 local GetFarm: {} = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local DataService: {} = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
 
-local lp: Player = Players.Localplayer
+local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
 
 Module.AutoPlantModule = function(): nil
