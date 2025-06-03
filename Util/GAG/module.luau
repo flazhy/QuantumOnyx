@@ -1,10 +1,23 @@
 local Module = {}
 
-local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CollectionService: CollectionService = game:GetService("CollectionService")
-local HttpService: HttpService = game:GetService("HttpService")
-local TeleportService: TeleportService = game:GetService("TeleportService")
-local Players: Players = game:GetService("Players")
+local Services = setmetatable({}, {
+	__index = function(self, Ind)
+		local Success, Result = ypcall(function()
+			return game:GetService(Ind)
+		end)
+		if Success and Result then
+			rawset(self, Ind, Result)
+			return Result
+		end
+		return nil
+	end
+})
+
+local ReplicatedStorage: ReplicatedStorage = Services.ReplicatedStorage
+local CollectionService: CollectionService = Services.CollectionService
+local HttpService: HttpService = Services.HttpService
+local TeleportService: TeleportService = Services.TeleportService
+local Players: Players = Services.Players
 
 local SellRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Sell_Inventory")
 local FavoriteToolRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Favorite_Item")
@@ -12,9 +25,12 @@ local HoneyRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Hone
 local PlantRemote: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("Plant_RE")
 local BuyPetEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("BuyPetEgg")
 local PlaceEgg: RemoteEvent = ReplicatedStorage.GameEvents:WaitForChild("PetEggService")
-local StevenHRP: BasePart? = workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
+
+local StevenHRP: BasePart? = Services.Workspace:WaitForChild("NPCS"):WaitForChild("Steven"):WaitForChild("HumanoidRootPart")
+
 local GetFarm: any = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local DataService: any = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+
 
 local lp: Player = Players.LocalPlayer
 local ExecCmd = getgenv() or {}
