@@ -390,7 +390,7 @@ function Module:AutoHatchEggs()
 	CreateThread("AutoHatchEggs", function()
 		while task.wait() do
 			pcall(function()
-				for _, Farm in ipairs(GetFarm()) do
+				for _, Farm in ipairs(workspace.Farm:GetChildren()) do
 					local Owner = Farm:FindFirstChild("Important") and Farm.Important:FindFirstChild("Data") and Farm.Important.Data:FindFirstChild("Owner")
 
 					if Owner and Owner.Value == lp.Name then
