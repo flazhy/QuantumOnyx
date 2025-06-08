@@ -48,7 +48,18 @@ local function LoadConfig()
 				SyncGlobalsFromConfig()
 				return
 			else
-				warn("[Config] Failed to decode config JSON")
+				-- AutoRepair Logic Start
+				warn("[Config] Failed to decode config JSON, backing up and regenerating...")
+				local backupPath = Config.ConfigFile .. ".bak"
+				pcall(function()
+					if isfile(backupPath) then delfile(backupPath) end
+					writefile(backupPath, data)
+				end)
+				pcall(delfile, Config.ConfigFile)
+				rawConfig = {}
+				usedKeys = {}
+				dbgPrint("Corrupt config backed up to:", backupPath)
+				-- AutoRepair Logic End
 			end
 		else
 			warn("[Config] Failed to read config file")
