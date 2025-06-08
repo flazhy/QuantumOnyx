@@ -33,6 +33,9 @@ local Data = {
     HoneyList = {
         "Honey Comb", "Bee Chair", "Honey Torch", "Flower Seed Pack", "Nectarine", "Hive Fruit", "Honey Sprinkler", "Bee Egg", "Bee Crate", "Honey Walkway"
     },
+    PetsList = {
+    "Golden Lab", "Dog", "Bunny", "Black Bunny", "Chicken", "Cat", "Deer", "Orange Tabby", "Spotted Deer", "Pig", "Rooster", "Monkey", "Cow", "Silver Monkey", "Sea Otter", "Turtle", "Polar Bear", "Grey Mouse", "Brown Mouse", "Squirrel", "Red Giant Ant", "Red Fox", "Snail", "Giant Ant", "Caterpillar", "Praying Mantis", "Dragonfly", "Hedgehog", "Mole", "Frog", "Echo Frog", "Night Owl", "Raccoon", "Bee", "Honey Bee", "Bear Bee", "Petal Bee", "Queen Bee", "Wasp", "Tarantula Hawk", "Moth", "Butterfly", "Disco Bee"
+    },
 }
 
 return Data
