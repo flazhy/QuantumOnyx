@@ -65,16 +65,13 @@ function Module:AutoPlant()
 		local CharParts = {}
 		local CanFire, LastFireTime, MinFireInterval = true, 0, 0.25
 
-		local function FindSeedTool(seed)
-			for _, container in ipairs(Containers) do
-				for _, item in ipairs(container:GetChildren()) do
-					if item:IsA("Tool") and string.find(item.Name, seed) and item.Name:find("Seed") then
-						return item
-					end
+		local function FindSeedTool(Name)
+			for _, tool in ipairs(lp.Backpack:GetChildren()) do
+				if tool:IsA("Tool") and tool.Name:find(Name) and tool.Name:find("Seed") then
+					return tool
 				end
 			end
 		end
-
 		local function CacheCharacterParts(character)
 			table.clear(CharParts)
 			for _, part in ipairs(character:GetDescendants()) do
@@ -83,7 +80,6 @@ function Module:AutoPlant()
 				end
 			end
 		end
-
 		local function SetCollision(parts, state)
 			for _, part in ipairs(parts) do
 				part.CanCollide = state
@@ -109,15 +105,13 @@ function Module:AutoPlant()
 
 			local plantingFolder = farm and farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Plant_Locations")
 			if not plantingFolder then Wait(1) continue end
-
 			local spots = {}
-			for _, d in ipairs(plantingFolder:GetDescendants()) do
-				if d:IsA("BasePart") and d.Name:find("Can_Plant") then
-					table.insert(spots, d)
+			for _, part in ipairs(plantingFolder:GetDescendants()) do
+				if part:IsA("BasePart") and part.Name:find("Can_Plant") then
+					table.insert(spots, part)
 				end
 			end
 			if #spots == 0 then Wait(1) continue end
-
 			local seeds = {}
 			local selected = ExecCmd.SeedName or "Any"
 			if selected == "Any" then
@@ -141,15 +135,20 @@ function Module:AutoPlant()
 			local style = ExecCmd.PlantStyle or "Random"
 
 			for _, seed in ipairs(seeds) do
-				local tool = FindSeedTool(seed)
+				local tool = FindSeed(seed)
 				if not tool then continue end
 
 				local lastPos
 				while ExecCmd.AutoPlant and tool do
 					local spot = spots[Random(1, #spots)]
 					local size = spot.Size
-					local target = (style == "Stacked" and lastPos) and lastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3)) or
-						spot.Position + Vector3New(Random(-size.X / 2, size.X / 2), 2, Random(-size.Z / 2, size.Z / 2))
+					local target
+
+					if style == "Stacked" and lastPos then
+						target = lastPos + Vector3New(Random(-3, 3), 0, Random(-3, 3))
+					else
+						target = spot.Position + Vector3New(Random(-size.X / 2, size.X / 2), 2, Random(-size.Z / 2, size.Z / 2))
+					end
 
 					if not tool:IsDescendantOf(character) then
 						tool.Parent = character
@@ -163,9 +162,7 @@ function Module:AutoPlant()
 							if (root.Position - target).Magnitude > 1 then
 								SetCollision(CharParts, false)
 								local done = false
-								local conn = humanoid.MoveToFinished:Connect(function()
-									done = true
-								end)
+								local conn = humanoid.MoveToFinished:Connect(function() done = true end)
 								humanoid:MoveTo(target)
 								for _ = 1, 30 do
 									if done or not ExecCmd.AutoPlant then break end
@@ -195,6 +192,7 @@ function Module:AutoPlant()
 		end
 	end)
 end
+
 
 function Module:AutoCollect()
 	CreateThread("AutoCollect", function()
@@ -337,19 +335,15 @@ function Module:AutoSell()
 				local ShouldSell = (ExecCmd.AutoSell and Count >= 200) or ExecCmd.AutoTickSell
 
 				if ShouldSell then
-					if ExecCmd.AutoTickSell then
-						task.wait(ExecCmd.DelaySell / 100)
-					end
-
 					local SellPos = StevenHRP.CFrame * CFrame.new(0, 2, 5)
 					Char:PivotTo(SellPos)
-					task.wait(0.25)
+					task.wait(1)
 
 					task.spawn(function()
 						pcall(SellRemote.FireServer, SellRemote)
 					end)
 
-					task.wait(0.25)
+					task.wait(1)
 					Char:PivotTo(SpawnPoint.CFrame + Vector3.new(0, 3, 0))
 				end
 			end
