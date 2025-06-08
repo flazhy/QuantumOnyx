@@ -57,6 +57,59 @@ function Module:StopThread(name)
 	end
 end
 
+local _Env = {}
+_Env.Containers = { lp.Backpack }
+
+_Env.CacheCharacterParts = function(character)
+	_Env.CharParts = _Env.CharParts or {}
+	table.clear(_Env.CharParts)
+	for _, part in ipairs(character:GetDescendants()) do
+		if part:IsA("BasePart") then
+			table.insert(_Env.CharParts, part)
+		end
+	end
+end
+
+_Env.SetCollision = function(parts, state)
+	for _, part in ipairs(parts) do
+		part.CanCollide = state
+	end
+end
+
+_Env.FindSeedTool = function(Name)
+	for _, tool in ipairs(lp.Backpack:GetChildren()) do
+		if tool:IsA("Tool") and tool.Name:find(Name) and tool.Name:find("Seed") then
+			return tool
+		end
+	end
+end
+
+_Env.GetFarm = function(player)
+	for _, farm in ipairs(workspace.Farm:GetChildren()) do
+		local owner = farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Data") and farm.Important.Data:FindFirstChild("Owner")
+		if owner and owner.Value == player.Name then
+			return farm
+		end
+	end
+end
+
+_Env.MatchMutations = function(crop, filter)
+	if filter == "Any" or table.find(filter, "Any") then return true end
+	local attrs = crop:GetAttributes()
+	for name, val in pairs(attrs) do
+		if val == true and table.find(filter, name) then
+			return true
+		end
+	end
+	return false
+end
+
+_Env.MatchVariants = function(crop, filter)
+	if filter == "Any" or table.find(filter, "Any") then return true end
+	local var = crop:FindFirstChild("Variant")
+	return var and var:IsA("StringValue") and table.find(filter, var.Value)
+end
+
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
@@ -65,40 +118,17 @@ function Module:AutoPlant()
 		local CharParts = {}
 		local CanFire, LastFireTime, MinFireInterval = true, 0, 0.25
 
-		local function FindSeedTool(Name)
-			for _, tool in ipairs(lp.Backpack:GetChildren()) do
-				if tool:IsA("Tool") and tool.Name:find(Name) and tool.Name:find("Seed") then
-					return tool
-				end
-			end
-		end
-
-		local function CacheCharacterParts(character)
-			table.clear(CharParts)
-			for _, part in ipairs(character:GetDescendants()) do
-				if part:IsA("BasePart") then
-					table.insert(CharParts, part)
-				end
-			end
-		end
-
-		local function SetCollision(parts, state)
-			for _, part in ipairs(parts) do
-				part.CanCollide = state
-			end
-		end
-
 		while ExecCmd.AutoPlant do
 			local character = lp.Character or lp.CharacterAdded:Wait()
-			Containers[2] = character
+			_Env.Containers[2] = character
 
 			local humanoid = character:FindFirstChildOfClass("Humanoid")
 			local root = character:FindFirstChild("HumanoidRootPart")
 			if not humanoid or not root then Wait(1) continue end
 
-			CacheCharacterParts(character)
+			_Env.CacheCharacterParts(character)
 
-			local farm = GetFarm(lp)
+			local farm = _Env.GetFarm(lp)
 			local spawn = farm and farm:FindFirstChild("Spawn_Point")
 			if spawn and (root.Position - spawn.Position).Magnitude > 30 then
 				root.CFrame = spawn.CFrame
@@ -139,7 +169,7 @@ function Module:AutoPlant()
 			local style = ExecCmd.PlantStyle or "Random"
 
 			for _, seed in ipairs(seeds) do
-				local tool = FindSeedTool(seed)
+				local tool = _Env.FindSeedTool(seed)
 				if not tool then continue end
 
 				local lastPos
@@ -164,7 +194,7 @@ function Module:AutoPlant()
 							PlantRemote:FireServer(target, seed)
 						else
 							if (root.Position - target).Magnitude > 1 then
-								SetCollision(CharParts, false)
+								_Env.SetCollision(CharParts, false)
 								local done = false
 								local conn = humanoid.MoveToFinished:Connect(function() done = true end)
 								humanoid:MoveTo(target)
@@ -173,7 +203,7 @@ function Module:AutoPlant()
 									Wait(0.1)
 								end
 								conn:Disconnect()
-								SetCollision(CharParts, true)
+								_Env.SetCollision(CharParts, true)
 							end
 							if ExecCmd.AutoPlant then
 								PlantRemote:FireServer(target, seed)
@@ -188,7 +218,7 @@ function Module:AutoPlant()
 					Wait(0.1)
 					humanoid:UnequipTools()
 					Wait(0.1)
-					tool = FindSeedTool(seed)
+					tool = _Env.FindSeedTool(seed)
 					if not tool then break end
 				end
 			end
