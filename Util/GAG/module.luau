@@ -114,8 +114,6 @@ end
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
 		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
-		local Containers = { lp.Backpack }
-		local CharParts = {}
 		local CanFire, LastFireTime, MinFireInterval = true, 0, 0.25
 
 		while ExecCmd.AutoPlant do
@@ -190,42 +188,46 @@ function Module:AutoPlant()
 					end
 
 					if CanFire and os.clock() - LastFireTime >= MinFireInterval then
-						if mode == "Bypass" then
+						if mode == "Bypass" or (root.Position - target).Magnitude <= 1 then
 							PlantRemote:FireServer(target, seed)
 						else
-							if (root.Position - target).Magnitude > 1 then
-								_Env.SetCollision(CharParts, false)
-								local done = false
-								local conn = humanoid.MoveToFinished:Connect(function() done = true end)
-								humanoid:MoveTo(target)
-								for _ = 1, 30 do
-									if done or not ExecCmd.AutoPlant then break end
-									Wait(0.1)
-								end
-								conn:Disconnect()
-								_Env.SetCollision(CharParts, true)
+							_Env.SetCollision(CharParts, false)
+							local done = false
+							local conn = humanoid.MoveToFinished:Connect(function() done = true end)
+							humanoid:MoveTo(target)
+
+							for _ = 1, 30 do
+								if done or not ExecCmd.AutoPlant then break end
+								Wait(0.1)
 							end
+							conn:Disconnect()
+							_Env.SetCollision(CharParts, true)
+
 							if ExecCmd.AutoPlant then
 								PlantRemote:FireServer(target, seed)
 							end
 						end
+
 						CanFire = false
 						LastFireTime = os.clock()
 						task.delay(MinFireInterval, function() CanFire = true end)
 					end
-
 					lastPos = target
-					Wait(0.1)
+					Wait(0.25)
 					humanoid:UnequipTools()
-					Wait(0.1)
+					Wait(0.25)
 					tool = _Env.FindSeedTool(seed)
 					if not tool then break end
+					tool.Parent = character
+					Wait(0.25)
 				end
 			end
-			Wait(0.1)
+
+			Wait(0.25)
 		end
 	end)
 end
+
 
 
 
