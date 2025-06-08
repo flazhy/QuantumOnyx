@@ -72,6 +72,7 @@ function Module:AutoPlant()
 				end
 			end
 		end
+
 		local function CacheCharacterParts(character)
 			table.clear(CharParts)
 			for _, part in ipairs(character:GetDescendants()) do
@@ -80,6 +81,7 @@ function Module:AutoPlant()
 				end
 			end
 		end
+
 		local function SetCollision(parts, state)
 			for _, part in ipairs(parts) do
 				part.CanCollide = state
@@ -105,6 +107,7 @@ function Module:AutoPlant()
 
 			local plantingFolder = farm and farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Plant_Locations")
 			if not plantingFolder then Wait(1) continue end
+
 			local spots = {}
 			for _, part in ipairs(plantingFolder:GetDescendants()) do
 				if part:IsA("BasePart") and part.Name:find("Can_Plant") then
@@ -112,6 +115,7 @@ function Module:AutoPlant()
 				end
 			end
 			if #spots == 0 then Wait(1) continue end
+
 			local seeds = {}
 			local selected = ExecCmd.SeedName or "Any"
 			if selected == "Any" then
@@ -135,7 +139,7 @@ function Module:AutoPlant()
 			local style = ExecCmd.PlantStyle or "Random"
 
 			for _, seed in ipairs(seeds) do
-				local tool = FindSeed(seed)
+				local tool = FindSeedTool(seed)
 				if not tool then continue end
 
 				local lastPos
@@ -192,6 +196,7 @@ function Module:AutoPlant()
 		end
 	end)
 end
+
 
 
 function Module:AutoCollect()
