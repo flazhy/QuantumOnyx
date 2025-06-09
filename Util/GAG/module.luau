@@ -148,7 +148,7 @@ function Module:AutoPlant()
 			local selected = ExecCmd.SeedName or "Any"
 			if selected == "Any" then
 				local seen = {}
-				for _, container in ipairs(Containers) do
+				for _, container in ipairs(_Env.Containers) do
 					for _, item in ipairs(container:GetChildren()) do
 						if item:IsA("Tool") and item.Name:find("Seed") then
 							local name = item.Name:gsub(" Seed.*", "")
