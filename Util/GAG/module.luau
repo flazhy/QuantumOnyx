@@ -31,6 +31,7 @@ local StevenHRP: BasePart? = Services.Workspace:WaitForChild("NPCS"):WaitForChil
 
 local GetFarm: any = require(ReplicatedStorage.Modules:WaitForChild("GetFarm"))
 local DataService: any = require(ReplicatedStorage.Modules:WaitForChild("DataService"))
+local CropCollectRemote: any = require(ReplicatedStorage.Modules:WaitForChild("Remotes")).Crops.Collect
 
 
 local lp: Player = Players.LocalPlayer
@@ -228,39 +229,8 @@ function Module:AutoPlant()
 	end)
 end
 
-
-
-
 function Module:AutoCollect()
 	CreateThread("AutoCollect", function()
-		local Remotes
-		repeat
-			local ok, res = pcall(function()
-				Remotes = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Remotes"))
-				return Remotes and Remotes.Crops and Remotes.Crops.Collect
-			end)
-			task.wait(1)
-		until ok and res
-
-		local CropCollectRemote = Remotes.Crops.Collect
-
-		local function MatchMutations(crop, filter)
-			if filter == "Any" or table.find(filter, "Any") then return true end
-			local attrs = crop:GetAttributes()
-			for name, val in pairs(attrs) do
-				if val == true and table.find(filter, name) then
-					return true
-				end
-			end
-			return false
-		end
-
-		local function MatchVariants(crop, filter)
-			if filter == "Any" or table.find(filter, "Any") then return true end
-			local var = crop:FindFirstChild("Variant")
-			return var and var:IsA("StringValue") and table.find(filter, var.Value)
-		end
-
 		while ExecCmd.AutoCollect do
 			if #lp.Backpack:GetChildren() >= 200 then task.wait(0.3) continue end
 
@@ -282,7 +252,7 @@ function Module:AutoCollect()
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop and MatchMutations(crop, SelectedMut) and MatchVariants(crop, SelectedVar) then
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) then
 							table.insert(batch, crop)
 						end
 					end
@@ -300,6 +270,7 @@ function Module:AutoCollect()
 		end
 	end)
 end
+
 
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
