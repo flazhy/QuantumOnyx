@@ -262,21 +262,28 @@ function Module:AutoCollect()
 			end
 
 			if garden then
-				local SelectedMut = ExecCmd.SelectedMutations
-				local SelectedVar = ExecCmd.SelectedVariants
-				local SelectedSeed = ExecCmd.SeedNameC
+				local SelectedMut = ExecCmd.SelectedMutations or {}
+				local SelectedVar = ExecCmd.SelectedVariants or {}
+				local SelectedSeed = ExecCmd.SeedNameC or "Any"
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
 					if #batch >= 10 then break end
+
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
-						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop
-							and _Env.MatchMutations(crop, SelectedMut)
-							and _Env.MatchVariants(crop, SelectedVar)
-							and _Env.MatchSeedName(crop, SelectedSeed)
-						then
-							table.insert(batch, crop)
+						local crop = prompt:FindFirstAncestorOfClass("Model")
+
+						if crop then
+							local mutMatch = _Env.MatchMutations(crop, SelectedMut)
+							local varMatch = _Env.MatchVariants(crop, SelectedVar)
+							local seedMatch = _Env.MatchSeedName(crop, SelectedSeed)
+
+							if mutMatch and varMatch and seedMatch then
+								table.insert(batch, crop)
+								print("[Collect] Added crop:", crop.Name)
+							else
+								print("[Skip] crop:", crop.Name, "mut:", mutMatch, "var:", varMatch, "seed:", seedMatch)
+							end
 						end
 					end
 				end
@@ -293,6 +300,7 @@ function Module:AutoCollect()
 		end
 	end)
 end
+
 
 
 function Module:AutoBuyEggs()
