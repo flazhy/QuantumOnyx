@@ -112,8 +112,6 @@ _Env.MatchVariants = function(crop, filter)
 end
 
 
-
-
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
 		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
@@ -272,6 +270,7 @@ function Module:AutoCollect()
 		end
 	end)
 end
+
 
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
