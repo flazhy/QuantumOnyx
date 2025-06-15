@@ -117,28 +117,22 @@ end
 _Env.MatchWeightRange = function(crop, selectedRange)
 	if selectedRange == "Any" then return true end
 
-	local weight = nil
+	local weight
 	local fruits = crop:FindFirstChild("Fruits")
 	if fruits then
 		for _, item in ipairs(fruits:GetChildren()) do
 			local w = item:FindFirstChild("Weight")
 			if w and w:IsA("NumberValue") then
 				weight = w.Value
-				break -- or use logic to pick max or avg weight
-			end
-		end
-	end
-
-	if not weight then
-		for _, desc in ipairs(crop:GetDescendants()) do
-			if desc:IsA("NumberValue") and desc.Name == "Weight" then
-				weight = desc.Value
 				break
 			end
 		end
 	end
 
-	if not weight then return false end
+	if not weight then
+		warn("[WeightMatch] No weight found in crop:", crop:GetFullName())
+		return false
+	end
 
 	if selectedRange == "100kg above" then
 		return weight > 100
@@ -147,7 +141,11 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 	else
 		local min, max = selectedRange:match("([%d%.]+)%s*%-%s*([%d%.]+)")
 		min, max = tonumber(min), tonumber(max)
-		return min and max and weight >= min and weight <= max
+		if not min or not max then
+			warn("[WeightMatch] Failed to parse selectedRange:", selectedRange)
+			return false
+		end
+		return weight >= min and weight <= max
 	end
 end
 
