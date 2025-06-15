@@ -112,14 +112,23 @@ _Env.MatchVariants = function(crop, filter)
 end
 
 _Env.MatchSeedName = function(crop, filter)
+	if not crop then return false end
+
 	if filter == "Any" then 
 		return true 
 	end
 
-	local name = crop and crop.Name or "nil"
-	local match = name == filter
-	return match
+	local name = crop.Name
+	if typeof(filter) == "string" then
+		return name == filter
+	elseif typeof(filter) == "table" then
+		return table.find(filter, name) ~= nil
+	else
+		warn("[MatchSeedName] Invalid filter type:", typeof(filter))
+		return false
+	end
 end
+
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
