@@ -118,10 +118,11 @@ end
 _Env.MatchWeightRange = function(crop, selectedRange)
 	if selectedRange == "Any" then return true end
 
-	local weightVal = crop:FindFirstChild("Weight")
-	if not (weightVal and weightVal:IsA("NumberValue")) then return false end
+	local w = crop:FindFirstChild("Weight")
+	if not (w and w:IsA("NumberValue")) then return false end
 
-	local weight = weightVal.Value
+	local weight = tonumber(w.Value)
+	if not weight then return false end
 
 	if selectedRange == "100kg above" then
 		return weight > 100
@@ -130,12 +131,8 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 	else
 		local min, max = selectedRange:match("(%d+)%s*%-%s*(%d+)")
 		min, max = tonumber(min), tonumber(max)
-		if min and max then
-			return weight >= min and weight <= max
-		end
+		return min and max and weight >= min and weight <= max
 	end
-
-	return false
 end
 
 
