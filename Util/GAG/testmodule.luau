@@ -129,6 +129,38 @@ _Env.MatchSeedName = function(crop, selectedName)
 end
 
 
+_Env.MatchWeightRange = function(crop, selectedRange)
+	if selectedRange == "Any" then return true end
+
+	local weight = nil
+	for _, descendant in ipairs(crop:GetDescendants()) do
+		if descendant.Name == "Weight" and descendant:IsA("NumberValue") then
+			weight = descendant.Value
+			break
+		end
+	end
+
+	if not weight then
+		warn("[MatchWeightRange] No weight found for crop:", crop:GetFullName())
+		return false
+	end
+
+	if selectedRange == "100kg above" then
+		return weight > 100
+	elseif selectedRange == "0 - 100kg" then
+		return weight >= 0 and weight <= 100
+	else
+		local min, max = selectedRange:match("([%d%.]+)%s*%-%s*([%d%.]+)")
+		min, max = tonumber(min), tonumber(max)
+		if not min or not max then
+			warn("[MatchWeightRange] Failed to parse range:", selectedRange)
+			return false
+		end
+		return weight >= min and weight <= max
+	end
+end
+
+
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
 		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
@@ -267,6 +299,7 @@ function Module:AutoCollect()
 				local SelectedMut = ExecCmd.SelectedMutations
 				local SelectedVar = ExecCmd.SelectedVariants
 				local SelectedSeed = ExecCmd.SeedNameC
+				local SelectedWeight = ExecCmd.SelectedWeights
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
@@ -277,6 +310,7 @@ function Module:AutoCollect()
 							and _Env.MatchMutations(crop, SelectedMut)
 							and _Env.MatchVariants(crop, SelectedVar)
 							and _Env.MatchSeedName(crop, SelectedSeed)
+							and _Env.MatchWeightRange(crop, SelectedWeight)
 						then
 							table.insert(batch, crop)
 						end
