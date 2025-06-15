@@ -113,9 +113,8 @@ end
 
 _Env.MatchSeedName = function(crop, filter)
 	if not crop then return false end
-
-	if filter == "Any" then 
-		return true 
+	if filter == "Any" or (typeof(filter) == "table" and table.find(filter, "Any")) then
+		return true
 	end
 
 	local name = crop.Name
@@ -123,10 +122,10 @@ _Env.MatchSeedName = function(crop, filter)
 		return name == filter
 	elseif typeof(filter) == "table" then
 		return table.find(filter, name) ~= nil
-	else
-		warn("[MatchSeedName] Invalid filter type:", typeof(filter))
-		return false
 	end
+
+	warn("[MatchSeedName] Invalid filter type:", typeof(filter))
+	return false
 end
 
 
