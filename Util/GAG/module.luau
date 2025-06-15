@@ -111,6 +111,53 @@ _Env.MatchVariants = function(crop, filter)
 	return var and var:IsA("StringValue") and table.find(filter, var.Value)
 end
 
+_Env.MatchSeedName = function(crop, selectedName)
+	if selectedName == "Any" then return true end
+	if crop.Name == selectedName then
+		return true
+	end
+	local parent = crop.Parent
+	if parent and parent:IsA("Model") and parent.Name == selectedName then
+		return true
+	end
+	local cropName = crop:FindFirstChild("Name")
+	if cropName and cropName:IsA("StringValue") and cropName.Value == selectedName then
+		return true
+	end
+
+	return false
+end
+
+
+_Env.MatchWeightRange = function(crop, range)
+	if range == "Any" then return true end
+
+	local weight = nil
+	for _, descendant in ipairs(crop:GetDescendants()) do
+		if descendant.Name == "Weight" and descendant:IsA("NumberValue") then
+			weight = descendant.Value
+			break
+		end
+	end
+
+	if not weight then
+		return false
+	end
+
+	if range == "100kg above" then
+		return weight > 100
+	elseif range == "0 - 100kg" then
+		return weight >= 0 and weight <= 100
+	else
+		local min, max = range:match("([%d%.]+)%s*%-%s*([%d%.]+)")
+		min, max = tonumber(min), tonumber(max)
+		if not min or not max then
+			return false
+		end
+		return weight >= min and weight <= max
+	end
+end
+
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
@@ -232,7 +279,10 @@ end
 function Module:AutoCollect()
 	CreateThread("AutoCollect", function()
 		while ExecCmd.AutoCollect do
-			if #lp.Backpack:GetChildren() >= 200 then task.wait(0.3) continue end
+			if #lp.Backpack:GetChildren() >= 200 then
+				task.wait(0.3)
+				continue
+			end
 
 			local garden
 			for _, plot in ipairs(workspace.Farm:GetChildren()) do
@@ -246,13 +296,16 @@ function Module:AutoCollect()
 			if garden then
 				local SelectedMut = ExecCmd.SelectedMutations
 				local SelectedVar = ExecCmd.SelectedVariants
+				local SelectedSeed = ExecCmd.SeedNameC
+				local SelectedWeight = ExecCmd.SelectedWeights
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) then
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedSeed) and _Env.MatchWeightRange(crop, SelectedWeight)
+						then
 							table.insert(batch, crop)
 						end
 					end
