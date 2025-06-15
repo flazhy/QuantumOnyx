@@ -129,7 +129,7 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 	elseif selectedRange == "0 - 100kg" then
 		return weight >= 0 and weight <= 100
 	else
-		local min, max = selectedRange:match("(%d+)%s*%-%s*(%d+)")
+		local min, max = selectedRange:match("([%d%.]+)%s*%-%s*([%d%.]+)")
 		min, max = tonumber(min), tonumber(max)
 		return min and max and weight >= min and weight <= max
 	end
