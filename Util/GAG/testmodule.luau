@@ -117,13 +117,18 @@ end
 _Env.MatchWeightRange = function(crop, selectedRange)
 	if selectedRange == "Any" then return true end
 
-	local weight
-	for _, desc in ipairs(crop:GetDescendants()) do
-		if desc:IsA("NumberValue") and desc.Name == "Weight" then
-			weight = desc.Value
-			break
+	local weight = nil
+	local fruits = crop:FindFirstChild("Fruits")
+	if fruits then
+		for _, item in ipairs(fruits:GetChildren()) do
+			local w = item:FindFirstChild("Weight")
+			if w and w:IsA("NumberValue") then
+				weight = w.Value
+				break
+			end
 		end
 	end
+
 	if not weight then return false end
 
 	if selectedRange == "100kg above" then
