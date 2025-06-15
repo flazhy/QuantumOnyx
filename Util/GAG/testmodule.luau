@@ -283,30 +283,23 @@ function Module:AutoCollect()
 				local SelectedVar = ExecCmd.SelectedVariants
 				local SelectedSeed = ExecCmd.SeedNameC
 				local SelectedWeight = ExecCmd.SelectedWeightRange
-
-				print("SelectedWeightRange:", ExecCmd.SelectedWeightRange)
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
-	if #batch >= 10 then break end
-	if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
-		local crop = prompt.Parent and prompt.Parent.Parent
-		if crop then
-			local passedName = _Env.MatchSeedName(crop, SelectedSeed)
-			local passedMut = _Env.MatchMutations(crop, SelectedMut)
-			local passedVar = _Env.MatchVariants(crop, SelectedVar)
-			local passedWeight = _Env.MatchWeightRange(crop, SelectedWeight)
-
-			print(`[AutoCollect] Crop: {crop.Name} | Name: {passedName} | Mut: {passedMut} | Var: {passedVar} | Weight: {passedWeight}`)
-
-			if passedName and passedMut and passedVar and passedWeight then
-				table.insert(batch, crop)
-				if #batch >= 10 then break end
-			end
-		end
-	end
-end
-
+					if #batch >= 10 then break end
+					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
+						local crop = prompt.Parent and prompt.Parent.Parent
+						if crop
+							and _Env.MatchMutations(crop, SelectedMut)
+							and _Env.MatchVariants(crop, SelectedVar)
+							and _Env.MatchSeedName(crop, SelectedSeed)
+							and _Env.MatchWeightRange(crop, SelectedWeight)
+						then
+							table.insert(batch, crop)
+							if #batch >= 10 then break end
+						end
+					end
+				end
 
 				if #batch > 0 then
 					pcall(function() CropCollectRemote.send(batch) end)
@@ -320,7 +313,6 @@ end
 		end
 	end)
 end
-
 
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
