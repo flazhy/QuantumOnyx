@@ -111,19 +111,6 @@ _Env.MatchVariants = function(crop, filter)
 	return var and var:IsA("StringValue") and table.find(filter, var.Value)
 end
 
-_Env.MatchSeedName = function(crop, selectedName)
-	if selectedName == "Any" then 
-		print("[MatchSeedName] Selected: Any → true")
-		return true 
-	end
-
-	local cropName = crop and crop.Name or "nil"
-	local match = cropName == selectedName
-	print("[MatchSeedName] Checking:", cropName, "==", selectedName, "→", match)
-
-	return match
-end
-
 
 
 
@@ -262,28 +249,19 @@ function Module:AutoCollect()
 			end
 
 			if garden then
-				local SelectedMut = ExecCmd.SelectedMutations or {}
-				local SelectedVar = ExecCmd.SelectedVariants or {}
-				local SelectedSeed = ExecCmd.SeedNameC or "Any"
+				local SelectedMut = ExecCmd.SelectedMutations
+				local SelectedVar = ExecCmd.SelectedVariants
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
 					if #batch >= 10 then break end
-
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
-						local crop = prompt:FindFirstAncestorOfClass("Model")
-
-						if crop then
-							local mutMatch = _Env.MatchMutations(crop, SelectedMut)
-							local varMatch = _Env.MatchVariants(crop, SelectedVar)
-							local seedMatch = _Env.MatchSeedName(crop, SelectedSeed)
-
-							if mutMatch and varMatch and seedMatch then
-								table.insert(batch, crop)
-								print("[Collect] Added crop:", crop.Name)
-							else
-								print("[Skip] crop:", crop.Name, "mut:", mutMatch, "var:", varMatch, "seed:", seedMatch)
-							end
+						local crop = prompt.Parent and prompt.Parent.Parent
+						if crop
+							and _Env.MatchMutations(crop, SelectedMut)
+							and _Env.MatchVariants(crop, SelectedVar)
+						then
+							table.insert(batch, crop)
 						end
 					end
 				end
@@ -300,7 +278,6 @@ function Module:AutoCollect()
 		end
 	end)
 end
-
 
 
 function Module:AutoBuyEggs()
