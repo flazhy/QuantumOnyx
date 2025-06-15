@@ -112,8 +112,22 @@ _Env.MatchVariants = function(crop, filter)
 end
 
 _Env.MatchSeedName = function(crop, selectedName)
-	return selectedName == "Any" or crop.Name == selectedName or (crop.Parent and crop.Parent.Name == selectedName)
+	if selectedName == "Any" then return true end
+	if crop.Name == selectedName then
+		return true
+	end
+	local parent = crop.Parent
+	if parent and parent:IsA("Model") and parent.Name == selectedName then
+		return true
+	end
+	local cropName = crop:FindFirstChild("Name")
+	if cropName and cropName:IsA("StringValue") and cropName.Value == selectedName then
+		return true
+	end
+
+	return false
 end
+
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
@@ -265,7 +279,6 @@ function Module:AutoCollect()
 							and _Env.MatchSeedName(crop, SelectedSeed)
 						then
 							table.insert(batch, crop)
-							if #batch >= 10 then break end
 						end
 					end
 				end
@@ -282,6 +295,7 @@ function Module:AutoCollect()
 		end
 	end)
 end
+
 
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
