@@ -129,33 +129,29 @@ _Env.MatchSeedName = function(crop, selectedName)
 end
 
 
-_Env.MatchWeightRange = function(crop, selectedRange)
-	if selectedRange == "Any" then return true end
+_Env.MatchWeightRange = function(crop, range)
+	if range == "Any" then return true end
 
-	local weight = nil
-	for _, descendant in ipairs(crop:GetDescendants()) do
-		if descendant.Name == "Weight" and descendant:IsA("NumberValue") then
-			weight = descendant.Value
-			break
-		end
+	local weight
+	local fruitsFolder = crop:FindFirstChild("Fruits")
+	local weightVal = 
+		(fruitsFolder and fruitsFolder:FindFirstChild("Weight")) or 
+		crop:FindFirstChild("Weight")
+
+	if weightVal and weightVal:IsA("NumberValue") then
+		weight = weightVal.Value
 	end
 
-	if not weight then
-		warn("[MatchWeightRange] No weight found for crop:", crop:GetFullName())
-		return false
-	end
+	if not weight then return false end
 
-	if selectedRange == "100kg above" then
+	if range == "100kg above" then
 		return weight > 100
-	elseif selectedRange == "0 - 100kg" then
+	elseif range == "0 - 100kg" then
 		return weight >= 0 and weight <= 100
 	else
-		local min, max = selectedRange:match("([%d%.]+)%s*%-%s*([%d%.]+)")
+		local min, max = range:match("([%d%.]+)%s*%-%s*([%d%.]+)")
 		min, max = tonumber(min), tonumber(max)
-		if not min or not max then
-			warn("[MatchWeightRange] Failed to parse range:", selectedRange)
-			return false
-		end
+		if not min or not max then return false end
 		return weight >= min and weight <= max
 	end
 end
@@ -306,11 +302,7 @@ function Module:AutoCollect()
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop
-							and _Env.MatchMutations(crop, SelectedMut)
-							and _Env.MatchVariants(crop, SelectedVar)
-							and _Env.MatchSeedName(crop, SelectedSeed)
-							and _Env.MatchWeightRange(crop, SelectedWeight)
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedSeed) and _Env.MatchWeightRange(crop, SelectedWeight)
 						then
 							table.insert(batch, crop)
 						end
