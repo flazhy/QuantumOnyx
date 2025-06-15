@@ -124,6 +124,16 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 			local w = item:FindFirstChild("Weight")
 			if w and w:IsA("NumberValue") then
 				weight = w.Value
+				break -- or use logic to pick max or avg weight
+			end
+		end
+	end
+
+	if not weight then
+		-- fallback: look for any descendant Weight if Fruits folder is missing
+		for _, desc in ipairs(crop:GetDescendants()) do
+			if desc:IsA("NumberValue") and desc.Name == "Weight" then
+				weight = desc.Value
 				break
 			end
 		end
@@ -141,6 +151,7 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 		return min and max and weight >= min and weight <= max
 	end
 end
+
 
 
 function Module:AutoPlant()
@@ -281,6 +292,7 @@ function Module:AutoCollect()
 				local SelectedMut = ExecCmd.SelectedMutations
 				local SelectedVar = ExecCmd.SelectedVariants
 				local SelectedSeed = ExecCmd.SeedNameC
+				local SelectedWeight = ExecCmd.SelectedWeightRange
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
@@ -291,7 +303,7 @@ function Module:AutoCollect()
 							and _Env.MatchMutations(crop, SelectedMut)
 							and _Env.MatchVariants(crop, SelectedVar)
 							and _Env.MatchSeedName(crop, SelectedSeed)
-							and _Env.MatchWeightRange(crop, ExecCmd.SelectedWeightRange)
+							and _Env.MatchWeightRange(crop, SelectedWeight)
 						then
 							table.insert(batch, crop)
 							if #batch >= 10 then break end
