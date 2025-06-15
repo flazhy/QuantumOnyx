@@ -111,6 +111,15 @@ _Env.MatchVariants = function(crop, filter)
 	return var and var:IsA("StringValue") and table.find(filter, var.Value)
 end
 
+_Env.MatchSeedName = function(crop, filter)
+	if filter == "Any" then 
+		return true 
+	end
+
+	local name = crop and crop.Name or "nil"
+	local match = name == filter
+	return match
+end
 
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
@@ -252,7 +261,7 @@ function Module:AutoCollect()
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) then
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedSeed) then
 							table.insert(batch, crop)
 						end
 					end
