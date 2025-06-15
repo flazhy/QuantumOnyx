@@ -234,10 +234,7 @@ end
 function Module:AutoCollect()
 	CreateThread("AutoCollect", function()
 		while ExecCmd.AutoCollect do
-			if #lp.Backpack:GetChildren() >= 200 then
-				task.wait(0.3)
-				continue
-			end
+			if #lp.Backpack:GetChildren() >= 200 then task.wait(0.3) continue end
 
 			local garden
 			for _, plot in ipairs(workspace.Farm:GetChildren()) do
@@ -257,10 +254,7 @@ function Module:AutoCollect()
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop
-							and _Env.MatchMutations(crop, SelectedMut)
-							and _Env.MatchVariants(crop, SelectedVar)
-						then
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) then
 							table.insert(batch, crop)
 						end
 					end
@@ -278,7 +272,6 @@ function Module:AutoCollect()
 		end
 	end)
 end
-
 
 function Module:AutoBuyEggs()
 	CreateThread("AutoBuyEggs", function()
