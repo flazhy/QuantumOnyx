@@ -114,14 +114,16 @@ end
 _Env.MatchSeedName = function(crop, selectedName)
 	return selectedName == "Any" or crop.Name == selectedName or (crop.Parent and crop.Parent.Name == selectedName)
 end
-
 _Env.MatchWeightRange = function(crop, selectedRange)
 	if selectedRange == "Any" then return true end
 
-	local w = crop:FindFirstChild("Weight")
-	if not (w and w:IsA("NumberValue")) then return false end
-
-	local weight = tonumber(w.Value)
+	local weight
+	for _, desc in ipairs(crop:GetDescendants()) do
+		if desc:IsA("NumberValue") and desc.Name == "Weight" then
+			weight = desc.Value
+			break
+		end
+	end
 	if not weight then return false end
 
 	if selectedRange == "100kg above" then
