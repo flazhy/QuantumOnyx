@@ -130,7 +130,6 @@ _Env.MatchWeightRange = function(crop, selectedRange)
 	end
 
 	if not weight then
-		-- fallback: look for any descendant Weight if Fruits folder is missing
 		for _, desc in ipairs(crop:GetDescendants()) do
 			if desc:IsA("NumberValue") and desc.Name == "Weight" then
 				weight = desc.Value
@@ -293,6 +292,8 @@ function Module:AutoCollect()
 				local SelectedVar = ExecCmd.SelectedVariants
 				local SelectedSeed = ExecCmd.SeedNameC
 				local SelectedWeight = ExecCmd.SelectedWeightRange
+
+				print("SelectedWeightRange:", ExecCmd.SelectedWeightRange)
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
