@@ -115,36 +115,33 @@ _Env.MatchSeedName = function(crop, selectedName)
 	return selectedName == "Any" or crop.Name == selectedName or (crop.Parent and crop.Parent.Name == selectedName)
 end
 _Env.MatchWeightRange = function(crop, selectedRange)
+	if type(selectedRange) == "table" then
+		selectedRange = selectedRange[1]
+	end
+
 	if selectedRange == "Any" then return true end
 
 	local weight = nil
 	for _, descendant in ipairs(crop:GetDescendants()) do
-		if descendant.Name == "Weight" and descendant:IsA("NumberValue") then
-			weight = descendant.Value
+		local w = descendant:FindFirstChild("Weight")
+		if w and w:IsA("NumberValue") then
+			weight = w.Value
 			break
 		end
 	end
 
-	if not weight then
-		warn("[MatchWeightRange] No weight found for crop:", crop:GetFullName())
-		return false
-	end
+	if not weight then return false end
 
 	if selectedRange == "100kg above" then
 		return weight > 100
 	elseif selectedRange == "0 - 100kg" then
 		return weight >= 0 and weight <= 100
 	else
-		local min, max = selectedRange:match("([%d%.]+)%s*%-%s*([%d%.]+)")
+		local min, max = tostring(selectedRange):match("([%d%.]+)%s*%-%s*([%d%.]+)")
 		min, max = tonumber(min), tonumber(max)
-		if not min or not max then
-			warn("[MatchWeightRange] Failed to parse range:", selectedRange)
-			return false
-		end
-		return weight >= min and weight <= max
+		return min and max and weight >= min and weight <= max
 	end
 end
-
 
 
 function Module:AutoPlant()
