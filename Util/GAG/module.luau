@@ -112,9 +112,16 @@ _Env.MatchVariants = function(crop, filter)
 end
 
 _Env.MatchSeedName = function(crop, selectedName)
-	if selectedName == "Any" then return true end
+	if selectedName == "Any" then 
+		print("[MatchSeedName] Selected: Any → true")
+		return true 
+	end
 
-	return crop and crop.Name == selectedName
+	local cropName = crop and crop.Name or "nil"
+	local match = cropName == selectedName
+	print("[MatchSeedName] Checking:", cropName, "==", selectedName, "→", match)
+
+	return match
 end
 
 
