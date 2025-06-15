@@ -255,13 +255,14 @@ function Module:AutoCollect()
 			if garden then
 				local SelectedMut = ExecCmd.SelectedMutations
 				local SelectedVar = ExecCmd.SelectedVariants
+				local SelectedsSeed = ExecCmd.SeedNameC
 				local batch = {}
 
 				for _, prompt in ipairs(garden:GetDescendants()) do
 					if #batch >= 10 then break end
 					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
 						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedSeed) then
+						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedsSeed) then
 							table.insert(batch, crop)
 						end
 					end
