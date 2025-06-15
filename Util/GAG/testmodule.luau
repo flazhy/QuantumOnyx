@@ -115,6 +115,28 @@ _Env.MatchSeedName = function(crop, selectedName)
 	return selectedName == "Any" or crop.Name == selectedName or (crop.Parent and crop.Parent.Name == selectedName)
 end
 
+_Env.MatchWeightRange = function(crop, selectedRange)
+	if selectedRange == "Any" then return true end
+
+	local weightVal = crop:FindFirstChild("Weight")
+	if not (weightVal and weightVal:IsA("NumberValue")) then return false end
+
+	local weight = weightVal.Value
+
+	if selectedRange == "100kg above" then
+		return weight > 100
+	elseif selectedRange == "0 - 100kg" then
+		return weight >= 0 and weight <= 100
+	else
+		local min, max = selectedRange:match("(%d+)%s*%-%s*(%d+)")
+		min, max = tonumber(min), tonumber(max)
+		if min and max then
+			return weight >= min and weight <= max
+		end
+	end
+
+	return false
+end
 
 
 function Module:AutoPlant()
@@ -265,8 +287,10 @@ function Module:AutoCollect()
 							and _Env.MatchMutations(crop, SelectedMut)
 							and _Env.MatchVariants(crop, SelectedVar)
 							and _Env.MatchSeedName(crop, SelectedSeed)
+							and _Env.MatchWeightRange(crop, ExecCmd.SelectedWeightRange)
 						then
 							table.insert(batch, crop)
+							if #batch >= 10 then break end
 						end
 					end
 				end
