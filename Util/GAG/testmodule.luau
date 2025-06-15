@@ -113,8 +113,25 @@ end
 
 _Env.MatchSeedName = function(crop, selectedName)
 	if selectedName == "Any" then return true end
+
+	-- Check crop name directly
+	if crop.Name == selectedName then
+		return true
+	end
+
+	-- Optionally check the parent model's name
+	local parent = crop.Parent
+	if parent and parent:IsA("Model") and parent.Name == selectedName then
+		return true
+	end
+
+	-- Optionally check for child "Name" value (if still used)
 	local cropName = crop:FindFirstChild("Name")
-	return cropName and cropName:IsA("StringValue") and cropName.Value == selectedName
+	if cropName and cropName:IsA("StringValue") and cropName.Value == selectedName then
+		return true
+	end
+
+	return false
 end
 
 
