@@ -94,75 +94,6 @@ _Env.GetFarm = function(player)
 	end
 end
 
-_Env.MatchMutations = function(crop, filter)
-	if filter == "Any" or table.find(filter, "Any") then return true end
-	local attrs = crop:GetAttributes()
-	for name, val in pairs(attrs) do
-		if val == true and table.find(filter, name) then
-			return true
-		end
-	end
-	return false
-end
-
-_Env.MatchVariants = function(crop, filter)
-	if filter == "Any" or table.find(filter, "Any") then return true end
-	local var = crop:FindFirstChild("Variant")
-	return var and var:IsA("StringValue") and table.find(filter, var.Value)
-end
-
-_Env.MatchSeedName = function(crop, filter)
-	if not crop then return false end
-	if filter == "Any" or (typeof(filter) == "table" and table.find(filter, "Any")) then
-		return true
-	end
-
-	local name = crop.Name
-	if typeof(filter) == "string" then
-		return name == filter
-	elseif typeof(filter) == "table" then
-		return table.find(filter, name) ~= nil
-	end
-
-	warn("[MatchSeedName] Invalid filter type:", typeof(filter))
-	return false
-end
-
-_Env.MatchWeightRange = function(crop, selectedRanges)
-	if not crop then return false end
-	if typeof(selectedRanges) == "string" and selectedRanges == "Any" then return true end
-	if typeof(selectedRanges) ~= "table" then return false end
-	local weightVal = nil
-	local weightObj = crop:FindFirstChild("Weight")
-	if weightObj then
-		if weightObj:IsA("StringValue") then
-			weightVal = tonumber(weightObj.Value)
-		elseif weightObj:IsA("NumberValue") then
-			weightVal = weightObj.Value
-		end
-	end
-	if not weightVal then return false end
-	for _, range in ipairs(selectedRanges) do
-		if range == "Any" then return true end
-		if range == "100kg above" then
-			if weightVal >= 100 then return true end
-		else
-			local minStr, maxStr = range:match("(%d+%.?%d*)%s*%-%s*(%d+%.?%d*)kg")
-			if minStr and maxStr then
-				local min = tonumber(minStr)
-				local max = tonumber(maxStr)
-				if min and max and weightVal >= min and weightVal <= max then
-					return true
-				end
-			end
-		end
-	end
-
-	return false
-end
-
-
-
 function Module:AutoPlant()
 	CreateThread("AutoPlant", function()
 		local Wait, Random, Vector3New = task.wait, math.random, Vector3.new
@@ -276,50 +207,6 @@ function Module:AutoPlant()
 			end
 
 			Wait(0.25)
-		end
-	end)
-end
-
-function Module:AutoCollect()
-	CreateThread("AutoCollect", function()
-		while ExecCmd.AutoCollect do
-			if #lp.Backpack:GetChildren() >= 200 then task.wait(0.3) continue end
-
-			local garden
-			for _, plot in ipairs(workspace.Farm:GetChildren()) do
-				local owner = plot:FindFirstChild("Important") and plot.Important:FindFirstChild("Data") and plot.Important.Data:FindFirstChild("Owner")
-				if owner and owner.Value == lp.Name then
-					garden = plot.Important:FindFirstChild("Plants_Physical")
-					break
-				end
-			end
-
-			if garden then
-				local SelectedMut = ExecCmd.SelectedMutations
-				local SelectedVar = ExecCmd.SelectedVariants
-				local SelectedsSeed = ExecCmd.SeedNameC
-				local SelectedWeight = ExecCmd.SelectedWeightRange
-				local batch = {}
-
-				for _, prompt in ipairs(garden:GetDescendants()) do
-					if #batch >= 10 then break end
-					if prompt:IsA("ProximityPrompt") and prompt.Enabled and CollectionService:HasTag(prompt, "CollectPrompt") then
-						local crop = prompt.Parent and prompt.Parent.Parent
-						if crop and _Env.MatchMutations(crop, SelectedMut) and _Env.MatchVariants(crop, SelectedVar) and _Env.MatchSeedName(crop, SelectedsSeed) and _Env.MatchWeightRange(crop, SelectedWeight) then
-							table.insert(batch, crop)
-						end
-					end
-				end
-
-				if #batch > 0 then
-					pcall(function() CropCollectRemote.send(batch) end)
-					task.wait(0.15)
-				else
-					task.wait(0.2)
-				end
-			else
-				task.wait(0.3)
-			end
 		end
 	end)
 end
