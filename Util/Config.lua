@@ -136,9 +136,9 @@ function section:addToggle(label, default, callback, description, image)
 	local key = CleanKey(label)
 	usedKeys[key] = true
 
-	uiControlCache[self] = uiControlCache[self] or {}
-	if uiControlCache[self][key] then
-		return uiControlCache[self][key]
+	patchedSections[self] = patchedSections[self] or {}
+	if patchedSections[self][key] then
+		return patchedSections[self][key]
 	end
 
 	local value = rawConfig[key]
