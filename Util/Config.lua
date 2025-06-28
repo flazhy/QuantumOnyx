@@ -10,6 +10,7 @@ Config.Debug = false
 local rawConfig = {}
 local usedKeys = {}
 local SaveScheduled = false
+local uiControlCache = setmetatable({}, { __mode = "k" })
 
 local function dbgPrint(...)
 	if Config.Debug then
@@ -28,9 +29,7 @@ local function SyncGlobalsFromConfig()
 end
 
 local function LoadConfig()
-	if not isfolder("QuantumOnyxHub") then
-		makefolder("QuantumOnyxHub")
-	end
+	if not isfolder("QuantumOnyxHub") then makefolder("QuantumOnyxHub") end
 	if not isfolder(Config.ConfigFolder) then
 		makefolder(Config.ConfigFolder)
 		dbgPrint("Created folder:", Config.ConfigFolder)
@@ -132,46 +131,43 @@ local function ApplyConfig(section)
 	local OrigSlider = section.addSlider
 	local OrigDropdown = section.addDropdown
 
-function section:addToggle(label, default, callback, description, image)
-	local key = CleanKey(label)
-	usedKeys[key] = true
+	function section:addToggle(label, default, callback, description, image)
+		local key = CleanKey(label)
+		usedKeys[key] = true
 
-	patchedSections[self] = patchedSections[self] or {}
-	if patchedSections[self][key] then
-		return patchedSections[self][key]
-	end
-
-	local value = rawConfig[key]
-	if value == nil then
-		value = default
-		ConfigProxy[key] = default
-	end
-
-	getgenv()[key] = value
-
-	local function onChanged(val)
-		ConfigProxy[key] = val
-		if callback then
-			local ok, err = pcall(callback, val)
-			if not ok then warn("[Config] addToggle callback error:", err) end
+		uiControlCache[self] = uiControlCache[self] or {}
+		if uiControlCache[self][key] then
+			return uiControlCache[self][key]
 		end
+
+		local value = rawConfig[key]
+		if value == nil then
+			value = default
+			ConfigProxy[key] = default
+		end
+
+		getgenv()[key] = value
+
+		local function onChanged(val)
+			ConfigProxy[key] = val
+			if callback then
+				local ok, err = pcall(callback, val)
+				if not ok then warn("[Config] addToggle callback error:", err) end
+			end
+		end
+
+		local toggle
+		if type(description) == "string" and type(image) == "string" then
+			toggle = OrigToggle(self, label, value, onChanged, description, image)
+		elseif type(description) == "string" then
+			toggle = OrigToggle(self, label, value, onChanged, description)
+		else
+			toggle = OrigToggle(self, label, value, onChanged)
+		end
+
+		uiControlCache[self][key] = toggle
+		return toggle
 	end
-
-	local toggle
-	if type(description) == "string" and type(image) == "string" then
-		toggle = OrigToggle(self, label, value, onChanged, description, image)
-	elseif type(description) == "string" then
-		toggle = OrigToggle(self, label, value, onChanged, description)
-	else
-		toggle = OrigToggle(self, label, value, onChanged)
-	end
-
-	patchedSections[self][key] = toggle
-	return toggle
-end
-
-
-
 
 	function section:addSlider(label, min, max, default, callback, increment)
 		local key = CleanKey(label)
@@ -222,7 +218,6 @@ function Config.Toggle(section, label, default, callback, description, image)
 	ApplyConfig(section)
 	return section:addToggle(label, default, callback, description, image)
 end
-
 
 function Config.Slider(section, label, min, max, default, callback, increment)
 	ApplyConfig(section)
