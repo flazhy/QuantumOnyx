@@ -132,7 +132,7 @@ local function ApplyConfig(section)
 	local OrigSlider = section.addSlider
 	local OrigDropdown = section.addDropdown
 
-	function section:addToggle(label, default, callback, description, image)
+function section:addToggle(label, default, callback, description, image)
 	local key = CleanKey(label)
 	usedKeys[key] = true
 
@@ -151,13 +151,24 @@ local function ApplyConfig(section)
 			if not ok then warn("[Config] addToggle callback error:", err) end
 		end
 	end
+	local args = {
+		Name = label,
+		Value = value,
+		Callback = onChanged,
+		Description = description,
+		Image = image
+	}
+	local success, result = pcall(function()
+		return OrigToggle(self, args)
+	end)
 
-	if description or image then
-		return OrigToggle(self, label, value, onChanged, description, image)
+	if success then
+		return result
 	else
 		return OrigToggle(self, label, value, onChanged)
 	end
 end
+
 
 
 	function section:addSlider(label, min, max, default, callback, increment)
