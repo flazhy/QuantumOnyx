@@ -127,9 +127,9 @@ local function ApplyConfig(section)
 	if patchedSections[section] then return end
 	patchedSections[section] = true
 
-	local OrigToggle = section.addToggle
-	local OrigSlider = section.addSlider
-	local OrigDropdown = section.addDropdown
+	local OrigToggle = rawget(section, "addToggle")
+	local OrigSlider = rawget(section, "addSlider")
+	local OrigDropdown = rawget(section, "addDropdown")
 
 	function section:addToggle(label, default, callback, description, image)
 		local key = CleanKey(label)
