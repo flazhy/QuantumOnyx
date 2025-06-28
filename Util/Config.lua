@@ -132,26 +132,33 @@ local function ApplyConfig(section)
 	local OrigSlider = section.addSlider
 	local OrigDropdown = section.addDropdown
 
-	function section:addToggle(label, default, callback)
-		local key = CleanKey(label)
-		usedKeys[key] = true
+	function section:addToggle(label, default, callback, description, image)
+	local key = CleanKey(label)
+	usedKeys[key] = true
 
-		local value = rawConfig[key]
-		if value == nil then
-			value = default
-			ConfigProxy[key] = default
-		end
-
-		getgenv()[key] = value
-
-		return OrigToggle(self, label, value, function(val)
-			ConfigProxy[key] = val
-			if callback then
-				local ok, err = pcall(callback, val)
-				if not ok then warn("[Config] addToggle callback error:", err) end
-			end
-		end)
+	local value = rawConfig[key]
+	if value == nil then
+		value = default
+		ConfigProxy[key] = default
 	end
+
+	getgenv()[key] = value
+
+	local function onChanged(val)
+		ConfigProxy[key] = val
+		if callback then
+			local ok, err = pcall(callback, val)
+			if not ok then warn("[Config] addToggle callback error:", err) end
+		end
+	end
+
+	if description or image then
+		return OrigToggle(self, label, value, onChanged, description, image)
+	else
+		return OrigToggle(self, label, value, onChanged)
+	end
+end
+
 
 	function section:addSlider(label, min, max, default, callback, increment)
 		local key = CleanKey(label)
