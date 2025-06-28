@@ -166,7 +166,7 @@ function section:addToggle(label, default, callback, description, image)
 		toggle = OrigToggle(self, label, value, onChanged)
 	end
 
-	uiControlCache[self][key] = toggle
+	patchedSections[self][key] = toggle
 	return toggle
 end
 
