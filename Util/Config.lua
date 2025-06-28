@@ -205,9 +205,9 @@ end
 	dbgPrint("Section patched:", section)
 end
 
-function Config.Toggle(section, label, default, callback)
+function Config.Toggle(section, label, default, callback, description, image)
 	ApplyConfig(section)
-	return section:addToggle(label, default, callback)
+	return section:addToggle(label, default, callback, description, image)
 end
 
 function Config.Slider(section, label, min, max, default, callback, increment)
