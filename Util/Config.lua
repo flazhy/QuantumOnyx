@@ -221,6 +221,7 @@ function Config.Toggle(section, label, default, callback, description, image)
 	return section:addToggle(label, default, callback, description, image)
 end
 
+
 function Config.Slider(section, label, min, max, default, callback, increment)
 	ApplyConfig(section)
 	return section:addSlider(label, min, max, default, callback, increment)
