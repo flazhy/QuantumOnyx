@@ -151,23 +151,15 @@ function section:addToggle(label, default, callback, description, image)
 			if not ok then warn("[Config] addToggle callback error:", err) end
 		end
 	end
-	local args = {
-		Name = label,
-		Value = value,
-		Callback = onChanged,
-		Description = description,
-		Image = image
-	}
-	local success, result = pcall(function()
-		return OrigToggle(self, args)
-	end)
-
-	if success then
-		return result
+	if description and image then
+		return OrigToggle(self, label, value, onChanged, description, image)
+	elseif description then
+		return OrigToggle(self, label, value, onChanged, description)
 	else
 		return OrigToggle(self, label, value, onChanged)
 	end
 end
+
 
 
 
