@@ -20,14 +20,17 @@ local function dbgPrint(...)
 end
 
 
-
 local function CleanKey(section, label)
-	local sectionID = section.Name or tostring(section)
-	sectionID = tostring(sectionID):gsub("[^%w_]", "")
+	local sectionID = rawget(section, "Name")
+	if not sectionID then
+		warn("[Config] Missing section.Name for label:", label)
+		sectionID = "UnknownSection"
+	end
+
+	sectionID = tostring(sectionID):gsub("%s+", ""):gsub("[^%w_]", "")
 	local cleanLabel = tostring(label):gsub("%s+", ""):gsub("[^%w_.]", "")
 	return sectionID .. "_" .. cleanLabel
 end
-
 
 
 local function SyncGlobalsFromConfig()
