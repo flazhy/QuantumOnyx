@@ -18,9 +18,13 @@ local function dbgPrint(...)
 	end
 end
 
-local function CleanKey(label)
-	return label:gsub("%s+", ""):gsub("[^%w_.]", "")
+local function CleanKey(section, label)
+	local sectionName = rawget(section, "Name") or tostring(section)
+	local sectionID = tostring(sectionName):gsub("table: ", ""):gsub("[^%w]", "")
+	local cleanLabel = label:gsub("%s+", ""):gsub("[^%w_.]", "")
+	return sectionID .. "_" .. cleanLabel
 end
+
 
 local function SyncGlobalsFromConfig()
 	for key, value in pairs(rawConfig) do
