@@ -131,18 +131,21 @@ local function ApplyConfig(section)
 	if patchedSections[section] then return end
 	patchedSections[section] = true
 
-	local OrigToggle = rawget(section, "addToggle")
-	local OrigSlider = rawget(section, "addSlider")
-	local OrigDropdown = rawget(section, "addDropdown")
+	local OrigToggle = rawget(section, "addToggle") or section.addToggle
+	local OrigSlider = rawget(section, "addSlider") or section.addSlider
+	local OrigDropdown = rawget(section, "addDropdown") or section.addDropdown
+
+	if not OrigToggle or not OrigSlider or not OrigDropdown then
+		warn("[Config] Missing original section functions for patching.")
+		return
+	end
 
 	function section:addToggle(label, default, callback, description, image)
-		local key = CleanKey(label)
+		local key = CleanKey(self, label)
 		usedKeys[key] = true
-
 		uiControlCache[self] = uiControlCache[self] or {}
-		if uiControlCache[self][key] then
-			return uiControlCache[self][key]
-		end
+
+		if uiControlCache[self][key] then return uiControlCache[self][key] end
 
 		local value = rawConfig[key]
 		if value == nil then
@@ -160,21 +163,13 @@ local function ApplyConfig(section)
 			end
 		end
 
-		local toggle
-		if type(description) == "string" and type(image) == "string" then
-			toggle = OrigToggle(self, label, value, onChanged, description, image)
-		elseif type(description) == "string" then
-			toggle = OrigToggle(self, label, value, onChanged, description)
-		else
-			toggle = OrigToggle(self, label, value, onChanged)
-		end
-
+		local toggle = OrigToggle(self, label, value, onChanged, description, image)
 		uiControlCache[self][key] = toggle
 		return toggle
 	end
 
 	function section:addSlider(label, min, max, default, callback, increment)
-		local key = CleanKey(label)
+		local key = CleanKey(self, label)
 		usedKeys[key] = true
 
 		local value = rawConfig[key]
@@ -195,7 +190,7 @@ local function ApplyConfig(section)
 	end
 
 	function section:addDropdown(label, default, options, callback, multi)
-		local key = CleanKey(label)
+		local key = CleanKey(self, label)
 		usedKeys[key] = true
 
 		local value = rawConfig[key]
