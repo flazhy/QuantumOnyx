@@ -1,12 +1,19 @@
 
+
 local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
 
 local Config = {}
+
 local GameID = tostring(game.GameId)
 Config.ConfigFolder = "QuantumOnyxHub/" .. GameID
-Config.ConfigFile = Config.ConfigFolder .. "/Settings.json"
+local success, gameInfo = pcall(MarketplaceService.GetProductInfo, MarketplaceService, game.PlaceId)
+local GameName = (success and gameInfo and gameInfo.Name) or "UnknownGame"
+local CleanGameName = GameName:gsub("[^%w_%-]", ""):gsub("%s+", "_")
+Config.ConfigFile = Config.ConfigFolder .. "/" .. CleanGameName .. ".json"
 Config.SaveDelay = 0.5
 Config.Debug = false
+
 
 local rawConfig = {}
 local usedKeys = {}
