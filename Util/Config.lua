@@ -19,12 +19,19 @@ local function dbgPrint(...)
     end
 end
 
+local sectionIDs = setmetatable({}, { __mode = "k" })
+local sectionCounter = 0
+
 local function CleanKey(section, label)
-    local sectionName = rawget(section, "Name") or tostring(section)
-    local sectionID = tostring(sectionName):gsub("table: ", ""):gsub("[^%w]", "")
-    local cleanLabel = label:gsub("%s+", ""):gsub("[^%w_.]", "")
-    return sectionID .. "_" .. cleanLabel
+	if not sectionIDs[section] then
+		sectionCounter += 1
+		sectionIDs[section] = "S" .. tostring(sectionCounter)
+	end
+	local sectionID = sectionIDs[section]
+	local cleanLabel = tostring(label):gsub("%s+", ""):gsub("[^%w_.]", "")
+	return sectionID .. "_" .. cleanLabel
 end
+
 
 local function SyncGlobalsFromConfig()
     for key, value in pairs(rawConfig) do
