@@ -113,4 +113,7 @@ local AutoFarmHolder = {
     Bones = AutoFarm.new("Bones")
 }
 
+warn("BFManager loaded")
+
+
 return AutoFarmHolder
