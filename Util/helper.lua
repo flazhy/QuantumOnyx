@@ -1,5 +1,6 @@
-local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/Library.lua')))()
-local Shared = loadstring(game:HttpGet(('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/shared.lua')))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/Library.lua'))()
+local Shared = loadstring(game:HttpGet('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/shared.lua'))()
+
 local helper = {}
 
 function helper.CreateToggle(section, label, key, default, options)
@@ -14,9 +15,8 @@ function helper.CreateToggle(section, label, key, default, options)
 
 		Shared.Set(key, value)
 
-		local callback = options.callback
-		if typeof(callback) == "function" then
-			callback(value)
+		if typeof(options.callback) == "function" then
+			task.spawn(options.callback, value)
 		end
 	end, desc)
 end
@@ -26,10 +26,12 @@ function helper.CreateDropdown(tab, name, key, default, options, config)
 	local dropdown = tab:addDropdown(name, (saved or default), options, function(value)
 		Library.SaveManager:Set(key, value)
 		Shared.Set(key, value)
-		if config and config.callback then
-			config.callback(value)
+
+		if config and typeof(config.callback) == "function" then
+			task.spawn(config.callback, value)
 		end
 	end)
+
 	Shared.Set(key, saved)
 	return dropdown
 end
