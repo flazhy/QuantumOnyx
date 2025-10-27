@@ -1,14 +1,5 @@
 local Shared = {}
-local Storage = setmetatable({}, { __mode = "kv" })
-
-function Shared.Get(key)
-	return Storage[key]
-end
-
-function Shared.Set(key, val)
-	Storage[key] = val
-end
-
+local _state = {}
 local Threader = {}
 Threader.ActiveThreads = {}
 
@@ -32,7 +23,16 @@ function Threader.Stop(name)
 end
 
 function Threader.IsRunning(name)
-	return Threader.ActiveThreads[name] == true
+	return Threader.ActiveThreads[name] ~= nil
+end
+
+
+function Shared.Get(key)
+	return _state[key]
+end
+
+function Shared.Set(key, value)
+	_state[key] = value
 end
 
 Shared.Threader = Threader
