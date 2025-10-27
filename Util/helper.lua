@@ -1,3 +1,4 @@
+local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/Library.lua')))()
 local Shared = loadstring(game:HttpGet(('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/shared.lua')))()
 local helper = {}
 
