@@ -1,5 +1,5 @@
-local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/Library.lua'))()
-local Shared = loadstring(game:HttpGet('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/shared.lua'))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/Util/Library.lua"))()
+local Shared = loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/Util/shared.lua"))()
 
 local helper = {}
 
@@ -23,7 +23,7 @@ end
 
 function helper.CreateDropdown(tab, name, key, default, options, config)
 	local saved = Library.SaveManager:Get(key, default)
-	local dropdown = tab:addDropdown(name, (saved or default), options, function(value)
+	local dropdown = tab:addDropdown(name, saved or default, options, function(value)
 		Library.SaveManager:Set(key, value)
 		Shared.Set(key, value)
 
