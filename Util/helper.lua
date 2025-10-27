@@ -1,7 +1,7 @@
 local Shared = loadstring(game:HttpGet(('https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Util/shared.lua')))()
-local UIHandler = {}
+local helper = {}
 
-function UIHandler.CreateToggle(section, label, key, default, options)
+function helper.CreateToggle(section, label, key, default, options)
 	options = options or {}
 	local saved = Library.SaveManager:Get(key, default)
 	local desc = options.desc or options.description
@@ -20,7 +20,7 @@ function UIHandler.CreateToggle(section, label, key, default, options)
 	end, desc)
 end
 
-function UIHandler.CreateDropdown(tab, name, key, default, options, config)
+function helper.CreateDropdown(tab, name, key, default, options, config)
 	local saved = Library.SaveManager:Get(key, default)
 	local dropdown = tab:addDropdown(name, (saved or default), options, function(value)
 		Library.SaveManager:Set(key, value)
@@ -33,4 +33,4 @@ function UIHandler.CreateDropdown(tab, name, key, default, options, config)
 	return dropdown
 end
 
-return UIHandler
+return helper
