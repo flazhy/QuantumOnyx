@@ -1,31 +1,20 @@
-local ScriptLoader = {}
-
-ScriptLoader.Scripts = {
-    [2753915549] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
-    [4442272183] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
-    [7449423635] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", Title = "BloxFruit" },
-    [126884695634066] = { Url = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/GAG.lua", Title = "Grow A Garden" },
+local Scripts = {
+    [994732206] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", -- Blox Fruits
 }
 
-function ScriptLoader:GetScriptEntry(PlaceId: number)
-    return self.Scripts[PlaceId]
-end
-
-function ScriptLoader:LoadScript(entry: {Url: string, Title: string})
-    if not entry then return end
-    local ok, fn = pcall(function()
-        return loadstring(game:HttpGet(entry.Url))
-    end)
-    if ok and fn then
-        task.spawn(fn)
+local url = Scripts[game.GameId]
+if url then
+    local success, response = pcall(game.HttpGet, game, url)
+    if success and response then
+        local loadSuccess, fn = pcall(loadstring, response)
+        if loadSuccess and type(fn) == "function" then
+            task.spawn(fn)
+        else
+            warn("[Loader] Failed to compile script from:", url)
+        end
+    else
+        warn("[Loader] Failed to fetch script:", url)
     end
+else
+    warn(string.format("[Loader] No script found for GameId %d", game.GameId))
 end
-
-function ScriptLoader:LoadForPlace(PlaceId: number)
-    local entry = self:GetScriptEntry(PlaceId)
-    self:LoadScript(entry)
-end
-
-ScriptLoader:LoadForPlace(game.PlaceId)
-
-return ScriptLoader
