@@ -1,5 +1,5 @@
 local Scripts = {
-    [994732206] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/BloxFruit.lua", -- Blox Fruits
+    [994732206] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua", -- Blox Fruits
 }
 
 local url = Scripts[game.GameId]
