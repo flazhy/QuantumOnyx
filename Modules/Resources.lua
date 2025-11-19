@@ -1,3 +1,3 @@
 local function RegisterRemote(...)
-	return CommF_:InvokeServer(...)
+	return game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(...)
 end
