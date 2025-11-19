@@ -1,130 +1,174 @@
-VM["combat/fastattack.lua"] = function()
+local VM = {}
+local VM_CACHE = {}
+
+local function requireVM(path)
+    path = path:gsub("\\","/")
+    if VM_CACHE[path] then return VM_CACHE[path] end
+    local moduleFn = VM[path]
+    if not moduleFn then error("Module not found: "..path) end
+    local result = moduleFn()
+    VM_CACHE[path] = result
+    return result
+end
+local quantum = {} or getgenv()
+VM["Modules/Resources.lua"] = function()
     local Config = {
-        AttackDistance = 70,
-        AttackMobs = true,
-        AttackPlayers = true,
-        AttackCooldown = 0,
-        ComboResetTime = 0.1,
-        MaxCombo = 10,
-        HitboxLimbs = {"RightLowerArm","RightUpperArm","LeftLowerArm","LeftUpperArm","RightHand","LeftHand"},
-        AutoClickEnabled = true
+        MaxForce = 1e9,
+        MaxTorque = 1e9,
+        Responsiveness = 200,
+        YOffset = -3,
+        DistanceOffset = 5,
+        SafeHeightOffset = 10
     }
     
-    local FastAttack = {}
-    FastAttack.__index = FastAttack
+    local BaseAttachment = Instance.new("Attachment")
     
-    function FastAttack.new()
-        local self = setmetatable({
-            Debounce = 0,
-            ComboDebounce = 0,
-            M1Combo = 0,
-            EnemyRootPart = nil,
-            Connections = {},
-        }, FastAttack)
-        pcall(function()
-            self.CombatFlags  = requireVM("modules/flags").COMBAT_REMOTE_THREAD
-            local LocalScript = Player:WaitForChild("PlayerScripts"):FindFirstChildOfClass("LocalScript")
-            if LocalScript and getsenv then
-                self.HitFunction = getsenv(LocalScript)._G.SendHitsToServer
-            end
-        end)
-        return self
-    end
+    local _attachments = {}
+    local _alignments = {}
+    local _lastSimulationUpdate = 0
     
-    function FastAttack:IsAlive(entity)
-        local humanoid = entity and entity:FindFirstChildOfClass("Humanoid")
-        return humanoid and humanoid.Health > 0
-    end
-    
-    function FastAttack:CheckStun(Character, Humanoid, ToolTip)
-        local Stun = Character:FindFirstChild("Stun")
-        local Busy = Character:FindFirstChild("Busy")
-        if Humanoid.Sit and (ToolTip == "Sword" or ToolTip == "Melee" or ToolTip == "Blox Fruit") then
-            return false
-        elseif Stun and Stun.Value > 0 or Busy and Busy.Value then
-            return false
+    function GetAttachment(root)
+        local attachment = root:FindFirstChild("MobBringAttachment")
+        if not attachment then
+            return CreateAttachment(root)
         end
-        return true
+        
+        local alignPos = attachment:FindFirstChild("MobAlignPosition")
+        local alignOri = attachment:FindFirstChild("MobAlignOrientation")
+        
+        if not (alignPos and alignOri) then
+            attachment:Destroy()
+            return CreateAttachment(root)
+        end
+        
+        _attachments[root] = attachment
+        _alignments[root] = {alignPos, alignOri}
+        
+        return attachment, alignPos, alignOri
     end
     
-    function FastAttack:GetBladeHits(Character, Distance)
-        local Position  = Character:GetPivot().Position
-        local BladeHits = {}
-        Distance = Distance or Config.AttackDistance
-        local function ProcessTargets(Folder)
-            for _, Enemy in ipairs(Folder:GetChildren()) do
-                if Enemy ~= Character and self:IsAlive(Enemy) then
-                    local BasePart = Enemy:FindFirstChild(Config.HitboxLimbs[math.random(#Config.HitboxLimbs)]) or Enemy:FindFirstChild("HumanoidRootPart")
-                    if BasePart and (Position - BasePart.Position).Magnitude <= Distance then
-                        if not self.EnemyRootPart then
-                            self.EnemyRootPart = BasePart
-                        else
-                            table.insert(BladeHits, {Enemy, BasePart})
+    function CreateAttachment(root)
+        local attachment = BaseAttachment:Clone()
+        attachment.Name = "MobBringAttachment"
+        attachment.Parent = root
+        
+        local alignPos = Instance.new("AlignPosition")
+        alignPos.Mode = Enum.PositionAlignmentMode.OneAttachment
+        alignPos.MaxForce = Config.MaxForce
+        alignPos.Responsiveness = Config.Responsiveness
+        alignPos.Name = "MobAlignPosition"
+        alignPos.Parent = attachment
+        alignPos.Attachment0 = attachment
+        
+        local alignOri = Instance.new("AlignOrientation")
+        alignOri.Mode = Enum.OrientationAlignmentMode.OneAttachment
+        alignOri.MaxTorque = Config.MaxTorque
+        alignOri.Responsiveness = Config.Responsiveness
+        alignOri.Name = "MobAlignOrientation"
+        alignOri.Parent = attachment
+        alignOri.Attachment0 = attachment
+        
+        _attachments[root] = attachment
+        _alignments[root] = {alignPos, alignOri}
+        
+        return attachment, alignPos, alignOri
+    end
+    
+    local function OrphanedAttachments()
+        for root, attachment in pairs(_attachments) do
+            if not root:IsDescendantOf(workspace) or not attachment:IsDescendantOf(root) then
+                pcall(function() attachment:Destroy() end)
+                _attachments[root] = nil
+                _alignments[root] = nil
+            end
+        end
+    end
+    
+    local function CalculatePosition(plrPos, targetPos, targetRoot)
+        local distanceOffset = (plrPos - targetPos).Unit * Config.DistanceOffset
+        local baseY = workspace.FallenPartsDestroyHeight + Config.SafeHeightOffset < targetPos.Y and targetPos.Y or targetPos.Y
+        local offset = Vector3.new(0, Config.YOffset, 0)
+        
+        return Vector3.new(targetPos.X + distanceOffset.X, baseY, targetPos.Z + distanceOffset.Z ) + offset
+    end
+    
+    local function IsValidTarget(targetRoot, targetHumanoid)
+        return targetRoot and targetHumanoid and targetHumanoid.Health > 0
+    end
+    
+    function BringEnemies(__index)
+        if not quantum.BringMonster then
+            for root, attachment in pairs(_attachments) do
+                pcall(function() attachment:Destroy() end)
+            end
+            _attachments = {}
+            _alignments = {}
+            return
+        end
+        if math.random(1, 10) == 1 then
+            OrphanedAttachments()
+        end
+        
+        local targetRoot = __index:FindFirstChild("HumanoidRootPart") or __index.PrimaryPart
+        local targetHumanoid = __index:FindFirstChildOfClass("Humanoid")
+        
+        if not IsValidTarget(targetRoot, targetHumanoid) then
+            return
+        end
+        
+        local CurrentTime = tick()
+        if CurrentTime - _lastSimulationUpdate > 0.5 then
+            pcall(function()
+                sethiddenproperty(Player, "SimulationRadius", math.huge)
+            end)
+            _lastSimulationUpdate = CurrentTime
+        end
+        
+        local Character = Player.Character
+        if not Character then return end
+        
+        local targetPos = targetRoot.Position
+        local mobs = __index.Name
+        local plrPos = Character:GetPivot().Position
+        
+        for _, v in ipairs(Enemies:GetChildren()) do
+            if v.Name == mobs then
+                local root = v:FindFirstChild("HumanoidRootPart") or v.PrimaryPart
+                local humanoid = v:FindFirstChildOfClass("Humanoid")
+                
+                if IsValidTarget(root, humanoid) then
+                    local distance = (plrPos - root.Position).Magnitude
+                    
+                    if distance <= quantum.BringMonsterRadius then
+                        humanoid.WalkSpeed = 0
+                        humanoid.JumpPower = 0
+                        local attachment, alignPos, alignOri = GetAttachment(root)
+                        
+                        if attachment and alignPos and alignOri then
+                            local targetPosition = CalculatePosition(plrPos, targetPos, targetRoot)
+                            
+                            alignPos.Enabled = true
+                            alignOri.Enabled = true
+                            alignPos.Position = targetPosition
+                            alignOri.CFrame = CFrame.new(targetPosition) * CFrame.Angles(0, math.rad(90), 0)
                         end
+                    else
+                        local alignment = _alignments[root]
+                        if alignment then
+                            alignment[1].Enabled = false
+                            alignment[2].Enabled = false
+                        end
+                    end
+                else
+                    local attachment = _attachments[root]
+                    if attachment then
+                        pcall(function() attachment:Destroy() end)
+                        _attachments[root] = nil
+                        _alignments[root] = nil
                     end
                 end
             end
         end
-        if Config.AttackMobs and quantum.attackmobs then ProcessTargets(Workspace.Enemies) end
-        if Config.AttackPlayers and quantum.attackplayers then ProcessTargets(Workspace.Characters) end
-        return BladeHits
     end
-    
-    function FastAttack:GetCombo()
-        local Combo = (tick() - self.ComboDebounce) <= Config.ComboResetTime and self.M1Combo or 0
-        Combo = Combo >= Config.MaxCombo and 1 or Combo + 1
-        self.ComboDebounce = tick()
-        self.M1Combo = Combo
-        return Combo
-    end
-    
-    function FastAttack:UseNormalClick(Character, Humanoid, Cooldown)
-        self.EnemyRootPart = nil
-        local BladeHits = self:GetBladeHits(Character)
-        if self.EnemyRootPart then
-            RegisterAttack:FireServer(Cooldown)
-            if self.CombatFlags and self.HitFunction then
-                self.HitFunction(self.EnemyRootPart, BladeHits)
-            else
-                RegisterHit:FireServer(self.EnemyRootPart, BladeHits)
-            end
-        end
-    end
-    
-    function FastAttack:UseFruitM1(Character, Equipped, Combo)
-        local Targets = self:GetBladeHits(Character)
-        if not Targets[1] then return end
-        local Direction = (Targets[1][2].Position - Character:GetPivot().Position).Unit
-        Equipped.LeftClickRemote:FireServer(Direction, Combo)
-    end
-    
-    function FastAttack:Attack()
-        if not Config.AutoClickEnabled or (tick() - self.Debounce) < Config.AttackCooldown then return end
-        local Character = Player.Character
-        if not Character or not self:IsAlive(Character) then return end
-        local Humanoid = Character.Humanoid
-        local Equipped = Character:FindFirstChildOfClass("Tool")
-        if not Equipped then return end
-        local ToolTip = Equipped.ToolTip
-        if not table.find({"Melee","Blox Fruit","Sword","Gun"}, ToolTip) then return end
-        local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or Config.AttackCooldown
-        if not self:CheckStun(Character, Humanoid, ToolTip) then return end
-        local Combo = self:GetCombo()
-        Cooldown = Cooldown + (Combo >= Config.MaxCombo and 0.05 or 0)
-        self.Debounce = Combo >= Config.MaxCombo and ToolTip ~= "Gun" and (tick() + 0.05) or tick()
-        if ToolTip == "Blox Fruit" and Equipped:FindFirstChild("LeftClickRemote") then
-            self:UseFruitM1(Character, Equipped, Combo)
-        else
-            self:UseNormalClick(Character, Humanoid, Cooldown)
-        end
-    end
-    
-    local AttackInstance = FastAttack.new()
-    table.insert(AttackInstance.Connections, RunService.Stepped:Connect(function()
-        if quantum.AutoAttack then
-            AttackInstance:Attack()
-        end
-    end))
-
-    return FastAttack
+return BringMobs
 end
