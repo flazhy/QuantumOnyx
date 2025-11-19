@@ -1,5 +1,28 @@
-return {
-    CheckQuest = function()
+local VM = {}
+local VM_CACHE = {}
+
+local function requireVM(path)
+    path = path:gsub("\\","/")
+    if VM_CACHE[path] then return VM_CACHE[path] end
+    local moduleFn = VM[path]
+    if not moduleFn then error("Module not found: "..path) end
+    local result = moduleFn()
+    VM_CACHE[path] = result
+    return result
+end
+
+
+return function()
+    local module = {}
+    function module.CheckQuest(deps)
+        local PlayerLevel = deps.PlayerLevel
+        local World1, World2, World3 = deps.World1, deps.World2, deps.World3
+        local Player = deps.Player
+        local CheckMon = deps.CheckMon
+
+        local Levels = tonumber(PlayerLevel.Value)
+        local Mon, NameQuest, LevelQuest
+		
     Levels = tonumber(PlayerLevel.Value)
 		if World1 then
 			if Levels >= 1  and Levels <= 9 then
