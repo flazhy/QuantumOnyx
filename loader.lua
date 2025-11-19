@@ -1,7 +1,7 @@
 local loader = {}
 loader.cache = {}
 local moduleURLs = {
-    Fire = "https://raw.githubusercontent.com/username/repo/branch/Fire.lua",
+    Fire = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Fire.lua",
 }
 
 function loader.require(moduleName)
