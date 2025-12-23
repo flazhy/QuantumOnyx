@@ -20,10 +20,7 @@ end
 
 return function()
     local MyLvl = game:GetService("Players").LocalPlayer.Data.Level.Value
-
-	local Mon = ""
-	local NameQuest = ""
-	local LevelQuest = 0
+	local Mon, NameQuest, LevelQuest  = "", "", 0
 
 	if Sea_1 then
 		if MyLvl >= 1  and MyLvl <= 9 then
