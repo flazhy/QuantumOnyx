@@ -1,6 +1,6 @@
 return function()
     local Container = game.ReplicatedStorage.Effect.Container
-  	local CameraShaker = require(ReplicatedStorage.Util.CameraShaker)
+  	local CameraShaker = require(game.ReplicatedStorage.Util.CameraShaker)
   	local Death = require(Container:FindFirstChild("Death"))
   	local Respawn = require(Container:FindFirstChild("Respawn"))
   	local LevelUp = require(Container:FindFirstChild("LevelUp"))
