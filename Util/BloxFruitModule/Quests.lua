@@ -17,7 +17,6 @@ local function CheckMon(args1)
 	end
 	return false
 end
-
 return function()
     local MyLvl = game:GetService("Players").LocalPlayer.Data.Level.Value
 	local Mon, NameQuest, LevelQuest  = "", "", 0
