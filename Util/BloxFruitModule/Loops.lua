@@ -1,7 +1,7 @@
-return function(body)
+return function(main)
 	task.spawn(function()
 		while task.wait() do
-			  body()
+			main()
 		end
 	end)
 end
