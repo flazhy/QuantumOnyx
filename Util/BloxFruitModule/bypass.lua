@@ -1,18 +1,15 @@
-crdts: iris utilities
-
+--crdts: iris
 local ProtectedInstances = {};
 local Connections = getconnections or get_connections;
 local HookFunction = HookFunction or hookfunction or hook_function or detour_function;
 local GetNCMethod = getnamecallmethod or get_namecall_method;
 local CheckCaller = checkcaller or check_caller;
 local GetRawMT = get_raw_metatable or getrawmetatable or getraw_metatable;
-
 assert(HookFunction  and GetNCMethod and CheckCaller and Connections, "Exploit is not supported");
 
 local function HookMetaMethod(Object, MetaMethod, Function)
     return HookFunction(assert(GetRawMT(Object)[MetaMethod], "Invalid Method"), Function);
 end 
-
 local TblDataCache = {};
 local FindDataCache = {};
 local PropertyChangedData = {};
