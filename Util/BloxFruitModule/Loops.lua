@@ -1,5 +1,5 @@
 return function(main)
-	task.spawn(function()
+	spawn(function()
 		while task.wait() do
 			main()
 		end
