@@ -1,6 +1,6 @@
 return function(main)
 	task.spawn(function()
-		while task.wait() do
+		while wait() do
 			main()
 		end
 	end)
