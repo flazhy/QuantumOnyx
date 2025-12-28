@@ -1,8 +1,30 @@
+local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CollectionService = game:GetService("CollectionService")
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local TeleportService =game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local CoreGui = game:GetService("CoreGui")
+
 local lp = Players.LocalPlayer
+
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+local CommF_ = Remotes:WaitForChild("CommF_")
+local PlayerLevel = lp:WaitForChild("Data"):WaitForChild("Level")
+local Enemies = Workspace:WaitForChild("Enemies")
+local Map = Workspace:WaitForChild("Map")
+local WorldOrigin = Workspace:WaitForChild("_WorldOrigin")
 local Modules = ReplicatedStorage:WaitForChild("Modules")
 local Net = Modules:WaitForChild("Net")
+
+pcall(function()
+    local Reparent = require(ReplicatedStorage:FindFirstChild("Reparent"))
+    if Reparent and Reparent.Unparent then
+        Reparent.Unparent = function() end
+    end
+end)
 
 local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
 
