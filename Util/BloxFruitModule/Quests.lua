@@ -2,7 +2,7 @@ local PlaceID = game.PlaceId
 local Sea_1 = (PlaceID == 2753915549 or PlaceID == 85211729168715)
 local Sea_2 = (PlaceID == 4442272183 or PlaceID == 79091703265657)
 local Sea_3 = (PlaceID == 7449423635 or PlaceID == 100117331123089)
-local function CheckMon(args1)
+function IsBoss(args1)
 	for a,b in ipairs({workspace:WaitForChild("Enemies"), game:GetService("ReplicatedStorage")}) do
 		if b then
 			for i,v in ipairs(b:GetChildren()) do
@@ -31,7 +31,7 @@ return function()
 		elseif MyLvl >= 10 and MyLvl <= 14 then
 			Mon, NameQuest, LevelQuest = "Monkey", "JungleQuest", 1
 		elseif MyLvl >= 15 and MyLvl < 30 then
-		if (CheckMon("The Gorilla King") and (MyLvl >= 20)) then
+		if (IsBoss("The Gorilla King") and (MyLvl >= 20)) then
 			Mon, NameQuest, LevelQuest = "The Gorilla King", "JungleQuest", 3
 		else
 			Mon, NameQuest, LevelQuest = "Gorilla", "JungleQuest", 2
@@ -39,7 +39,7 @@ return function()
 		elseif MyLvl >= 30 and MyLvl <= 39 then
 			Mon, NameQuest, LevelQuest = "Pirate", "BuggyQuest1", 1
 		elseif MyLvl >= 40 and MyLvl < 60 then
-			if (CheckMon("Chief") and (MyLvl >= 55)) then
+			if (IsBoss("Chief") and (MyLvl >= 55)) then
 			Mon, NameQuest, LevelQuest = "Chief", "BuggyQuest1", 3
 			else
 			Mon, NameQuest, LevelQuest = "Brute", "BuggyQuest1", 2
@@ -51,13 +51,13 @@ return function()
 		elseif MyLvl >= 90 and MyLvl <= 99 then
 			Mon, NameQuest, LevelQuest = "Snow Bandit", "SnowQuest", 1
 		elseif MyLvl >= 100 and MyLvl <= 119 then
-			if (CheckMon("Yeti") and (MyLvl >= 105)) then
+			if (IsBoss("Yeti") and (MyLvl >= 105)) then
 			Mon, NameQuest, LevelQuest = "Yeti", "SnowQuest", 3
 			else
 			Mon, NameQuest, LevelQuest = "Snowman", "SnowQuest", 2
 			end
 		elseif MyLvl >= 120 and MyLvl <= 149 then
-			if (CheckMon("Vice Admiral") and (MyLvl >= 130)) then
+			if (IsBoss("Vice Admiral") and (MyLvl >= 130)) then
 			Mon, NameQuest, LevelQuest = "Vice Admiral", "MarineQuest2", 2
 			else
 			Mon, NameQuest, LevelQuest = "Chief Petty Officer", "MarineQuest2", 1
@@ -69,11 +69,11 @@ return function()
 		elseif MyLvl >= 190 and MyLvl <= 209 then
 			Mon, NameQuest, LevelQuest = "Prisoner", "PrisonerQuest", 1
 		elseif MyLvl >= 210 and MyLvl <= 249 then
-			if (CheckMon("Swan") and (MyLvl >= 240)) then
+			if (IsBoss("Swan") and (MyLvl >= 240)) then
 				Mon, NameQuest, LevelQuest = "Swan", "ImpelQuest", 3
-			elseif (CheckMon("Chief Warden") and (MyLvl >= 230)) then
+			elseif (IsBoss("Chief Warden") and (MyLvl >= 230)) then
 				Mon, NameQuest, LevelQuest = "Chief Warden", "ImpelQuest", 2
-			elseif (CheckMon("Warden") and (MyLvl >= 220)) then
+			elseif (IsBoss("Warden") and (MyLvl >= 220)) then
 				Mon, NameQuest, LevelQuest = "Warden", "ImpelQuest", 1
 			else
 				Mon, NameQuest, LevelQuest = "Dangerous Prisoner", "PrisonerQuest", 2
@@ -85,7 +85,7 @@ return function()
 		elseif MyLvl >= 300 and MyLvl <= 324 then
 			Mon, NameQuest, LevelQuest = "Military Soldier", "MagmaQuest", 1
 		elseif MyLvl >= 325 and MyLvl <= 374 then
-			if (CheckMon("Magma Admiral") and (MyLvl >= 350)) then
+			if (IsBoss("Magma Admiral") and (MyLvl >= 350)) then
 				Mon, NameQuest, LevelQuest = "Magma Admiral", "MagmaQuest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Military Spy", "MagmaQuest", 2
@@ -93,7 +93,7 @@ return function()
 		elseif MyLvl >= 375 and MyLvl <= 399 then
 			Mon, NameQuest, LevelQuest = "Fishman Warrior", "FishmanQuest", 1
 		elseif MyLvl >= 400 and MyLvl <= 449 then
-			if (CheckMon("Fishman Lord") and (MyLvl >= 425)) then
+			if (IsBoss("Fishman Lord") and (MyLvl >= 425)) then
 				Mon, NameQuest, LevelQuest = "Fishman Lord", "FishmanQuest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Fishman Commando", "FishmanQuest", 2
@@ -101,7 +101,7 @@ return function()
 		elseif MyLvl >= 450 and MyLvl <= 474 then
 			Mon, NameQuest, LevelQuest = "God's Guard", "SkyExp1Quest", 1
 		elseif MyLvl >= 475 and MyLvl <= 524 then
-			if (CheckMon("Wysper") and (MyLvl >= 500)) then
+			if (IsBoss("Wysper") and (MyLvl >= 500)) then
 				Mon, NameQuest, LevelQuest = "Wysper", "SkyExp1Quest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Shanda", "SkyExp1Quest", 2
@@ -109,7 +109,7 @@ return function()
 		elseif MyLvl >= 525 and MyLvl <= 549 then
 			Mon, NameQuest, LevelQuest = "Royal Squad", "SkyExp2Quest", 1
 		elseif MyLvl >= 550 and MyLvl <= 624 then
-			if (CheckMon("Thunder God") and (MyLvl >= 575)) then
+			if (IsBoss("Thunder God") and (MyLvl >= 575)) then
 				Mon, NameQuest, LevelQuest = "Thunder God", "SkyExp2Quest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Royal Soldier", "SkyExp2Quest", 2
@@ -117,7 +117,7 @@ return function()
 		elseif MyLvl >= 625 and MyLvl <= 649 then
 			Mon, NameQuest, LevelQuest = "Galley Pirate", "FountainQuest", 1
 	  elseif (MyLvl >= 650) then
-		if CheckMon("Cyborg") and MyLvl >= 675 then
+		if IsBoss("Cyborg") and MyLvl >= 675 then
 		  	Mon, NameQuest, LevelQuest = "Cyborg", "FountainQuest", 3
 		else
 		  	Mon, NameQuest, LevelQuest = "Galley Captain", "FountainQuest", 2
@@ -127,7 +127,7 @@ return function()
 		if MyLvl >= 700 and MyLvl <= 724 then
 			Mon, NameQuest, LevelQuest = "Raider", "Area1Quest", 1
 		elseif MyLvl >= 725 and MyLvl <= 774 then
-			if (CheckMon("Diamond") and (MyLvl >= 750)) then
+			if (IsBoss("Diamond") and (MyLvl >= 750)) then
 				Mon, NameQuest, LevelQuest = "Diamond", "Area1Quest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Mercenary", "Area1Quest", 2
@@ -135,7 +135,7 @@ return function()
 		elseif MyLvl >= 775 and MyLvl <= 799 then
 			Mon, NameQuest, LevelQuest = "Swan Pirate", "Area2Quest", 1
 		elseif MyLvl >= 800 and MyLvl <= 874 then
-			if (CheckMon("Jeremy") and (MyLvl >= 850)) then
+			if (IsBoss("Jeremy") and (MyLvl >= 850)) then
 				Mon, NameQuest, LevelQuest = "Jeremy", "Area2Quest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Factory Staff", "Area2Quest", 2
@@ -143,7 +143,7 @@ return function()
 		elseif MyLvl >= 875 and MyLvl <= 899 then
 			Mon, NameQuest, LevelQuest = "Marine Lieutenant", "MarineQuest3", 1
 		elseif MyLvl >= 900 and MyLvl <= 949 then
-			if (CheckMon("Orbitus") and (MyLvl >= 925)) then
+			if (IsBoss("Orbitus") and (MyLvl >= 925)) then
 				Mon, NameQuest, LevelQuest = "Orbitus", "MarineQuest3", 3
 			else
 				Mon, NameQuest, LevelQuest = "Marine Captain", "MarineQuest3", 2
@@ -159,7 +159,7 @@ return function()
 		elseif MyLvl >= 1100 and MyLvl <= 1124 then
 			Mon, NameQuest, LevelQuest = "Lab Subordinate", "IceSideQuest", 1
 		elseif MyLvl >= 1125 and MyLvl <= 1174 then
-			if (CheckMon("Smoke Admiral") and (MyLvl >= 1150)) then
+			if (IsBoss("Smoke Admiral") and (MyLvl >= 1150)) then
 				Mon, NameQuest, LevelQuest = "Smoke Admiral", "IceSideQuest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Horned Warrior", "IceSideQuest", 2
@@ -179,7 +179,7 @@ return function()
 		elseif MyLvl >= 1350 and MyLvl <= 1374 then
 			Mon, NameQuest, LevelQuest = "Arctic Warrior", "FrostQuest", 1
 		elseif MyLvl >= 1375 and MyLvl <= 1424 then
-			if (CheckMon("Awakened Ice Admiral") and (MyLvl >= 1400)) then
+			if (IsBoss("Awakened Ice Admiral") and (MyLvl >= 1400)) then
 				Mon, NameQuest, LevelQuest = "Awakened Ice Admiral", "FrostQuest", 3
 			else
 				Mon, NameQuest, LevelQuest = "Snow Lurker", "FrostQuest", 2
@@ -187,7 +187,7 @@ return function()
 		elseif MyLvl >= 1425 and MyLvl <= 1449 then
 			Mon, NameQuest, LevelQuest = "Sea Soldier", "ForgottenQuest", 1
 		elseif MyLvl >= 1450 then
-		if (CheckMon("Tide Keeper") and (MyLvl >= 1475)) then
+		if (IsBoss("Tide Keeper") and (MyLvl >= 1475)) then
 			Mon, NameQuest, LevelQuest = "Tide Keeper", "ForgottenQuest", 3
 		else
 			Mon, NameQuest, LevelQuest = "Water Fighter", "ForgottenQuest", 2
