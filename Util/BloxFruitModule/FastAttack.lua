@@ -91,7 +91,7 @@ local LocalScript = lp:WaitForChild("PlayerScripts"):FindFirstChildOfClass("Loca
 if LocalScript and getsenv then
     HitFunction = getsenv(LocalScript)._G.SendHitsToServer
 end
-function FastAttack()
+return function()
 	if not lp.Character or not lp.Character:FindFirstChild("HumanoidRootPart") then return end
     local tool = lp.Character and lp.Character:FindFirstChildOfClass("Tool")
     if tool then
