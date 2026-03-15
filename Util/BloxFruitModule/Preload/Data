@@ -97,3 +97,29 @@ local QUESTS = {
 			{2700, 9999, "Grand Devotee", "SubmergedQuest3", 2},
 		}
 	}
+	local MaterialEnemies = {
+		Sea_1 = {
+			["Angel Wings"] = { "Shanda", "Royal Squad", "Royal Soldier", "Wysper", "Thunder God" },
+			["Leather + Scrap Metal"] = { "Brute", "Pirate" },
+			["Magma Ore"] = { "Military Soldier", "Military Spy", "Magma Admiral" },
+			["Fish Tail"] = { "Fishman Warrior", "Fishman Commando", "Fishman Lord" },
+		},
+		Sea_2 = {
+			["Leather + Scrap Metal"] = { "Marine Captain" },
+			["Magma Ore"] = { "Magma Ninja", "Lava Pirate" },
+			["Ectoplasm"] = { "Ship Deckhand", "Ship Engineer", "Ship Steward", "Ship Officer" },
+			["Mystic Droplet"] = { "Water Fighter" },
+			["Radioactive Material"] = { "Factory Staff" },
+			["Vampire Fang"] = { "Vampire" },
+		},
+		Sea_3 = {
+			["Leather + Scrap Metal"] = { "Jungle Pirate" },
+			["Demonic Wisp"] = { "Demonic Soul" },
+			["Fish Tail"] = { "Fishman Raider", "Fishman Captain" },
+			["Conjured Cocoa"] = { "Chocolate Bar Battler", "Cocoa Warrior" },
+			["Dragon Scale"] = { "Dragon Crew Archer", "Dragon Crew Warrior" },
+			["Gunpowder"] = { "Pistol Billionaire" },
+			["Mini Tusk"] = { "Mythological Pirate" },
+			["Nightmare Catcher"] = { "Reborn Skeleton", "Living Zombie" },
+		}
+	}
