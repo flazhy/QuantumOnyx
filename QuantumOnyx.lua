@@ -1,5 +1,5 @@
 local Scripts = {
-    [994732206] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/BloxFruit.lua",
+    [994732206] = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/Games/BloxFruits.lua",
     [9186719164] = "",
 }
 
