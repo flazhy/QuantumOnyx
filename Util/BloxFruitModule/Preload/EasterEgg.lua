@@ -40,7 +40,7 @@ return {
         ["Eggspensive Egg"] = "Can be found in the Blox Fruit Dealer's shop or the Permanent Fruit Shop hidden behind the icon of a random fruit.",
         ["Treasured Egg"] = "Can be dropped by collecting chests.",
         ["Duelists Egg"] = "Can be dropped from killing another player.",
-        ["Mended Egg"] = "Spawns at any location separatedly. The player needs to find both red and blue parts.,
+        ["Mended Egg"] = "Spawns at any location separatedly. The player needs to find both red and blue parts.",
         ["Kawaii Egg"] = "Can be obtained with a chance by interacting with the Indra-chan portrait at Middle Town, Café, or Mansion.",
         ["Falling Sky Egg"] = "Spawns at any location, needs to be droped from a high place to be collected.",
         ["Eggsploration Egg"] = "Can spawn in the water after completing a sea event.",
