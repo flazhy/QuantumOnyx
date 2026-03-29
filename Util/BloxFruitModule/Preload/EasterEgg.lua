@@ -52,8 +52,8 @@ return {
         ["Gacha Egg"] = "Can be rolled at gacha",
         ["Full Moon Egg"] = "Stare at the Full Moon when it's an egg to get it.",
         ["Night Hunter Egg"] = "Killing a boss during a Full Moon has a chance to transform it into a Werewolf which drops the egg.",
-        ["Sealed Showdown Egg"] = "In the chat, a message will appear: "Sealed Showdown Egg has spawned on Location". The egg can be found there and have a cooldown to be collected.",
+        ["Sealed Showdown Egg"] = "In the chat, a message will appear: Sealed Showdown Egg has spawned on Location. The egg can be found there and have a cooldown to be collected.",
         ["Golden Egg"] = "Spawns at any location.",
-        ["Celestial Egg"] = "Dropped from the boss after selecting "Secret" from the Easter Shop.",
+        ["Celestial Egg"] = "Dropped from the boss after selecting Secret from the Easter Shop.",
     }
 }
