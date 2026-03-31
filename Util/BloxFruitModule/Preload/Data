@@ -1,4 +1,4 @@
-return = {
+return {
 	QUESTS = {
 		Sea_1 = {
 			{1, 9, "Team-dependent", "Team-dependent", 1},
