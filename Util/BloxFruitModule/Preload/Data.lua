@@ -123,5 +123,18 @@ return {
 			["Mini Tusk"] = { "Mythological Pirate" },
 			["Nightmare Catcher"] = { "Reborn Skeleton", "Living Zombie" },
 		}
+	},
+	Melees = {
+	    ["Black Leg"] = { npc = "Dark Step Teacher", remote = {"BuyBlackLeg"} },
+	    ["Electro"] = { npc = "Mad Scientist", remote = {"BuyElectro"} },
+	    ["Fishman Karate"] = { npc = "Water Kung-fu Teacher", remote = {"BuyFishmanKarate"} },
+	    ["Dragon Claw"] = { npc = "Sabi", remote = {{"BlackbeardReward","DragonClaw","1"},{"BlackbeardReward","DragonClaw","2"}} },
+	    ["Superhuman"] = { npc = "Martial Arts Master", remote = {"BuySuperhuman"} },
+	    ["Death Step"] = { npc = "Phoeyu, the Reformed", remote = {"BuyDeathStep"} },
+	    ["Sharkman Karate"] = { npc = "Sharkman Teacher", remote = {"BuySharkmanKarate"} },
+	    ["Electric Claw"] = { npc = "Previous Hero", remote = {"BuyElectricClaw"} },
+	    ["Dragon Talon"] = { npc = "Uzoth", remote = {"BuyDragonTalon"} },
+	    ["Godhuman"] = { npc = "Ancient Monk", remote = {"BuyGodhuman"} },
+	    ["Sanguine Art"] = { npc = "Shafi", remote = {{"BuySanguineArt", true},{"BuySanguineArt"}} },
 	}
 }
