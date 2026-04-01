@@ -98,6 +98,37 @@ return {
 			{2700, 9999, "Grand Devotee", "SubmergedQuest3", 2},
 		}
 	},
+	BossList = {
+		Sea_1 = {
+			{20, "The Gorilla King", "JungleQuest", 3, CFrame.new(-1602, 37, 153)},
+			{55, "Chief", "BuggyQuest1", 2, CFrame.new(-1140, 5, 3827)},
+			{105, "Yeti", "SnowQuest", 3, CFrame.new(1387, 87, -1298)},
+			{130, "Vice Admiral", "MarineQuest2", 2, CFrame.new(-5036, 29, 4325)},
+			{220, "Warden", "ImpelQuest", 1, CFrame.new(5192, 3, 686)},
+			{230, "Chief Warden", "ImpelQuest", 2, CFrame.new(5192, 3, 686)},
+			{240, "Swan", "ImpelQuest", 3, CFrame.new(5192, 3, 686)},
+			{350, "Magma Admiral", "MagmaQuest", 3, CFrame.new(-5315, 12, 8517)},
+			{425, "Fishman Lord", "FishmanQuest", 3, CFrame.new(61123, 18, 1569)},
+			{500, "Wysper", "SkyExp1Quest", 3, CFrame.new(-7862, 5546, -380)},
+			{575, "Thunder God", "SkyExp2Quest", 3, CFrame.new(-7903, 5636, -1411)},
+			{675, "Cyborg", "FountainQuest", 3, CFrame.new(5258, 39, 4050)},
+		},
+		Sea_2 = {
+			{750, "Diamond", "Area1Quest", 3, CFrame.new(-428, 73, 1835)},
+			{850, "Jeremy", "Area2Quest", 3, CFrame.new(637, 73, 918)},
+			{925, "Orbitus", "MarineQuest3", 3, CFrame.new(-2442, 73, -3218)},
+			{1150, "Smoke Admiral", "IceSideQuest", 3, CFrame.new(-5429, 16, -5298)},
+			{1400, "Awakened Ice Admiral", "FrostQuest", 3, CFrame.new(5669, 29, -6483)},
+			{1475, "Tide Keeper", "ForgottenQuest", 3, CFrame.new(-3054, 237, -10145)},
+		},
+		Sea_3 = {
+			{1575, "Stone", "PiratePortQuest", 3, CFrame.new(-290, 44, 5580)},
+			{1775, "Kilo Admiral", "MarineTreeIsland", 3, CFrame.new(2179, 29, -6740)},
+			{1875, "Captain Elephant", "DeepForestIsland", 3, CFrame.new(-13233, 332, -7626)},
+			{1950, "Beautiful Pirate", "DeepForestIsland2", 3, CFrame.new(-12682, 391, -9902)},
+			{2175, "Cake Queen", "IceCreamIslandQuest", 3, CFrame.new(-819, 65, -10967)},
+		}
+	}, 
 	MaterialEnemies = {
 		Sea_1 = {
 			["Angel Wings"] = { "Shanda", "Royal Squad", "Royal Soldier", "Wysper", "Thunder God" },
