@@ -167,5 +167,44 @@ return {
 	    ["Dragon Talon"] = { npc = "Uzoth", remote = {"BuyDragonTalon"} },
 	    ["Godhuman"] = { npc = "Ancient Monk", remote = {"BuyGodhuman"} },
 	    ["Sanguine Art"] = { npc = "Shafi", remote = {{"BuySanguineArt", true},{"BuySanguineArt"}} },
+	},
+	ItemsToBuy = {
+		["Frags"] = {
+			["Race Rerol"] = { "BlackbeardReward", "Reroll", "2" },
+			["Reset Stats"] = { "BlackbeardReward", "Refund", "2" }
+		},
+		["Ability"] = {
+			["Geppo"] = { "BuyHaki", "Geppo" },
+			["Buso Haki"] = { "BuyHaki", "Buso" },
+			["Soru"] = { "BuyHaki", "Soru" },
+			["Observation Haki"] = { "KenTalk", "Buy" }
+		},
+		["Gun"] = {
+			["Slingshot"] = { "BuyItem", "Slingshot" },
+			["Musket"] = { "BuyItem", "Musket" },
+			["Flintlock"] = { "BuyItem", "Flintlock" },
+			["Refined Slingshot"] = { "BuyItem", "Refined Flintlock" },
+			["Refined Flintlock"] = { "BuyItem", "Refined Flintlock" },
+			["Cannon"] = { "BuyItem", "Cannon" },
+			["Kabucha"] = { "BlackbeardReward", "Slingshot", "1" },
+			["Bizarre Rifle"] = { "Ectoplasm", "Buy", 1 }
+		},
+		["Accessory"] = {
+			["Black Cape"] = { "Black Cape" },
+			["Swordsman Hat"] = { "Swordsman Hat" },
+			["Tomoe Ring"] = { "Tomoe Ring" }
+		},
+		["Sword"] = {
+			["Cutlass"] = { "Cutlass" },
+			["Katana"] = { "Katana" },
+			["Iron Mace"] = { "Iron Mace" },
+			["Dual Katana"] = { "Duel Katana" },
+			["Triple Katana"] = { "Triple Katana" },
+			["Pipe"] = { "Pipe" },
+			["Dual-Headed Blade"] = { "Dual-Headed Blade" },
+			["Bisento"] = { "Bisento" },
+			["Soul Cane"] = { "Soul Cane" },
+			["Pole v.2"] = { "ThunderGodTalk" }
+		}
 	}
 }
