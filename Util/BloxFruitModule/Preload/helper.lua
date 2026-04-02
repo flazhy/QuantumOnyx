@@ -16,7 +16,7 @@ local Guard = (function()
         end
         if typeof(self) == "Instance" and self == PlayerGui and BLOCKED_METHODS[method] then
             task.defer(function()
-                warn(("[Guard] Blocked '%s' on PlayerGui"):format(method))
+                warn(("[ Quantum Guard] Blocked '%s' on PlayerGui"):format(method))
             end)
             return nil
         end
