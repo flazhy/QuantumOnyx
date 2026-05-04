@@ -1,6 +1,3 @@
--- ThemeManager.lua
--- Host this at: https://raw.githubusercontent.com/YourUser/YourRepo/main/ThemeManager.lua
-
 return {
     Themes = {
         Purple = {
