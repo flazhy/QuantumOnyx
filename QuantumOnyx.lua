@@ -4,6 +4,7 @@ local Scripts = {
     [9186719164] = Directory.."/SailorPiece.lua",
     [8191429227] = Directory.."/CutTrees.lua",
     [9792947201] = Directory.."/SlimeRNG.lua",
+    [10004244222] = Directory.."/KickALuckyBlock.lua",
 }
 
 local url = Scripts[game.GameId]
