@@ -236,7 +236,7 @@ return {
 	        ["Green Zone"] = CFrame.new(-2258, 73, -2696),
 	        ["Graveyard"] = CFrame.new(-5552, 194, -776),
 	        ["Snow Mountain"] = CFrame.new(752, 408, -5277),
-	        ["Hot and Cold"] = CFrame.new(-5897, 18, -5096),
+	        ["Hot and Cold"] = CFrame.new(-6008, 29, -5018),
 	        ["Cursed Ship"] = CFrame.new(919, 125, 32869),
 	        ["Ice Castle"] = CFrame.new(5505, 40, -6178),
 	        ["Forgotten Island"] = CFrame.new(-3050, 240, -10178),
