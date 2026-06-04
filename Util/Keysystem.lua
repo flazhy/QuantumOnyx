@@ -1,6 +1,3 @@
-if not game and game.GetService and game:GetService("RunService") or game.ClassName ~= "DataModel" or (typeof and typeof(game.Players) ~= "Instance") or not (getmetatable and setmetatable and type and pcall and rawget and rawset) then
-    repeat task.wait() warn("stop skidding - flazhy") until false
-end
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
@@ -9,7 +6,7 @@ local Mouse = LocalPlayer:GetMouse()
 local env = (getgenv and getgenv()) or _G
 local LUARMOR = {
     PROJECT_ID  = "b51bc445318cbb9c68b360ff37884e84",
-    GET_KEY_URL = "https://ads.luarmor.net/get_key?project=b51bc445318cbb9c68b360ff37884e84",
+    GET_KEY_URL = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-gyvyVEssDcDO",
 }
 local function LuarmorLoaderPremium()
     local i, v = pcall(function() return LRM_IsUserPremium == true end)
