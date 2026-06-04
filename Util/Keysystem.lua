@@ -1,1 +1,524 @@
-return(function(...)local k,E,w,c,D,T,n,N,g,A,H,v,M,r=string.byte,string.sub,string.char,string.gsub,string.rep,setmetatable,pcall,type,tostring,assert,loadstring,unpack,string.pack,{}local O={}local I=bit32 local d,e,l,F,L=_ENV,getfenv,metatable,unpack,"!!!"local m,R,h="-",true,nil local y,f=nil,0 local V={S4DKij6ht="v!!!"}local k={":i\']OF(HJ*DKKH1+CQC.AU,D1Bl\\9:/c";"7r3*Q@;G";"<Cp,2Ec5`)";"5rE.@;J&Hn;(tL,";"BQS?8Eb065ATMq","7VHQpA8Q(!6W/#KDZ","<+U;r;e^Ph";"Eb065ATMq","BQS?8F#ks-B5)I$F^ct5Df%.,Cd_uTBM3#WBeNJ.Bl#GC@<XAFAS-!:BOtU_F\"_B=Bl5S\'BQ%d$6=Fdc6#^O5DaePRDe*EIFa6;bDZ","<HDhe3I*DL<(f/@;Fp","C0*/iG[XTMDbrek","9QacaD/XG;E,oN,Bm\"88A7]jo@ru9m+Q@p9+Cf5%@r!2UDKKH1+A69k+EVNE@rH7,Bl8\')/c";":i\'QcATDh","G%G]8Bl@k","6Yp1PF&$.\\AH";"GA;&!1I=)^1i?076i";"=T","<b5c_DfRT";"CbY";"?Uk","3(RXR3I5RE@PVG<9E",":f:(]771$]8ON";"Bl.J";":3CD_ATC^\\EHPi1@qA;EH#R\\9DKG",";eL#M0f2NZ0fE\'R<W";":ifQ$DcUU]F>7Gb","+9";";0?SjF8";"DFehWC3jqV:j5r_F8","","6$79f6?RBlDf.p\\Ci==";"94`A","Eb/ZiAnc\'m","=]f?XCK4)>8p4?[","Cbb";"8T&-YEc#6,Bl@k","Eaj9%F)to7Bk07X0/>FD2)I*E2E1","Ecjib7Ro1$8k2<BGQ","6Z6gYF`(o8Gl";"G][A7F]`9V2ISpk","Ci<`mF*)G:DJ&";"02#l%/o#HGD?";"7WN\'NDeicWDIi","iddaG",":N0l_Bl7Q+CLqc6Ch[d&/hSa","68iIK@V&_f6UkO*","BlIKpEcV",":i\'QMAP$D",":18!N";"2)oQ$<`NXMGsPq\"Er","94`AkBl8*&Ch[D";";0?;bFEMFfBOt[h94`A","89Arm7qHc","6Z6j[ARff";";0?;bFEMFC:MtH&+@pWa","9P%gX";"<\'rTeE,T_p7X@g3<W";"5u:,q6YL%@CEQMd@:XW";"<CCP<1&","86TS.0QVPL@rXAK";"6Z7!_ATC[WA8-1-","A7]@aEW";"Ea`irDf#";"=]9#hB6[TRASZU;","D0\'=","B4Z0uF_L","FDl&>D.7\'s";"6YL%@CM@[!+A?odEc#`8+@/gq/hSa";"6\"4nRCisi2:iCDhFD5Z2";"D..3kAoDKrAT@","9Mp(EE-5,T2JmS6A7G",">\"h=D>#THMA9(\".3\'m","8SqmKAQ3\\YDKBc*Eb0,uGl","6>pC[","DK\\K/<`qh.D(ndh=%`",";0?;bFEMFC:MtH&","F$atf7l`SE<B)a2=o";"=`8F*6#pNZ9Q+uo+T";"H\"T&jBh<)<2L.SC","GB.D>AS,XmAH";"DIn\"","H#HAf:H2d&B3@*59`";";0?;bFEMFoF^]<-DfSliEbT-\"ARk","E+*I$Er";"9j(;<0hjW>;IVJ$";"F(KH1ATV@&@:F%a";"FD56#",":i^,aBm\"88G%kA-9QacaD/XF","6t(1G9lFQRC]";"6=FA>B6%p5DIc+QCi=>M",":2_7jAU,D0DKKH1ARk";"7qHcb94`A";"B45Xg","Eaa0)ATR";"FYHp1E^iVVE)gmNE<","8T&Tk@;]Rd";":i\'QMAS?!uA7]d\\AU&:";"6ZQaHFCb","8SqmKAO:N]FDl$";"9Q+ELCf\"qVH\"D!","9N\"Sl8TRmQATC7\\ARt";"7l!P\"BPU4989ATh","BQS?8F#ks-@;op5Cis0,D/XGIDImoCFu(djEc5](@rucF";"<+U;r<-!,!@psIj","EGo\\s2ekg*77h`8:e^","E+<<mC]";"7;d3YEZe\"dGl";":i^,aBm\"886\">\"NG%C","6YL1MA9)7!","@<;","7WMpSAH","7W30d","6YL%@CM@[!+A?odEc#`8/hSa",":M=]CGuIR`CGp#h";"6YpIUF$sS\\@qBOg@;^1.","FEqh:De8";":2b4s<b6;cAnbge";"<CoPrEc,H/";"<+U;r6?RBlDf,","7rNK_@;S>LCh*","7;d6b";":J!9.@7#!(G@:","B6/3)","AS=h26s+G+91;]p=o","G[bqoDc0A5D.@HT","@rH6p@<;","<+U;r6>q)";"@PolL@l-#\"1GLk!@U_?-2E5/%2DA`T1H.9Q1hAX\'","94`AkCh[d&+Cf>/Bk:ftFDi:3Ch[itDddZs+T","84c3<<Cm","7;d3YEZf=AASl.(D\'3V*GqL^%","6$79_DfTQ<@<?4%D?";"4D&MLF<G(3Ci=>W+sUMU2)Su),!I;o4>1;bDKJ&b+?X7SDKI\"2Des?44X)+.2)I-J2Bk=2F$)*fDf0Y\\";"<+U;r9OVCAC]","DJsW.Er","<+U;r";"A79Rk";"<-MnbDFn_XDZ",":i\'Qc";"FEqh:";"<+U;r=)q_gE+NP","GA:Pf7S%!$:,?NC","Ao_g,;Fa%","G@>3-","89Arm;e9umBk(]";";e\']T1ItqI@kou67RR";"7:C7ODJ)miH#.$";"=_)#e@81oA0fa#aG?+","8SqmKAOCBPDfRW","9kAW;<_-tG;/\'uQGXq";"<H)JWFCcRgDeB","F*)>>+EM=4A7TClB-8cKAo(n%BR\'","Bldm)Ch.*t","<Co]$@:X(`DKG","<,uDbF)YQ.ASu\"\'";"ATDg0EW","9lG/qAP?ZDG%C";";e^Ph","7WN\'O+B<JoEW","0l(SbC0F7uDe2[`";">#7sd@<6I(3Ar`f";"Eaj9%F)to7Bk07X0/kmI1,LaA2`3NJ2D[2";"<H;m","+Q@p9+A69k+B*Q,FCf:","8pP#>=AW^3:cCpa1B","6\"4nRCisi2;e^Ph";"CggdaC]";"G%#30AH","BQS?83\\N.1GBYZ[DdmO$GV3KED(f==F(KGH5A=Xk0f1dD0JGIC1G^i","D)#$mCj\'W+1K7.cAH";"94`AkG%G].Anbge","8T\"","6tLF]Ec64";"<+ouUCMm^)Er";"F\\cIb78m31@p*G_6qm","8S;pZEb.a`Bh<2`ATR","<HD_l8T&KiFAlakG%kGt","ig5]K:i^,aBm\"88-qnblEc#`8.0","<H;nEDI[TqAH","3[c:b.OdC",";0?;bFEMFnAU.*mASl.(D#","=9";"?XIMbA7]u";"3W";"@l\\=\"@UVqiC-c]+A7k";"BQS?8F#ks-@:XF3Cis0,D/XGIDImoCB4Z0lCLqcUE,ol3ARfgF@PolL@l-#\"1GLk!@U_?-2E5/%2DA`T1H.9Q1hAX\'","Ap&!$FD5Z2","0k>Q5=tiQ/F)Fl1";"6=FA>B6%p5DIc^e@;^.*@<,ps@sJ";"BQS?8?ZK^tF_,W9","6>pmTATC^`H=]oeG\\([","8SqmKAQ!)LFAHL\\F(KF",";e/^79jq1)6pXgJC,#","Eaj9%F)to7Bk07X0/GUD2D[$E3A<8",":N^a","F*)G:DJ&";"BgkifBj!2pBOtmL7f","7rNK_@;P";"Ao)C(EW";"87c4?ATDh","94`AkDJsV>AoDg0A,","F*VX","A7]RcGl","7qHd:Dfp,4","Dc];>=)2hL0gn?%";"F(KH\'Ch[itDddZs","3EA+TBMrb?D?";"D..O\"";"7n$A";"7WN\'OD/\"-0+Q@p9+DYP6+DGm>DfBf4Df0!\"/db$bFCfJ8@3B>sGp%3I+E_R<De!Q*E,oN,Bm\"88An>CmF`M&7/c","7WN\'OD/\"-0","APIGDGZf#X3C\\==","B4Z0tASuY","6Z6dZE\\d";"6$,P5A,";";JC)hCh3";"6#L1GDfSZmBl8\"","9lG/qAOUKYAT@","A2%IH@lZD\'Ai;M%@Q%Y*0K*EOAn<Z,0JkXH@Q@k,@l@pT0f:[tA7I>O0f_+#3A=ks";":iCDhFD5Z2","8lJM\\7;cURA7Y";"<-V5,<&[BABQe5k@/";"7ntjU2/=scA27s";"BQS?8";"9kAE[De&";">\"NUBAU\"";"EDK\\U3B:tX@RGHRBkm",">\"NUBAU$OQBOQ\'uDfP";"8SqmKAQ!)LFAln\"AH";"9lG/qAO:N]FDl%O6YpIHCB",":3&pG6<A8I;Kalg";"7:C7ODJ)@OEb/a&Bl@k";"8SqmKAP?NAAS_","0m$ncBerId95Rcc";";e\'iZASt\"\\B`","G%#3$A,","Bldm#Ch3";"@W,e&";"92&[","6Y1.WAT@","6=FA>","FDl5BEbTE(","9/B@;D/!K:Db2Wp;?","<+U;r=[?k<B5VQtDKG";"Eaj9%F)to7Bk07X0/54B1-%9Q1c@*H0K(mG","F*D@fG?/iuD.knJH?&","7V?.\"DDuH-:fhpDGsh";"FCAWpAH";"06M>IEcXHfF(KB!CLqcS";"85rPb+Du+>+CTG%Bl%3eCh3","F)YQ3D?","B4Z0pCh[itDddZs";"?XIGU","FDkZ*BlIO\"@<,l";"F(96)E-,H&AU+";"AoD^,@<;",";KZkUATDs.@q>";":,I62<,-P0FZ\"8S","5uDbj0PG->7mStE<r";"D..Y";"<+U;r6Z6dZE\\d";"E,ol=ARfghB6@n";"DGO_\"2eu009/^WZ=a\'","Cf48IEI)G)7<CgT:]",":i\'QMAS?!uA7]dKDes?41B";":3CD_ATC^\\EHPi1@q>","Eaa05ATR";":gnBUDKG";"F*(i4F`TogA7Y",";IsijATMr9AmoCiARk","D)QSt89%Zd=\\U_0G;K","6Z6dZEW";"D`2E695&Nb3GrV*2Z","CLqb";"AnXapB4=nTAOpHC=T";"F`)/,@qu",";K$YcFD5Z2";"@rH/","6#^dZGuJg*DeioYDe*D","9N\"Sl8TRmQATCUfASl.(D#";"Eaj9%F)to7Bk07X0/kgG1H@HN2)7,";"7WN\'O+BE&oF(oQ1";"3DT","B5M(!@qY";"6Yp=BE`?UpFAHdDDe!p2";"<HBs,B/jX\"=#!\'.","9ghcH2H2Fe0gR[#F$p",";JBWS<+U;r";"?XIV\\D?","7qHd@ATDs.@q>","9PJBU@<)","0Om^E1hp&]=[R@+";"8SqmKAH","<CCP<","<-MnbDGt+eG%kGt",";flGiF`TogA7Y";"B4Z1%ATV@&@:F%a";"8U!]a;-G\\m1IGkO63";"@W?O82,?\\Z7r(b2CB";"6Z7!V7s/M","<+U;r=@$b;B5VQtDKG";"FCB6+";"G@>N0";";Iso\\FAHdQE+*s.","6>pmTAT@","8lJM\\6tKkHA7Y",";0?;X";"7n$Ba91;uj<DlK","G<nW4;G1Lq=]\'BP9gS",":f(eLE(kL6F>IGo8n%"}for E,w in ipairs({{1;310};{1,231};{232,310}})do while w[1]<w[2]do k[w[1]],k[w[2]],w[1],w[2]=k[w[2]],k[w[1]],w[1]+1,w[2]-1 end end local function E(E)return k[E-37448]end do local E=k local w={}local function c(k)local E={}local w=1 local c=#k while w<=c do local D=string.sub(k,w,w)if D=="z"then table.insert(E,string.char(0,0,0,0))w=w+1 elseif D:match("%s")then w=w+1 else local D={}local T=0 while T<5 and w+T<=c do local E=string.sub(k,w+T,w+T)if E=="z"or E==" "or E=="\n"or E=="\r"then break end D[#D+1]=E T=T+1 end local n=#D for k=n+1,5,1 do D[#D+1]="u"end local N=0 for k=1,5,1 do N=N*85+(string.byte(D[k])-33)end local g=n-1 for k=3,3-(g-1),-1 do local w=math.floor(N/256^k)%256 table.insert(E,string.char(w))end w=w+n end end return table.concat(E)end for k=1,#E,1 do local w=E[k]if type(w)=="string"then E[k]=c(w)end end end return(function(k,c,D,T,n,N,g,d,F,L,A,h,H,O,v,R,l,I,e,r,M,m,y,w)A,M,e,L,F,w,O,r,d,m,h,H,I,l,R,v,y={},0,function(k,E)local c=r(E)local D=function(D)return w(k,{D},E,c)end return D end,function(k,E)local c=r(E)local D=function(D,T,n,N)return w(k,{D,T;n;N},E,c)end return D end,function(k,E)local c=r(E)local D=function(D,T,n)return w(k,{D,T,n},E,c)end return D end,function(w,D,T,n)local Ib={}local d,P,K,S,Ob,W,db,a,rb,Eb,g,Z,Hb,O,wb,j,vb,i,Q,cb,G,q,Tb,f,t,J,Mb,Y,B,nb,C,s,p,H,kb,z,X,gb,u,Db,V,b,Ab,o,U,Nb,r,eb,M,x while w do if w<7903787 then if w<3735551 then if w<1944527 then if w<1128622 then if w<436448 then if w<332679 then if w<168653 then if w<119996 then if w<89246 then w=g and 8292352 or 12481024 else H=nil M=nil w=2748928 end else w=O w=r and 1788416 or 4888576 g=r end else if w<243697 then Z=2 z=b[Z]Z=A[p]w=14454784 C=z==Z kb=C else V=nil X=nil d=I(d)x=nil U=nil f=I(f)t=I(t)q=I(q)i=nil O=I(O)S=nil r=I(r)s=I(s)O=m(16591360,{})r=E(37475)M=I(M)M=k[r]r=M(O)M=not r w=M and 10769408 or 10782720 end end else if w<374188 then if w<353926 then H=D[1]d=w M=D[2]O=E(37755)g=H or O w=M and 1521152 or 8378368 O=M r=D[3]H=g else w=A[T[3]]g=w()M=g w=not M w=w and 11589632 or 904704 end else if w<383231 then r=E(37518)V=E(37583)w=A[T[1]]H=A[T[2]]d=k[V]f=70 V=E(37512)O=d[V]x=70 V=255 d=O(V,f,x)M={[r]=d}r=.12 g=w(H,M,r)g={}w=k[E(37628)]else d=E(37671)O=k[d]d=E(37513)M=O[d]O=M()d=E(37521)O=E(37672)M=k[O]O=M(d)M=false w=M and 15699456 or 385024 end end end else if w<895582 then if w<848816 then if w<832762 then if w<728063 then a=a+G g=a<=Y u=not J g=u and g u=a>=Y u=J and u g=u or g u=3103744 w=g and u g=16342528 w=w or g else q=E(37509)d=w t=k[q]f=w q=t(r)t=E(37617)x=q==t w=x and 4376576 or 13359616 V=x end else V,t=f(d,V)w=V and 3872256 or 5523456 end else if w<868412 then w=15279616 else X=i w=s w=11526656 end end else if w<1001357 then if w<907670 then g=E(37475)S=E(37701)d=E(37532)f=E(37472)w=k[g]U=E(37548)q=A[T[4]]t=q[S]X=A[T[5]]S=E(37618)U=X[U]U=U(X,H)q=S..U X=E(37588)x=t..q V=f..x S=E(37501)q={[S]=X}x=E(37578)t=E(37569)f=E(37594)O={[d]=V;[f]=x,[t]=q}d={w(M,O)}g=d[1]O=g r=d[2]d=not O g=d w=d and 9865216 or 1922048 else q=w X=E(37665)S=r[X]t=S w=S and 12674560 or 7931904 end else if w<1119184 then M=E(37571)H=k[M]w=H and 5264896 or 6883328 g=H else S=w U=E(37666)X=k[U]q=X w=X and 10732032 or 3079168 end end end end else if w<1708360 then if w<1449657 then if w<1390386 then if w<1302332 then if w<1131591 then g=E(37621)w=k[g]w=w and 14998528 or 11964928 else V=E(37582)d=k[V]V=d()r=V w=151552 end else W=nil K=nil w=2903040 end else if w<1414830 then H=E(37485)r=E(37559)g=k[H]M=k[r]H=g(M)g=E(37556)w=H==g w=w and 13602304 or 2507776 else w=r w=M and 10059776 or 11311616 g=M end end else if w<1555832 then if w<1534329 then M=O w=d d=r V=w w=r and 11493376 or 7797760 else U=E(37617)X=k[U]w=5214208 U=E(37645)S=X[U]t=S end else if w<1568265 then w=3748352 else G=1 J=6 w=A[f]Y=w(G,J)J=E(37714)w=E(37714)k[w]=Y G=k[J]J=2 w=G>J w=w and 3300352 or 6795776 end end end else if w<1862754 then if w<1845676 then if w<1795021 then r=g w=A[T[1]]g=w()w=g and 16746496 or 3831808 else H=E(37649)g=k[H]H=true w=g==H g={w}w=k[E(37656)]end else if w<1850067 then H=E(37470)g=k[H]H=true w=g==H A[T[1]]=w g={}w=k[E(37474)]else w=A[T[1]]r=E(37558)O=.08 H=A[T[2]]M={[r]=O}r=.12 g=w(H,M,r)w=k[E(37708)]g={}end end else if w<1875981 then if w<1874397 then M=d w=V w=d and 11406848 or 13381120 else kb,K=j(p,kb)w=kb and 8423936 or 2903040 end else if w<1938398 then d=not r w=9865216 g=d else w=R(5869568,{O})Y={w()}w=k[E(37615)]g={c(Y)}end end end end end else if w<2881835 then if w<2523698 then if w<2400750 then if w<2223365 then if w<2215507 then if w<1957335 then w=297984 else w=10326528 C=1 K=b[C]kb=K end else H=E(37485)r=E(37684)g=k[H]M=k[r]H=g(M)g=E(37556)w=H==g w=w and 12667904 or 6225408 end else if w<2285070 then f=w t=E(37611)x=k[t]t=x(r)x=E(37709)V=t or x g=V w=3835904 else wb=E(37478)C=.5 S=E(37465)U=E(37608)q=k[S]Ob=E(37648)b=0 S=E(37450)x=q[S]B=E(37637)W=E(37738)u=E(37527)S=E(37604)s=E(37611)p=1 q=x(S)x=v()A[x]=q G=E(37577)q=A[x]i=k[s]j=0 Y=k[G]S=E(37728)G=E(37742)o=true a=Y[G]G=1000000.0 kb=.5 Y={a(G)}s=i(c(Y))nb=E(37663)X=U..s s=E(37490)q[S]=X q=A[x]Y=E(37583)S=E(37597)i=k[s]s=E(37597)U=i[s]i=E(37681)X=U[i]q[S]=X q=A[x]G=0 S=E(37673)Tb=E(37740)J=0 X=false q[S]=X S=E(37545)q=A[x]X=true z=201 q[S]=X q=A[T[4]]X=A[x]S=q(X)i=E(37459)X=E(37480)q=A[T[5]]a=k[Y]Y=E(37512)s=a[Y]Y=0 a=s(Y,G,J)G=E(37560)s=E(37558)P=k[W]Y=1 J=0 Mb=50 W=E(37450)Z=E(37484)Q=P[W]W=1 P=Q(W,j,p,b)j=E(37637)W=200 Q=E(37595)p=A[x]U={[i]=a,[s]=Y;[G]=J,[u]=P,[Q]=W;[j]=p}S=q(X,U)Y=E(37586)q=v()U=v()W=0 A[q]=S S=450 X=310 s=E(37480)A[U]=S j=.5 Ib[3]=E(37490)S=v()A[S]=X P=E(37738)X=A[T[5]]u=E(37697)p=0 J=k[u]u=E(37450)G=J[u]u=.5 rb=210 Q=.5 J=G(u,Q)G=E(37589)Q=k[P]P=E(37450)Ab=14 Db=E(37487)u=Q[P]P=.5 Q=u(P,W,j,p)u=E(37527)j=E(37738)W=k[j]Ib[5]=235 j=E(37450)P=W[j]j=0 b=A[U]p=b*kb K=A[S]kb=K*C b=0 W=P(j,p,b,kb)b=E(37583)K=12 p=k[b]P=E(37459)b=E(37512)j=p[b]C=E(37595)kb=3 b=6 p=j(b,kb,K)Eb=A[x]kb=E(37560)j=E(37558)K=0 b=.8 cb=A[T[5]]Nb=k[nb]nb=E(37450)gb=Nb[nb]nb=0 Nb=gb(nb,Ab)Hb={[Tb]=Nb}vb=cb(Db,Hb)cb=A[T[5]]gb=E(37641)Ab=E(37583)nb=k[Ab]Hb=E(37682)Ab=E(37512)Nb=nb[Ab]Ab=110 nb=Nb(Ab,Mb,rb)Ab=.38 Nb=E(37524)Ib[2]=k[Ib[3]]rb=1 Ib[3]=E(37648)Ib[1]=Ib[2][Ib[3]]Mb=E(37543)Ib[2]=E(37674)db=Ib[1][Ib[2]]Tb={[gb]=nb;[Nb]=Ab,[Mb]=rb,[Ob]=db}Db={cb(Hb,Tb)}eb={vb,c(Db)}a={[Y]=J;[G]=Q;[u]=W;[P]=p,[j]=b,[kb]=K;[C]=z,[Z]=o,[B]=Eb,[wb]=eb}i=X(s,a)kb=E(37738)X=v()Q=E(37583)vb=E(37740)j=E(37589)W=160 A[X]=i G=E(37459)P=20 a=E(37480)i=A[T[5]]u=k[Q]Q=E(37512)z=-60 J=u[Q]Q=80 u=J(Q,P,W)C=0 Q=.88 b=k[kb]o=220 P=E(37560)K=-60 J=E(37558)W=0 kb=E(37450)p=b[kb]kb=0 b=p(kb,K,C,z)p=E(37527)rb=0 C=E(37738)K=k[C]C=E(37450)gb=0 eb=E(37487)z=220 kb=K[C]Z=0 C=0 K=kb(C,z,Z,o)o=E(37478)kb=E(37595)C=201 z=E(37637)Tb=E(37663)Z=A[X]Eb=A[T[5]]Hb=k[Tb]Tb=E(37450)Db=Hb[Tb]Tb=1 Hb=Db(Tb,gb)cb={[vb]=Hb}wb={Eb(eb,cb)}B={c(wb)}Ib[6]=160 Y={[G]=u;[J]=Q;[P]=W,[j]=b,[p]=K;[kb]=C,[z]=Z;[o]=B}Q=E(37583)vb=E(37740)G=E(37459)s=i(a,Y)a=E(37480)Tb=E(37663)i=A[T[5]]P=10 j=E(37589)u=k[Q]gb=0 W=110 kb=E(37738)Q=E(37512)J=u[Q]Q=40 u=J(Q,P,W)o=180 J=E(37558)Z=0 b=k[kb]W=0 Q=.9 K=-100 Mb=.5 P=E(37560)kb=E(37450)p=b[kb]z=-100 kb=1 C=1 b=p(kb,K,C,z)p=E(37527)C=E(37738)K=k[C]C=E(37450)kb=K[C]z=180 C=0 K=kb(C,z,Z,o)o=E(37478)kb=E(37595)C=201 Z=A[X]z=E(37637)eb=E(37487)Eb=A[T[5]]Hb=k[Tb]Tb=E(37450)Db=Hb[Tb]Tb=1 Hb=Db(Tb,gb)cb={[vb]=Hb}wb={Eb(eb,cb)}B={c(wb)}gb=E(37738)Y={[G]=u;[J]=Q;[P]=W;[j]=b;[p]=K;[kb]=C;[z]=Z;[o]=B}p=E(37738)W=18 s=i(a,Y)G=E(37459)Q=E(37583)i=A[T[5]]b=0 u=k[Q]K=44 Q=E(37512)o=E(37487)J=u[Q]a=E(37480)P=5 Q=9 u=J(Q,P,W)cb=E(37663)vb=14 J=E(37560)Ab=0 P=E(37527)j=k[p]p=E(37450)Q=0 W=j[p]p=1 Db=5 nb=.5 Eb=E(37740)kb=0 Nb=0 j=W(p,b,kb,K)W=E(37595)kb=A[X]K=E(37478)p=202 b=E(37637)z=A[T[5]]eb=k[cb]cb=E(37450)wb=eb[cb]cb=0 eb=wb(cb,vb)vb=E(37583)B={[Eb]=eb}Z=z(o,B)w=2909184 B=E(37480)z=A[T[5]]cb=k[vb]vb=E(37512)eb=cb[vb]vb=9 Hb=18 wb=E(37459)cb=eb(vb,Db,Hb)Db=E(37589)eb=E(37560)Tb=k[gb]gb=E(37450)vb=0 Hb=Tb[gb]gb=0 Tb=Hb(gb,Nb,nb,Ab)nb=E(37738)Hb=E(37527)Ab=0 Nb=k[nb]nb=E(37450)gb=Nb[nb]nb=1 Nb=gb(nb,Ab,Mb,rb)gb=E(37595)nb=202 Eb={[wb]=cb;[eb]=vb,[Db]=Tb,[Hb]=Nb,[gb]=nb}o={z(B,Eb)}C={Z,c(o)}Y={[G]=u,[J]=Q;[P]=j,[W]=p;[b]=kb;[K]=C}u=1 z=E(37583)s=i(a,Y)Q=E(37589)Y=E(37602)kb=-8 j=E(37738)i=A[T[5]]Eb=255 C=16 W=k[j]J=E(37558)K=0 b=.5 o=255 j=E(37450)Mb=110 P=W[j]Nb=E(37663)Ib[2]=E(37490)p=13 j=0 W=P(j,p,b,kb)b=E(37738)P=E(37527)kb=16 p=k[b]b=E(37450)j=p[b]b=0 vb=E(37487)p=j(b,kb,K,C)j=E(37662)C=k[z]z=E(37512)b=E(37650)K=C[z]kb=E(37518)Z=90 z=155 C=K(z,Z,o)K=E(37595)Z=E(37637)cb=E(37490)z=203 G={[J]=u,[Q]=W,[P]=p;[j]=b,[kb]=C;[K]=z;[Z]=s}b=0 C=0 Q=E(37589)a=i(Y,G)J=E(37558)K=1 j=E(37738)kb=0 u=1 i=A[T[5]]p=35 Y=E(37503)B=200 W=k[j]j=E(37450)P=W[j]j=0 W=P(j,p,b,kb)P=E(37527)b=E(37738)p=k[b]b=E(37450)kb=-130 j=p[b]Hb=E(37740)b=1 p=j(b,kb,K,C)C=E(37490)o=E(37583)K=k[C]C=E(37481)kb=K[C]C=E(37533)K=E(37722)j=E(37481)b=kb[K]kb=E(37505)K=H..C Z=k[o]C=E(37630)o=E(37512)z=Z[o]o=220 Z=z(o,B,Eb)eb=k[cb]cb=E(37670)o=14 z=E(37686)B=E(37670)wb=eb[cb]eb=E(37735)cb=E(37637)Eb=wb[eb]eb=203 wb=E(37595)G={[J]=u;[Q]=W,[P]=p;[j]=b;[kb]=K,[C]=Z,[z]=o,[B]=Eb,[wb]=eb,[cb]=s}b=20 a=i(Y,G)i=A[T[5]]z=E(37738)P=E(37697)Q=k[P]Y=E(37480)J=E(37586)P=E(37450)u=Q[P]Eb=0 W=.5 kb=E(37589)j=E(37583)P=1 Q=u(P,W)W=k[j]p=60 u=E(37459)wb=20 j=E(37512)P=W[j]j=30 W=P(j,p,b)b=0 Ab=200 j=.35 p=E(37560)C=k[z]Z=-40 z=E(37450)o=.5 P=E(37558)K=C[z]B=0 z=1 C=K(z,Z,o,B)o=E(37738)B=72 Z=k[o]K=E(37527)o=E(37450)z=Z[o]rb=E(37648)nb=5 o=0 Z=z(o,B,Eb,wb)o=203 z=E(37595)Eb=E(37478)eb=A[T[5]]B=E(37637)gb=k[Nb]Nb=E(37450)Tb=gb[Nb]Nb=0 gb=Tb(Nb,nb)Db={[Hb]=gb}cb=eb(vb,Db)Db=E(37682)Ib[9]=E(37490)eb=A[T[5]]Tb=E(37641)nb=E(37583)Nb=k[nb]nb=E(37512)gb=Nb[nb]nb=80 Nb=gb(nb,Ab,Mb)Mb=1 gb=E(37524)Ib[1]=k[Ib[2]]nb=.45 Ab=E(37543)Ib[2]=E(37648)db=Ib[1][Ib[2]]Ib[1]=E(37674)Ob=db[Ib[1]]Hb={[Tb]=Nb;[gb]=nb;[Ab]=Mb,[rb]=Ob}nb=E(37527)gb=E(37558)Nb=1 db=1 vb=eb(Db,Hb)eb=A[T[5]]Hb=E(37503)rb=E(37738)Ib[4]=E(37583)Mb=k[rb]rb=E(37450)Ab=Mb[rb]Ob=0 Ib[1]=0 rb=1 Mb=Ab(rb,Ob,db,Ib[1])Ib[1]=E(37490)db=k[Ib[1]]Ab=E(37481)Ib[1]=E(37481)Ob=db[Ib[1]]db=E(37489)Ib[1]=E(37630)rb=Ob[db]Ib[3]=k[Ib[4]]db=E(37580)Ib[4]=E(37512)Ib[2]=Ib[3][Ib[4]]Ob=E(37505)Ib[4]=130 Ib[3]=Ib[2](Ib[4],Ib[5],Ib[6])Ib[8]=k[Ib[9]]Ib[9]=E(37670)Ib[7]=Ib[8][Ib[9]]Ib[8]=E(37609)Ib[5]=E(37670)Ib[6]=Ib[7][Ib[8]]Ib[8]=204 Ib[2]=E(37686)Ib[4]=10 Ib[7]=E(37595)Tb={[gb]=Nb;[nb]=Mb;[Ab]=rb;[Ob]=db;[Ib[1]]=Ib[3];[Ib[2]]=Ib[4];[Ib[5]]=Ib[6];[Ib[7]]=Ib[8]}Db={eb(Hb,Tb)}wb={cb;vb,c(Db)}G={[J]=Q,[u]=W;[P]=j;[p]=b;[kb]=C;[K]=Z;[z]=o,[B]=s;[Eb]=wb}J=E(37558)Hb=E(37524)p=.5 j=E(37697)u=1 a=i(Y,G)Y=E(37468)i=A[T[5]]kb=-8 W=k[j]Q=E(37586)C=0 j=E(37450)P=W[j]B=80 K=.5 Ib[1]=1 j=1 z=0 b=E(37738)W=P(j,p)p=k[b]b=E(37450)P=E(37589)j=p[b]b=1 p=j(b,kb,K,C)o=E(37583)Eb=80 Ib[6]=1 Mb=E(37703)K=E(37738)kb=k[K]C=20 Z=20 rb=1 j=E(37527)K=E(37450)b=kb[K]K=0 kb=b(K,C,z,Z)b=E(37662)K=E(37531)C=E(37518)Z=k[o]o=E(37512)z=Z[o]o=200 Z=z(o,B,Eb)z=E(37595)B=E(37637)o=203 G={[J]=u;[Q]=W,[P]=p,[j]=kb;[b]=K;[C]=Z;[z]=o;[B]=s}u=E(37459)j=50 z=0 a=i(Y,G)db=0 Z=0 i=v()Nb=E(37635)A[i]=a B=0 a=A[T[5]]W=E(37583)G=E(37480)P=k[W]p=210 W=E(37512)b=E(37589)Q=P[W]W=110 o=44 P=Q(W,j,p)j=E(37560)Q=E(37558)vb=E(37523)C=E(37738)Eb=1 W=.55 p=0 K=k[C]Ib[4]=0 C=E(37450)kb=K[C]C=0 K=kb(C,z,Z,o)o=0 Z=E(37738)kb=E(37527)z=k[Z]Z=E(37450)C=z[Z]Z=1 z=C(Z,o,B,Eb)o=E(37637)B=A[X]eb=A[T[5]]Z=202 C=E(37595)gb=k[Nb]Eb=E(37478)Nb=E(37450)Tb=gb[Nb]Ab=k[Mb]Mb=E(37450)nb=Ab[Mb]Mb=0 Ab=nb(Mb,rb)rb=E(37703)Ob=0 Ib[3]=1 Mb=k[rb]rb=E(37450)nb=Mb[rb]rb=.1 Mb=nb(rb,Ob)Ob=E(37703)rb=k[Ob]Ob=E(37450)nb=rb[Ob]Ob=.9 rb=nb(Ob,db)Ib[2]=E(37703)db=E(37703)Ob=k[db]db=E(37450)nb=Ob[db]db=1 Ob={nb(db,Ib[1])}Nb={Ab,Mb,rb;c(Ob)}gb=Tb(Nb)Db={[Hb]=gb}cb={eb(vb,Db)}wb={c(cb)}J={[u]=P,[Q]=W;[j]=p;[b]=K;[kb]=z,[C]=Z;[o]=B;[Eb]=wb}Y=a(G,J)a=180 G=18 Ib[5]=0 Y=a+G W=E(37459)C=E(37589)o=E(37738)nb=90 Ob=E(37635)kb=50 Q=E(37480)wb=52 u=A[U]J=u-Y u=10 G=J-u J=A[T[5]]Tb=E(37523)b=E(37583)K=200 p=k[b]b=E(37512)j=p[b]Eb=8 b=100 p=j(b,kb,K)Nb=E(37646)b=.65 K=0 j=E(37558)Db=60 Z=k[o]o=E(37450)z=Z[o]kb=E(37560)o=0 B=a+Eb Eb=0 Z=z(o,B,Eb,wb)Eb=E(37738)wb=1 Ab=E(37524)B=k[Eb]Eb=E(37450)o=B[Eb]z=E(37527)eb=0 vb=A[S]cb=vb-Db Eb=0 B=o(Eb,wb,eb,cb)o=E(37595)wb=E(37637)eb=A[X]cb=E(37478)Db=A[T[5]]rb=k[Ob]Ob=E(37450)Eb=202 Mb=rb[Ob]Ib[1]=k[Ib[2]]Ib[2]=E(37450)db=Ib[1][Ib[2]]Ib[2]=0 Ib[1]=db(Ib[2],Ib[3])Ib[3]=E(37703)Ib[2]=k[Ib[3]]Ib[3]=E(37450)db=Ib[2][Ib[3]]Ib[3]=.08 Ib[2]=db(Ib[3],Ib[4])Ib[4]=E(37703)Ib[3]=k[Ib[4]]Ib[4]=E(37450)db=Ib[3][Ib[4]]Ib[4]=.92 Ib[3]=db(Ib[4],Ib[5])Ib[5]=E(37703)Ib[4]=k[Ib[5]]Ib[5]=E(37450)db=Ib[4][Ib[5]]Ib[5]=1 Ib[4]={db(Ib[5],Ib[6])}Ob={Ib[1],Ib[2],Ib[3];c(Ib[4])}rb=Mb(Ob)gb={[Nb]=nb;[Ab]=rb}Hb={Db(Tb,gb)}vb={c(Hb)}P={[W]=p,[j]=b,[kb]=K;[C]=Z,[z]=B;[o]=Eb,[wb]=eb;[cb]=vb}Ib[1]=E(37648)Tb=E(37487)u=J(Q,P)J=A[T[5]]W=E(37459)kb=5 C=E(37589)b=E(37583)o=E(37738)db=190 Q=E(37480)p=k[b]eb=112 K=18 b=E(37512)j=p[b]rb=8 Ib[5]=E(37490)B=8 b=9 Ob=50 p=j(b,kb,K)Mb=E(37663)K=0 j=E(37558)b=.2 kb=E(37560)wb=52 Z=k[o]o=E(37450)z=Z[o]o=0 Eb=0 cb=E(37478)Z=z(o,B,Eb,wb)Eb=E(37738)B=k[Eb]z=E(37527)Nb=E(37740)wb=0 Eb=E(37450)o=B[Eb]Eb=0 B=o(Eb,a,wb,eb)o=E(37595)Eb=202 wb=E(37637)eb=A[X]Db=A[T[5]]Ab=k[Mb]Mb=E(37450)nb=Ab[Mb]Mb=0 Ab=nb(Mb,rb)nb=E(37641)rb=E(37583)gb={[Nb]=Ab}Hb=Db(Tb,gb)Db=A[T[5]]gb=E(37682)Mb=k[rb]rb=E(37512)Ab=Mb[rb]rb=100 Mb=Ab(rb,Ob,db)Ab=E(37524)rb=.58 db=1 Ob=E(37543)Ib[4]=k[Ib[5]]Ib[5]=E(37648)Ib[3]=Ib[4][Ib[5]]Ib[4]=E(37674)Ib[2]=Ib[3][Ib[4]]Nb={[nb]=Mb,[Ab]=rb;[Ob]=db;[Ib[1]]=Ib[2]}Tb={Db(gb,Nb)}vb={Hb,c(Tb)}P={[W]=p,[j]=b,[kb]=K,[C]=Z,[z]=B,[o]=Eb,[wb]=eb;[cb]=vb}C=E(37738)b=E(37589)u=J(Q,P)J=A[T[5]]j=E(37558)p=1 P=E(37503)K=k[C]z=9 Z=0 C=E(37450)kb=K[C]C=0 o=5 gb=E(37490)K=kb(C,z,Z,o)kb=E(37527)o=-14 Z=E(37738)B=0 z=k[Z]Z=E(37450)C=z[Z]Z=1 Eb=13 z=C(Z,o,B,Eb)C=E(37481)Eb=E(37490)B=k[Eb]Eb=E(37481)Ib[1]=1 o=B[Eb]B=E(37489)vb=85 Z=o[B]o=E(37505)Eb=E(37630)B=E(37715)cb=E(37583)eb=k[cb]Ib[3]=0 Db=210 cb=E(37512)wb=eb[cb]cb=130 eb=wb(cb,vb,Db)Tb=k[gb]db=E(37703)vb=E(37670)gb=E(37670)wb=E(37686)cb=9 Hb=Tb[gb]Tb=E(37735)gb=E(37637)Db=Hb[Tb]Hb=E(37595)Tb=203 W={[j]=p;[b]=K;[kb]=z,[C]=Z;[o]=B,[Eb]=eb,[wb]=cb,[vb]=Db,[Hb]=Tb;[gb]=u}Q=J(P,W)kb=E(37583)P=E(37480)j=E(37459)vb=1 Nb=E(37524)B=E(37738)C=200 Eb=7 z=E(37589)wb=0 eb=20 J=A[T[5]]b=k[kb]Mb=E(37635)K=60 kb=E(37512)p=b[kb]kb=110 b=p(kb,K,C)kb=.72 K=E(37560)Tb=E(37523)o=k[B]B=E(37450)p=E(37558)cb=0 C=0 Z=o[B]B=0 o=Z(B,Eb,wb,eb)wb=E(37738)Z=E(37527)Eb=k[wb]eb=-14 wb=E(37450)B=Eb[wb]wb=1 Eb=B(wb,eb,cb,vb)cb=E(37478)Db=A[T[5]]Ib[2]=0 Ab=k[Mb]wb=203 eb=E(37637)B=E(37595)Mb=E(37450)nb=Ab[Mb]Ob=k[db]db=E(37450)rb=Ob[db]db=0 Ob=rb(db,Ib[1])Ib[1]=E(37703)db=k[Ib[1]]Ib[1]=E(37450)rb=db[Ib[1]]Ib[1]=.1 db=rb(Ib[1],Ib[2])Ib[2]=E(37703)Ib[1]=k[Ib[2]]Ib[4]=1 Ib[2]=E(37450)rb=Ib[1][Ib[2]]Ib[2]=.9 Ib[1]=rb(Ib[2],Ib[3])Ib[3]=E(37703)Ib[2]=k[Ib[3]]Ib[3]=E(37450)rb=Ib[2][Ib[3]]Ib[3]=1 Ib[2]={rb(Ib[3],Ib[4])}Mb={Ob,db,Ib[1];c(Ib[2])}Ab=nb(Mb)gb={[Nb]=Ab}Hb={Db(Tb,gb)}vb={c(Hb)}W={[j]=b;[p]=kb;[K]=C,[z]=o,[Z]=Eb,[B]=wb;[eb]=u;[cb]=vb}Q=J(P,W)J=26 P=E(37726)Q=k[P]p={Q(M)}j=p[3]W=p[2]P=p[1]end end else if w<2473037 then if w<2454691 then r=E(37709)M=H==r g=M w=4798464 else wb=E(37738)Q=A[T[5]]W=E(37480)o=E(37589)p=E(37459)Ib[3]=190 cb=0 z=5 C=E(37583)Z=18 Db=128 K=k[C]C=E(37512)kb=K[C]C=9 K=kb(C,z,Z)kb=E(37558)z=E(37560)Eb=k[wb]vb=170 Ib[4]=E(37648)Z=0 wb=E(37450)B=Eb[wb]nb=E(37487)C=.2 wb=0 eb=8 Eb=B(wb,eb,cb,vb)B=E(37527)vb=0 cb=E(37738)eb=k[cb]cb=E(37450)Hb=E(37478)wb=eb[cb]cb=0 db=E(37663)eb=wb(cb,a,vb,Db)wb=E(37595)vb=E(37637)Mb=E(37740)Ib[2]=50 cb=202 Db=A[X]Ib[8]=E(37490)gb=A[T[5]]Ob=k[db]db=E(37450)rb=Ob[db]Ib[1]=8 db=0 Ob=rb(db,Ib[1])Ab={[Mb]=Ob}Nb=gb(nb,Ab)Ab=E(37682)gb=A[T[5]]Ib[1]=E(37583)rb=E(37641)db=k[Ib[1]]Ib[1]=E(37512)Ob=db[Ib[1]]Ib[1]=100 db=Ob(Ib[1],Ib[2],Ib[3])Ib[7]=k[Ib[8]]Ib[2]=E(37543)Ib[3]=1 Ib[8]=E(37648)Ib[1]=.58 Ob=E(37524)Ib[6]=Ib[7][Ib[8]]Ib[7]=E(37674)Ib[5]=Ib[6][Ib[7]]Mb={[rb]=db,[Ob]=Ib[1],[Ib[2]]=Ib[3];[Ib[4]]=Ib[5]}nb={gb(Ab,Mb)}Tb={Nb,c(nb)}j={[p]=K,[kb]=C;[z]=Z;[o]=Eb;[B]=eb,[wb]=cb;[vb]=Db,[Hb]=Tb}B=9 cb=13 o=E(37738)P=Q(W,j)j=E(37503)kb=E(37558)Q=A[T[5]]Eb=0 C=E(37589)wb=5 Mb=E(37524)K=1 Z=k[o]o=E(37450)z=Z[o]Ab=E(37490)o=0 Z=z(o,B,Eb,wb)eb=0 z=E(37527)Eb=E(37738)wb=-14 Tb=85 B=k[Eb]Eb=E(37450)o=B[Eb]gb=210 Eb=1 B=o(Eb,wb,eb,cb)o=E(37481)cb=E(37490)eb=k[cb]cb=E(37481)wb=eb[cb]eb=E(37489)cb=E(37630)Eb=wb[eb]Hb=E(37583)Db=k[Hb]Hb=E(37512)vb=Db[Hb]wb=E(37505)eb=E(37520)Hb=130 Db=vb(Hb,Tb,gb)vb=E(37686)nb=k[Ab]Tb=E(37670)Ab=E(37670)Nb=nb[Ab]nb=E(37735)Hb=9 Ib[3]=E(37703)gb=Nb[nb]Ab=E(37637)Nb=E(37595)nb=203 p={[kb]=K;[C]=Z;[z]=B;[o]=Eb,[wb]=eb,[cb]=Db;[vb]=Hb,[Tb]=gb;[Nb]=nb;[Ab]=P}eb=E(37738)Db=20 kb=E(37459)Z=60 o=200 cb=7 z=E(37583)Hb=0 W=Q(j,p)vb=0 j=E(37480)Q=A[T[5]]C=k[z]z=E(37512)Ib[6]=0 K=C[z]z=110 C=K(z,Z,o)nb=E(37523)B=E(37589)wb=k[eb]K=E(37558)Z=E(37560)o=0 z=.72 eb=E(37450)Eb=wb[eb]eb=0 Tb=1 Ib[4]=1 wb=Eb(eb,cb,vb,Db)vb=E(37738)Db=-14 Eb=E(37527)Ib[5]=0 cb=k[vb]vb=E(37450)eb=cb[vb]vb=1 cb=eb(vb,Db,Hb,Tb)db=E(37635)eb=E(37595)gb=A[T[5]]Hb=E(37478)Db=E(37637)Ob=k[db]vb=203 db=E(37450)rb=Ob[db]Ib[2]=k[Ib[3]]Ib[3]=E(37450)Ib[1]=Ib[2][Ib[3]]Ib[3]=0 Ib[2]=Ib[1](Ib[3],Ib[4])Ib[4]=E(37703)Ib[3]=k[Ib[4]]Ib[4]=E(37450)Ib[1]=Ib[3][Ib[4]]Ib[4]=.1 Ib[3]=Ib[1](Ib[4],Ib[5])Ib[5]=E(37703)Ib[4]=k[Ib[5]]Ib[5]=E(37450)w=1875968 Ib[1]=Ib[4][Ib[5]]Ib[5]=.9 Ib[4]=Ib[1](Ib[5],Ib[6])Ib[6]=E(37703)Ib[5]=k[Ib[6]]Ib[6]=E(37450)Ib[7]=1 Ib[1]=Ib[5][Ib[6]]Ib[6]=1 Ib[5]={Ib[1](Ib[6],Ib[7])}db={Ib[2],Ib[3];Ib[4];c(Ib[5])}Ob=rb(db)Ab={[Mb]=Ob}Nb={gb(nb,Ab)}Tb={c(Nb)}p={[kb]=C,[K]=z,[Z]=o,[B]=wb,[Eb]=cb;[eb]=vb,[Db]=P,[Hb]=Tb}W=Q(j,p)Q=26 j=E(37726)W=k[j]K={W(r)}j=K[1]kb=K[3]p=K[2]end else if w<2490269 then f=E(37479)w=5636608 d=E(37456)O=k[d]d=O()V=A[T[2]]O=V[f]r=d-O O=30 M=r<O g=M else r=E(37687)H=E(37485)g=k[H]M=k[r]H=g(M)g=E(37556)w=H==g w=w and 7185408 or 2222592 end end end else if w<2751814 then if w<2626014 then if w<2596286 then V=E(37643)d=H[V]r=d w=10054144 else w=385024 end else if w<2695750 then r=E(37593)M=k[r]w=7457792 r=E(37687)H=M[r]g=H else w=E(37709)g={w}w=k[E(37603)]end end else if w<2845107 then if w<2780869 then K=nil w=1875968 W=nil else t=v()A[t]=g S=65 i=F(3192320,{})w=A[f]U=E(37475)q=3 g=w(q,S)q=v()G=E(37611)w=0 A[q]=g S=w w=0 g=k[U]U={g(i)}X=w g=2 w={c(U)}U=w w=U[g]g=E(37746)i=w w=k[g]s=A[r]Y=k[G]G=Y(i)Y=E(37549)a=s(G,Y)s={a()}g=w(c(s))s=v()A[s]=g a=A[q]g=1 w=663040 Y=a a=1 G=a a=0 J=G<a a=g-G end else if w<2863672 then r=r+d f=not V M=r<=O M=f and M f=r>=O f=V and f M=f or M f=14769664 w=M and f M=7417344 w=w or M else M=E(37528)g=E(37505)O=E(37583)V=80 w=A[T[2]]w[g]=M g=E(37630)w=A[T[2]]r=k[O]O=E(37512)d=200 M=r[O]O=255 r=M(O,d,V)w[g]=r w=3444736 end end end end else if w<3224858 then if w<3102789 then if w<3048775 then if w<2952610 then if w<2904839 then Hb=0 Ib[6]=200 p=E(37480)K=E(37459)Db=E(37738)Ib[14]=0 Ib[5]=7 B=E(37583)nb=E(37478)eb=E(37589)W=A[T[5]]Eb=5 gb=0 o=k[B]wb=18 Nb=50 B=E(37512)Z=o[B]B=9 o=Z(B,Eb,wb)Eb=E(37560)Z=E(37558)wb=0 vb=k[Db]Ib[17]=E(37487)B=.22 Ib[1]=E(37740)Db=E(37450)Tb=52 cb=vb[Db]Db=0 vb=cb(Db,Y,Hb,Tb)Ib[13]=-10 cb=E(37527)Ib[4]=E(37663)Tb=E(37738)Hb=k[Tb]Tb=E(37450)Ib[7]=110 Db=Hb[Tb]Tb=0 Hb=Db(Tb,G,gb,Nb)Db=E(37595)Nb=A[X]Mb=A[T[5]]Ib[3]=k[Ib[4]]Ib[4]=E(37450)Tb=202 gb=E(37637)Ib[2]=Ib[3][Ib[4]]Ob=E(37487)Ib[4]=0 Ib[3]=Ib[2](Ib[4],Ib[5])Ib[19]=E(37740)Ib[8]=E(37648)Ib[2]=E(37641)Ib[5]=E(37583)db={[Ib[1]]=Ib[3]}Ib[12]=E(37490)rb=Mb(Ob,db)db=E(37682)Mb=A[T[5]]Ib[4]=k[Ib[5]]Ib[5]=E(37512)Ib[3]=Ib[4][Ib[5]]Ib[5]=80 Ib[4]=Ib[3](Ib[5],Ib[6],Ib[7])Ib[11]=k[Ib[12]]Ib[12]=E(37648)Ib[7]=1 Ib[10]=Ib[11][Ib[12]]Ib[3]=E(37524)Ib[11]=E(37674)Ib[9]=Ib[10][Ib[11]]Ib[5]=.52 Ib[6]=E(37543)Ib[11]=0 Ib[1]={[Ib[2]]=Ib[4];[Ib[3]]=Ib[5],[Ib[6]]=Ib[7];[Ib[8]]=Ib[9]}Ib[3]=E(37459)Ob=Mb(db,Ib[1])Ib[6]=E(37583)Ib[1]=E(37480)Ib[8]=110 Mb=A[T[5]]Ib[5]=k[Ib[6]]Ib[10]=E(37738)Ib[6]=E(37512)Ib[7]=200 Ib[4]=Ib[5][Ib[6]]Ib[6]=80 Ib[12]=.5 Ib[5]=Ib[4](Ib[6],Ib[7],Ib[8])Ib[4]=E(37560)Ib[23]=0 Ib[9]=k[Ib[10]]Ib[7]=E(37589)Ib[10]=E(37450)Ib[8]=Ib[9][Ib[10]]Ib[6]=0 Ib[10]=0 Ib[9]=Ib[8](Ib[10],Ib[11],Ib[12],Ib[13])Ib[8]=E(37527)Ib[13]=3 Ib[12]=E(37738)Ib[11]=k[Ib[12]]Ib[22]=E(37663)Ib[12]=E(37450)Ib[10]=Ib[11][Ib[12]]Ib[15]=20 Ib[12]=0 Ib[11]=Ib[10](Ib[12],Ib[13],Ib[14],Ib[15])Ib[10]=E(37595)Ib[12]=203 Ib[15]=A[T[5]]Ib[21]=k[Ib[22]]Ib[22]=E(37450)Ib[13]=E(37478)Ib[20]=Ib[21][Ib[22]]Ib[22]=1 Ib[21]=Ib[20](Ib[22],Ib[23])Ib[18]={[Ib[19]]=Ib[21]}Ib[16]={Ib[15](Ib[17],Ib[18])}Ib[14]={c(Ib[16])}Ib[2]={[Ib[3]]=Ib[5];[Ib[4]]=Ib[6];[Ib[7]]=Ib[9];[Ib[8]]=Ib[11];[Ib[10]]=Ib[12],[Ib[13]]=Ib[14]}db={Mb(Ib[1],Ib[2])}Ab={rb;Ob;c(db)}db=E(37490)kb={[K]=o,[Z]=B,[Eb]=wb;[eb]=vb,[cb]=Hb;[Db]=Tb;[gb]=Nb,[nb]=Ab}j=W(p,kb)W=A[T[5]]Ib[3]=E(37579)Db=0 Z=E(37558)Hb=1 eb=E(37738)wb=k[eb]Tb=0 o=1 vb=0 B=E(37589)kb=E(37503)eb=E(37450)cb=12 Eb=wb[eb]eb=0 wb=Eb(eb,cb,vb,Db)vb=E(37738)cb=k[vb]vb=E(37450)eb=cb[vb]Db=-16 vb=1 cb=eb(vb,Db,Hb,Tb)Eb=E(37527)Tb=E(37490)Hb=k[Tb]Tb=E(37481)Db=Hb[Tb]nb=170 Ib[2]=E(37490)Hb=E(37567)eb=E(37481)gb=E(37583)vb=Db[Hb]Ib[5]=E(37663)Db=E(37630)Tb=k[gb]gb=E(37512)Hb=Tb[gb]Ab=E(37670)Nb=230 gb=140 Ib[6]=6 Tb=Hb(gb,Nb,nb)Hb=E(37686)nb=true Nb=E(37510)Ib[13]=E(37490)gb=10 Ob=k[db]db=E(37670)rb=Ob[db]Ob=E(37735)Mb=rb[Ob]rb=E(37613)Ib[1]=k[Ib[2]]Ib[2]=E(37613)db=Ib[1][Ib[2]]Ib[1]=E(37609)Ob=db[Ib[1]]db=E(37595)Ib[1]=203 Ib[4]=E(37637)Ib[2]=E(37505)K={[Z]=o,[B]=wb;[Eb]=cb,[eb]=vb,[Db]=Tb;[Hb]=gb,[Nb]=nb;[Ab]=Mb,[rb]=Ob,[db]=Ib[1],[Ib[2]]=Ib[3],[Ib[4]]=j}cb=E(37589)wb=5 p=W(kb,K)Eb=E(37583)Z=E(37459)W=A[T[5]]B=k[Eb]Tb=0 kb=E(37480)Hb=E(37738)Eb=E(37512)o=B[Eb]nb=28 eb=18 Eb=9 B=o(Eb,wb,eb)Eb=.22 o=E(37558)gb=110 Db=k[Hb]wb=E(37560)Nb=0 Hb=E(37450)eb=0 Ab=E(37478)vb=Db[Hb]Hb=0 Ib[8]=190 Db=vb(Hb,Y,Tb,gb)Ib[2]=E(37740)vb=E(37527)gb=E(37738)Ib[9]=E(37648)Tb=k[gb]gb=E(37450)Hb=Tb[gb]db=E(37487)gb=0 Tb=Hb(gb,G,Nb,nb)gb=202 Nb=E(37637)Hb=E(37595)nb=A[X]rb=A[T[5]]Ib[7]=50 Ib[4]=k[Ib[5]]Ib[5]=E(37450)Ib[3]=Ib[4][Ib[5]]Ib[5]=0 Ib[4]=Ib[3](Ib[5],Ib[6])Ib[1]={[Ib[2]]=Ib[4]}Ob=rb(db,Ib[1])Ib[3]=E(37641)rb=A[T[5]]Ib[6]=E(37583)Ib[5]=k[Ib[6]]Ib[1]=E(37682)Ib[6]=E(37512)Ib[4]=Ib[5][Ib[6]]Ib[6]=100 Ib[5]=Ib[4](Ib[6],Ib[7],Ib[8])Ib[12]=k[Ib[13]]Ib[4]=E(37524)Ib[13]=E(37648)Ib[7]=E(37543)Ib[6]=.6 Ib[8]=1 Ib[11]=Ib[12][Ib[13]]Ib[12]=E(37674)Ib[10]=Ib[11][Ib[12]]Ib[2]={[Ib[3]]=Ib[5];[Ib[4]]=Ib[6],[Ib[7]]=Ib[8];[Ib[9]]=Ib[10]}db={rb(Ib[1],Ib[2])}Mb={Ob;c(db)}K={[Z]=B;[o]=Eb,[wb]=eb,[cb]=Db,[vb]=Tb,[Hb]=gb;[Nb]=nb;[Ab]=Mb}o=E(37558)p=W(kb,K)Tb=0 B=1 K=E(37602)cb=E(37738)W=A[T[5]]vb=8 Ab=200 eb=k[cb]cb=E(37450)wb=eb[cb]Eb=E(37589)nb=80 cb=0 Db=.5 Hb=-6 eb=wb(cb,vb,Db,Hb)wb=E(37527)Db=E(37738)vb=k[Db]Db=E(37450)Hb=12 cb=vb[Db]gb=12 Nb=E(37583)Db=0 vb=cb(Db,Hb,Tb,gb)gb=k[Nb]Hb=E(37518)Db=E(37650)Nb=E(37512)Tb=gb[Nb]Nb=130 cb=E(37662)gb=Tb(Nb,nb,Ab)Tb=E(37595)Ib[1]=E(37490)rb=200 nb=E(37637)Nb=203 Z={[o]=B;[Eb]=eb,[wb]=vb;[cb]=Db,[Hb]=gb,[Tb]=Nb,[nb]=p}kb=W(K,Z)o=E(37558)K=E(37503)Mb=140 W=A[T[5]]B=1 gb=0 cb=E(37738)eb=k[cb]Db=0 Eb=E(37589)cb=E(37450)wb=eb[cb]Hb=0 cb=0 vb=25 eb=wb(cb,vb,Db,Hb)Hb=-30 Db=E(37738)vb=k[Db]Db=E(37450)cb=vb[Db]wb=E(37527)Tb=1 Db=1 vb=cb(Db,Hb,Tb,gb)cb=E(37481)gb=E(37490)Tb=k[gb]gb=E(37481)Hb=Tb[gb]Tb=E(37489)Db=Hb[Tb]Ab=E(37583)nb=k[Ab]Ib[11]=E(37648)Tb=E(37482)Hb=E(37505)Ib[4]=E(37740)Ab=E(37512)gb=E(37630)Nb=nb[Ab]Ab=160 nb=Nb(Ab,Mb,rb)Ib[9]=55 db=k[Ib[1]]Ib[1]=E(37670)Nb=E(37686)Ab=10 Ob=db[Ib[1]]Ib[1]=E(37637)db=E(37735)Mb=E(37670)rb=Ob[db]db=203 Ib[15]=E(37490)Ob=E(37595)Z={[o]=B;[Eb]=eb;[wb]=vb,[cb]=Db;[Hb]=Tb,[gb]=nb,[Nb]=Ab,[Mb]=rb;[Ob]=db;[Ib[1]]=p}Ib[7]=E(37663)kb=W(K,Z)W=v()Ib[8]=7 vb=9 A[W]=kb Ab=0 Z=E(37480)gb=E(37738)kb=A[T[5]]cb=2 Ib[2]=E(37487)B=E(37459)rb=E(37478)eb=E(37583)Nb=0 wb=k[eb]Db=E(37589)Ib[10]=200 Mb=34 eb=E(37512)Eb=wb[eb]eb=4 wb=Eb(eb,cb,vb)vb=0 Tb=k[gb]Ib[18]=E(37663)eb=0 nb=146 cb=E(37560)Eb=E(37558)gb=E(37450)Hb=Tb[gb]gb=0 Tb=Hb(gb,Y,Nb,nb)Hb=E(37527)nb=E(37738)Nb=k[nb]nb=E(37450)gb=Nb[nb]nb=0 Nb=gb(nb,G,Ab,Mb)gb=E(37595)Ab=E(37637)nb=202 Mb=A[X]db=A[T[5]]Ib[6]=k[Ib[7]]Ib[7]=E(37450)Ib[5]=Ib[6][Ib[7]]Ib[7]=0 Ib[6]=Ib[5](Ib[7],Ib[8])Ib[3]={[Ib[4]]=Ib[6]}Ib[1]=db(Ib[2],Ib[3])Ib[3]=E(37682)Ib[8]=E(37583)Ib[5]=E(37641)db=A[T[5]]Ib[7]=k[Ib[8]]Ib[8]=E(37512)Ib[6]=Ib[7][Ib[8]]Ib[8]=110 Ib[7]=Ib[6](Ib[8],Ib[9],Ib[10])Ib[9]=E(37543)Ib[14]=k[Ib[15]]Ib[10]=1 Ib[6]=E(37524)Ib[15]=E(37648)Ib[8]=.48 Ib[13]=Ib[14][Ib[15]]Ib[14]=E(37674)Ib[12]=Ib[13][Ib[14]]Ib[4]={[Ib[5]]=Ib[7];[Ib[6]]=Ib[8],[Ib[9]]=Ib[10];[Ib[11]]=Ib[12]}Ib[2]={db(Ib[3],Ib[4])}Ob={Ib[1],c(Ib[2])}o={[B]=wb,[Eb]=eb;[cb]=vb;[Db]=Tb,[Hb]=Nb;[gb]=nb,[Ab]=Mb;[rb]=Ob}Hb=10 K=kb(Z,o)eb=E(37589)o=E(37602)kb=A[T[5]]Tb=.5 Eb=E(37558)Db=E(37738)vb=k[Db]Db=E(37450)wb=1 Ab=E(37583)cb=vb[Db]Mb=75 gb=-7 Db=0 vb=cb(Db,Hb,Tb,gb)Tb=E(37738)cb=E(37527)Hb=k[Tb]rb=195 Tb=E(37450)Ib[8]=203 Db=Hb[Tb]Nb=0 Tb=0 gb=14 nb=14 Hb=Db(Tb,gb,Nb,nb)Db=E(37662)gb=E(37518)Tb=E(37650)nb=k[Ab]Ab=E(37512)Nb=nb[Ab]Ab=120 nb=Nb(Ab,Mb,rb)Ib[3]=175 Ab=203 Mb=E(37637)Ob=60 Nb=E(37595)B={[Eb]=wb;[eb]=vb;[cb]=Hb,[Db]=Tb;[gb]=nb,[Nb]=Ab,[Mb]=K}Db=E(37738)Z=kb(o,B)o=E(37496)Hb=30 nb=0 kb=A[T[5]]wb=1 gb=0 Eb=E(37558)Tb=0 vb=k[Db]Nb=1 Db=E(37450)cb=vb[Db]Ib[4]=255 eb=E(37589)Db=0 vb=cb(Db,Hb,Tb,gb)cb=E(37527)Tb=E(37738)Hb=k[Tb]Tb=E(37450)Db=Hb[Tb]gb=-54 Tb=1 db=125 rb=E(37583)Hb=Db(Tb,gb,Nb,nb)nb=E(37490)Nb=k[nb]nb=E(37481)gb=Nb[nb]Nb=E(37489)nb=E(37634)Db=E(37481)Tb=gb[Nb]Mb=k[rb]Ib[2]=E(37583)gb=E(37466)Nb=E(37500)rb=E(37512)Ab=Mb[rb]rb=85 Mb=Ab(rb,Ob,db)Ob=E(37630)Ib[9]=E(37637)rb=E(37709)Ib[1]=k[Ib[2]]Ab=E(37505)Ib[7]=E(37490)Ib[2]=E(37512)db=Ib[1][Ib[2]]Ib[2]=200 Ib[1]=db(Ib[2],Ib[3],Ib[4])Ib[3]=E(37670)db=E(37686)Ib[2]=11 Ib[6]=k[Ib[7]]Ib[7]=E(37670)Ib[5]=Ib[6][Ib[7]]Ib[7]=E(37595)Ib[6]=E(37735)Ib[4]=Ib[5][Ib[6]]Ib[5]=E(37654)Ib[6]=false Ib[13]=E(37487)B={[Eb]=wb,[eb]=vb;[cb]=Hb,[Db]=Tb;[gb]=Nb,[nb]=Mb,[Ab]=rb,[Ob]=Ib[1],[db]=Ib[2];[Ib[3]]=Ib[4];[Ib[5]]=Ib[6];[Ib[7]]=Ib[8],[Ib[9]]=K}Z=kb(o,B)Ib[4]=684 Ib[1]=0 kb=v()Db=35 B=E(37468)A[kb]=Z Ib[2]=24 Z=A[T[5]]wb=E(37459)Hb=155 vb=E(37583)rb=-5 cb=k[vb]vb=E(37512)eb=cb[vb]Ib[19]=5 Ob=.5 vb=75 db=0 Tb=E(37586)nb=E(37697)cb=eb(vb,Db,Hb)Hb=0 vb=.62 Ab=.5 eb=E(37558)Mb=E(37738)Nb=k[nb]Ib[8]=115 nb=E(37450)gb=Nb[nb]Ib[3]=E(37697)nb=1 Ib[5]=E(37697)Db=E(37560)Nb=gb(nb,Ab)gb=E(37589)Ab=k[Mb]Mb=E(37450)nb=Ab[Mb]Ib[7]=E(37583)Mb=1 Ab=nb(Mb,rb,Ob,db)db=24 nb=E(37527)Ob=E(37738)rb=k[Ob]Ob=E(37450)Mb=rb[Ob]Ib[9]=225 Ob=0 rb=Mb(Ob,db,Ib[1],Ib[2])Ob=E(37563)Ib[2]=k[Ib[3]]Ib[6]=36 Ib[3]=E(37450)Ib[1]=Ib[2][Ib[3]]db=E(37561)Mb=E(37662)Ib[3]=324 Ib[2]=Ib[1](Ib[3],Ib[4])Ib[4]=k[Ib[5]]Ib[1]=E(37598)Ib[5]=E(37450)Ib[3]=Ib[4][Ib[5]]Ib[5]=36 Ib[4]=Ib[3](Ib[5],Ib[6])Ib[3]=E(37518)Ib[6]=k[Ib[7]]Ib[7]=E(37512)Ib[5]=Ib[6][Ib[7]]Ib[7]=155 Ib[6]=Ib[5](Ib[7],Ib[8],Ib[9])Ib[5]=E(37595)Ib[7]=204 Ib[11]=A[T[5]]Ib[15]=E(37740)Ib[17]=k[Ib[18]]Ib[18]=E(37450)Ib[16]=Ib[17][Ib[18]]Ib[18]=0 Ib[17]=Ib[16](Ib[18],Ib[19])Ib[14]={[Ib[15]]=Ib[17]}Ib[12]={Ib[11](Ib[13],Ib[14])}Ib[10]={c(Ib[12])}Ib[8]=E(37637)Ib[9]=E(37478)Eb={[wb]=cb;[eb]=vb;[Db]=Hb,[Tb]=Nb;[gb]=Ab,[nb]=rb,[Mb]=Ob;[db]=Ib[2];[Ib[1]]=Ib[4],[Ib[3]]=Ib[6];[Ib[5]]=Ib[7],[Ib[8]]=K,[Ib[9]]=Ib[10]}Ib[1]=135 o=Z(B,Eb)Z=v()cb=1 Eb=E(37587)A[Z]=o gb=0 B=A[Z]o=B[Eb]eb=E(37558)Eb=e(7374336,{T[6],Z})Nb=185 B=E(37733)B=o[B]B=B(o,Eb)db=E(37583)B=A[Z]Eb=E(37526)Ib[2]=190 o=B[Eb]Eb=e(3582464,{T[6],Z})B=E(37733)B=o[B]B=B(o,Eb)Eb=E(37599)vb=E(37589)B=A[Z]Tb=E(37738)o=B[Eb]Eb=l(1131520,{kb})B=E(37733)B=o[B]B=B(o,Eb)Mb=E(37490)Eb=E(37503)o=A[T[5]]nb=0 Hb=k[Tb]Tb=E(37450)Db=Hb[Tb]Tb=0 Hb=Db(Tb,Y,gb,Nb)Nb=E(37738)Db=E(37527)Ib[5]=E(37490)gb=k[Nb]Ab=13 Nb=E(37450)Tb=gb[Nb]Nb=0 gb=Tb(Nb,G,nb,Ab)Tb=E(37481)Ab=k[Mb]Mb=E(37481)nb=Ab[Mb]Mb=E(37630)Ab=E(37489)Nb=nb[Ab]nb=E(37505)Ob=k[db]db=E(37512)rb=Ob[db]Ab=E(37709)db=155 Ob=rb(db,Ib[1],Ib[2])Ib[4]=k[Ib[5]]Ib[5]=E(37670)db=9 Ib[3]=Ib[4][Ib[5]]Ib[5]=E(37637)Ib[4]=E(37609)rb=E(37686)Ib[2]=Ib[3][Ib[4]]Ib[4]=202 Ib[1]=E(37670)Ib[6]=A[X]Ib[3]=E(37595)wb={[eb]=cb,[vb]=Hb,[Db]=gb;[Tb]=Nb,[nb]=Ab;[Mb]=Ob,[rb]=db;[Ib[1]]=Ib[2],[Ib[3]]=Ib[4],[Ib[5]]=Ib[6]}B=o(Eb,wb)w=9595904 o=v()vb=E(37577)A[o]=B Eb=v()wb=v()B=202 A[Eb]=B B=30 Tb=2 A[wb]=B Mb=70 nb=E(37583)B=6 cb=k[vb]vb=E(37568)eb=cb[vb]Hb=B*Tb Db=G-Hb Hb=3 vb=Db/Hb cb=eb(vb)eb=y(10791936,{T[5];Eb;wb,X,T[6];T[7];T[8]})Db=l(6476288,{T[6],X,U,S,q,x,f})vb=v()A[vb]=Db Hb=y(9815040,{t;o;T[9],V,T[10];T[3];W,vb})Db=v()Tb=E(37651)A[Db]=Hb Ib[14]=E(37490)Nb=k[nb]nb=E(37512)gb=Nb[nb]nb=35 Ab=14 Nb=gb(nb,Ab,Mb)rb=255 Mb=130 Ob=255 Ab=E(37583)nb=k[Ab]Ab=E(37512)gb=nb[Ab]Ab=170 nb=gb(Ab,Mb,rb)gb=L(5235712,{V,vb})Hb=eb(Tb,Y,cb,Nb,nb,gb)Tb=E(37461)Nb=Y+cb Ib[2]=0 gb=Nb+B Ab=E(37583)nb=k[Ab]Ab=E(37512)Mb=35 Nb=nb[Ab]Ib[6]=E(37490)Ab=12 rb=70 nb=Nb(Ab,Mb,rb)Mb=E(37583)Ib[4]=0 Ab=k[Mb]Mb=E(37512)rb=175 Nb=Ab[Mb]Mb=105 Ab=Nb(Mb,rb,Ob)rb=100 Mb=14 Nb=e(7002112,{o;T[11]})Hb=eb(Tb,gb,cb,nb,Ab,Nb)Ab=2 nb=cb+B Tb=E(37476)Ib[3]=E(37738)Nb=nb*Ab Ab=E(37583)gb=Y+Nb nb=k[Ab]Ab=E(37512)Nb=nb[Ab]Ab=48 nb=Nb(Ab,Mb,rb)Mb=E(37583)rb=150 Ab=k[Mb]Mb=E(37512)Nb=Ab[Mb]Ob=255 Mb=200 Ab=Nb(Mb,rb,Ob)Nb=F(16131584,{kb;o;Db})Ib[5]=12 Hb=eb(Tb,gb,cb,nb,Ab,Nb)Ib[1]=E(37738)gb=A[Eb]Nb=A[wb]Tb=gb+Nb Ib[9]=E(37583)rb=E(37589)gb=14 Hb=Tb+gb Tb=A[T[5]]Ib[10]=170 Ab=E(37558)Mb=1 Nb=E(37503)db=k[Ib[1]]Ib[1]=E(37450)Ob=db[Ib[1]]Ib[1]=0 db=Ob(Ib[1],Y,Ib[2],Hb)Ob=E(37527)Ib[2]=k[Ib[3]]Ib[3]=E(37450)Ib[1]=Ib[2][Ib[3]]Ib[3]=0 Ib[2]=Ib[1](Ib[3],G,Ib[4],Ib[5])Ib[5]=k[Ib[6]]Ib[1]=E(37481)Ib[6]=E(37481)Ib[4]=Ib[5][Ib[6]]Ib[5]=E(37489)Ib[3]=Ib[4][Ib[5]]Ib[4]=E(37505)Ib[8]=k[Ib[9]]Ib[6]=E(37630)Ib[11]=65 Ib[5]=E(37718)Ib[9]=E(37512)Ib[7]=Ib[8][Ib[9]]Ib[9]=200 Ib[8]=Ib[7](Ib[9],Ib[10],Ib[11])Ib[13]=k[Ib[14]]Ib[9]=9 Ib[14]=E(37670)Ib[10]=E(37670)Ib[12]=Ib[13][Ib[14]]Ib[7]=E(37686)Ib[14]=E(37637)Ib[13]=E(37609)Ib[11]=Ib[12][Ib[13]]Ib[13]=202 Ib[15]=A[X]Ib[12]=E(37595)nb={[Ab]=Mb,[rb]=db,[Ob]=Ib[2],[Ib[1]]=Ib[3],[Ib[4]]=Ib[5],[Ib[6]]=Ib[8],[Ib[7]]=Ib[9],[Ib[10]]=Ib[11];[Ib[12]]=Ib[13];[Ib[14]]=Ib[15]}db=120 Ab=E(37647)Ob=E(37583)gb=Tb(Nb,nb)Ib[1]=255 Nb=E(37702)nb=E(37614)rb=k[Ob]Ib[2]=255 Ob=E(37512)Mb=rb[Ob]Ob=100 rb=Mb(Ob,db,Ib[1])gb={[Nb]=nb,[Ab]=rb}Ab=E(37538)Mb=E(37647)nb=E(37702)Ib[1]=130 db=E(37583)Ob=k[db]db=E(37512)rb=Ob[db]db=185 Ob=rb(db,Ib[1],Ib[2])Nb={[nb]=Ab,[Mb]=Ob}Tb={gb;Nb}gb=26 db=2 Ab=#Tb nb=Ab*gb Ob=1 rb=#Tb Mb=rb-Ob rb=8 Ab=Mb*rb Nb=nb+Ab rb=E(37577)Mb=k[rb]rb=E(37568)Ab=Mb[rb]Ob=G-Nb rb=Ob/db Mb=Ab(rb)nb=Y+Mb Mb=E(37726)Ab=k[Mb]db={Ab(Tb)}Mb=db[1]rb=db[2]Ob=db[3]else j,p=P(W,j)w=j and 6141952 or 2457600 end else Mb=A[i]rb=E(37587)Ab=Mb[rb]db=E(37558)Ib[1]=.5 Ib[4]=E(37490)Mb=E(37733)Mb=Ab[Mb]rb=F(381440,{T[6],i})Mb=Mb(Ab,rb)Mb=A[i]rb=E(37526)Ab=Mb[rb]Mb=E(37733)Mb=Ab[Mb]rb=l(11833344,{T[6];i})Mb=Mb(Ab,rb)rb=E(37599)Mb=A[i]Ib[5]=0 Ab=Mb[rb]rb=m(16034304,{V,vb})Mb=E(37733)Mb=Ab[Mb]Mb=Mb(Ab,rb)Ob={[db]=Ib[1]}Ab=A[T[6]]rb=A[q]db=.28 Ib[3]=k[Ib[4]]Ib[4]=E(37516)Ib[2]=Ib[3][Ib[4]]Ib[3]=E(37707)Ib[1]=Ib[2][Ib[3]]Ib[3]=E(37738)Mb=Ab(rb,Ob,db,Ib[1])Ab=A[T[6]]rb=A[X]db=E(37527)Ib[2]=k[Ib[3]]Ib[3]=E(37450)Ib[1]=Ib[2][Ib[3]]Ib[3]=0 Ib[4]=A[U]Ib[6]=A[S]Ib[2]=Ib[1](Ib[3],Ib[4],Ib[5],Ib[6])Ib[3]=0 Ib[1]=E(37558)Ib[4]=E(37490)Ob={[db]=Ib[2],[Ib[1]]=Ib[3]}db=.36 Ib[3]=k[Ib[4]]Ib[4]=E(37516)Ib[2]=Ib[3][Ib[4]]Ib[5]=E(37490)Ib[3]=E(37610)Ib[1]=Ib[2][Ib[3]]Ib[4]=k[Ib[5]]Ib[5]=E(37601)Ib[3]=Ib[4][Ib[5]]Ib[4]=E(37564)Ib[2]=Ib[3][Ib[4]]Mb=Ab(rb,Ob,db,Ib[1],Ib[2])rb=E(37671)Mb=k[rb]Ob=E(37709)rb=E(37620)Ab=Mb[rb]rb=R(13346816,{T[1],W;o})Mb=Ab(rb)Ab=A[T[2]]Mb=Ab()Ab=v()A[Ab]=Mb rb=A[Ab]Mb=rb~=Ob w=Mb and 14023680 or 1555968 end else if w<3079206 then w=S w=6869504 t=not q f=t else w=O w=g and 8465408 or 5568512 end end else if w<3193895 then if w<3181781 then W=255 u=v()Q=E(37577)A[u]=a b=2 g=k[Q]P=100 Q=E(37742)w=g[Q]Q=1 g=w(Q,P)Q=v()A[Q]=g w=A[f]P=0 o=0 g=w(P,W)P=v()A[P]=g B=10000 p=1 W=1 w=A[f]j=A[Q]g=w(W,j)W=v()A[W]=g g=A[f]j=g(p,b)g=1 C=E(37611)w=j==g j=v()g=E(37549)A[j]=w K=k[C]b=E(37553)z=A[f]w=E(37492)Z={z(o,B)}C=K(c(Z))K=E(37553)kb=C..K w=i[w]p=b..kb w=w(i,g,p)b=E(37475)p=v()A[p]=w g=k[b]kb=m(16285184,{f,u,q;r;M;s;j;p,Q,W,P,t})b={g(kb)}w={c(b)}b=w w=A[j]w=w and 7364608 or 11641344 else M=E(37652)g=8008193 r=6112257 H=M^r w=g-H g=E(37491)H=w w=g/H g={w}w=k[E(37644)]end else if w<3219814 then w=x w=1866752 d=f else M=not H w=M and 10052608 or 12448256 g=M end end end else if w<3300910 then if w<3290145 then if w<3236426 then w=true g=E(37457)g={w;g}w=k[E(37756)]else g=E(37475)w=k[g]M=m(1845248,{})r={w(M)}H=r[2]g=r[1]M=g w=M and 14896128 or 9426944 g=M end else if w<3297877 then w=15736320 A[T[5]]=g H=nil else u=E(37698)G=E(37611)w=k[G]J=k[u]G=w(J)w=E(37714)k[w]=G w=849408 end end else if w<3539815 then if w<3419896 then d=E(37571)O=k[d]w=69632 d=E(37631)r=O[d]g=r else w=12558336 H=I(H)end else if w<3666589 then w=A[T[1]]O=.62 H=A[T[2]]r=E(37558)M={[r]=O}r=.16 g=w(H,M,r)g={}w=k[E(37451)]else w=true H=D M=v()r=E(37565)A[M]=w g=k[r]r=E(37653)w=g[r]r=v()O=v()d=v()A[r]=w x=l(7812096,{d})w=e(12857344,{})f=E(37475)A[O]=w w=false A[d]=w V=k[f]f=V(x)w=f and 12608512 or 12032000 g=f end end end end end end else if w<5628642 then if w<4598896 then if w<4132485 then if w<3862578 then if w<3830938 then if w<3818831 then if w<3772862 then Ob=E(37671)rb=k[Ob]Ob=E(37513)Mb=rb[Ob]Ob=.08 rb=Mb(Ob)Mb=A[f]w=Mb and 7022080 or 3748352 else p=nil Q=nil w=2457600 end else H=e(8315392,{T[1]})g=E(37475)r=E(37583)w=k[g]g=w(H)w=A[T[2]]O=195 H=E(37498)g=E(37505)w[g]=H g=E(37630)w=A[T[2]]M=k[r]r=E(37512)d=255 H=M[r]r=105 M=H(r,O,d)w[g]=M w=k[E(37515)]g={}end else if w<3835619 then O=true g=M==O w=g and 14272512 or 4058624 else w=d V=w x=w S=E(37509)q=k[S]d=g S=q(r)q=E(37617)t=S==q f=t w=t and 985088 or 7583232 end end else if w<3974540 then if w<3916004 then x=V w=v()A[w]=x x=w w=v()A[w]=t U=E(37478)t=w X=A[x]S=X~=U w=S and 12770304 or 13892608 q=S else H=E(37571)g=k[H]H=E(37687)w=g[H]g={w}w=k[E(37557)]end else if w<3981689 then S=R(14251008,{O,x;t})q=E(37475)w=k[q]q=w(S)w=6808576 else O=false g=E(37452)r[g]=O g=E(37649)w=4548608 O=false r[g]=O g=E(37550)O=false r[g]=O end end end else if w<4451041 then if w<4341975 then if w<4238421 then if w<4235329 then w=true w=w and 7380992 or 13468160 else S=E(37607)q=r[S]w=16489472 x=q end else f,t=d(V,f)w=f and 5284864 or 6193152 end else if w<4381619 then S=E(37753)t=w q=r[S]x=q w=q and 16489472 or 4236800 else j=E(37636)w=12062720 W=k[j]Q=W end end else if w<4515363 then if w<4469763 then M=v()H=v()A[H]=D[1]r=v()O=E(37671)A[M]=D[2]A[r]=D[3]g=k[O]O=E(37620)w=g[O]O=l(5063680,{H,M,r,T[1];T[2]})r=I(r)H=I(H)M=I(M)g=w(O)g={}w=k[E(37566)]else M=A[T[2]]w=14764544 r=A[T[3]]H=M==r g=H end else if w<4555588 then O=w d=A[H]g=d w=d and 4873728 or 3084288 else w=16074752 Ib[2]=rb end end end end else if w<5220766 then if w<4882628 then if w<4794353 then if w<4754892 then if w<4629450 then r=E(37583)d=130 O=230 w=A[T[2]]H=E(37547)g=E(37505)w[g]=H g=E(37630)w=A[T[2]]M=k[r]r=E(37512)H=M[r]r=80 M=H(r,O,d)w[g]=M g=E(37505)w=A[T[3]]H=E(37691)r=E(37583)w[g]=H O=220 d=160 w=A[T[3]]g=E(37630)M=k[r]r=E(37512)H=M[r]r=130 M=H(r,O,d)w[g]=M w=12558336 else w=A[T[1]]M=A[T[2]]r={w(M)}w=false g=r[1]M=g H=r[2]A[T[3]]=w w=M and 9624064 or 11682304 end else r=E(37745)w=E(37637)g=k[r]r=g()H[w]=r w=15187968 end else if w<4831723 then w=g and 12027904 or 13832704 else V=A[H]w=3084288 f=E(37709)d=V~=f g=d end end else if w<5047569 then if w<5030466 then O=E(37699)r=k[O]w=1788416 g=r else V=E(37582)O=w H=v()A[H]=D[1]d=k[V]r=d M=D[2]w=d and 1134592 or 151552 end else if w<5132270 then w=A[T[1]]H=true q=E(37518)W=0 d=E(37748)g=E(37484)w[g]=H g=A[T[2]]r=A[T[1]]O=E(37748)M=r[O]r=E(37551)H=M[r]w=g-H g=A[T[3]]O=A[T[1]]H=w r=O[d]O=E(37696)f=E(37535)M=r[O]w=g-M M=w a=E(37595)O=E(37577)r=k[O]O=E(37629)x=E(37535)g=r[O]u=E(37595)V=A[T[1]]i=255 d=V[f]U=E(37583)t=E(37716)V=E(37551)j=0 O=d[V]f=A[T[1]]V=f[x]f=E(37696)d=V[f]r=g(O,d)g=1.6 V=E(37728)w=r*g x=E(37662)O=E(37602)f=E(37585)r=w w=A[T[4]]X=k[U]U=E(37512)S=X[U]U=255 s=255 Q=E(37738)X=S(U,i,s)U=.82 S=E(37752)i=E(37558)J=A[T[1]]G=J[u]s=1 J=5 P=0 Y=G+J G=E(37527)u=k[Q]Q=E(37450)J=u[Q]Q=0 u=J(Q,P,W,j)W=E(37738)j=0 P=k[W]J=E(37589)W=E(37450)Q=P[W]W=0 P=Q(W,H,j,M)d={[V]=f;[x]=t;[q]=X;[S]=U;[i]=s,[a]=Y,[G]=u;[J]=P}q=0 a=2 V=A[T[1]]g=w(O,d,V)O=g t=E(37738)S=E(37738)V=E(37527)w=A[T[5]]i=2 x=k[t]t=E(37450)f=x[t]t=0 x=f(t,r,q,r)f=E(37589)q=k[S]S=E(37450)t=q[S]S=.5 U=-r X=U/i U=.5 s=-r i=s/a q=t(S,X,U,i)d={[V]=x;[f]=q}q=E(37490)V=.45 t=k[q]r=nil q=E(37516)x=t[q]t=E(37676)f=x[t]g=w(O,d,V,f)f=1 w=A[T[5]]q=E(37490)V=E(37752)d={[V]=f}t=k[q]V=.45 q=E(37516)x=t[q]t=E(37660)f=x[t]g=w(O,d,V,f)M=nil d=E(37671)g=k[d]H=nil d=E(37513)w=g[d]d=.46 g=w(d)w=E(37542)w=O[w]w=w(O)O=nil g={}w=k[E(37678)]else g=t w=q w=t and 2781696 or 10703872 end end end else if w<5391013 then if w<5277387 then if w<5237876 then w=false A[T[1]]=w w=k[E(37700)]g=A[T[2]]H=g()g={}else r=E(37571)M=k[r]r=E(37687)H=M[r]w=6883328 g=H end else if w<5373940 then q=E(37475)x=f w=v()x=nil A[w]=t t=w w=k[q]S=F(8899072,{t;O})t=I(t)q=w(S)w=4313088 else u=E(37509)J=k[u]s=w i=J w=J and 8463872 or 891904 end end else if w<5561869 then if w<5487264 then t=E(37490)x=k[t]t=E(37516)f=x[t]x=E(37707)V=f[x]w=8847872 g=V else d=E(37478)w=M[d]w=w and 7862784 or 15544832 end else if w<5575767 then r=nil H=I(H)g={}w=k[E(37667)]M=nil else w=A[T[1]]g=E(37624)k[g]=w g={}w=k[E(37750)]end end end end end else if w<6991198 then if w<6478509 then if w<6114633 then if w<5790451 then if w<5694629 then if w<5653212 then w=g and 9064448 or 364032 else d=V q=E(37507)w=A[T[1]]t=k[q]q=E(37450)g={}f=E(37467)x=t[q]f=w[f]t=x(r,O,d)f=f(w,H,t,M)O=nil H=nil M=nil d=nil r=nil w=E(37508)w=f[w]w=w(f)w=k[E(37544)]end else w=E(37637)r=E(37499)g=M[r]H[w]=g w=15187968 end else if w<5969668 then w=4194304 else O=E(37611)g=E(37746)x=E(37475)t=L(15765504,{})w=k[g]H=A[T[4]]r=k[O]f=k[x]x={f(t)}V={c(x)}f=2 d=V[f]O=r(d)r=E(37549)M=H(O,r)H={M()}g=w(c(H))M=A[T[5]]H=g w=M and 10876416 or 3297792 g=M end end else if w<6201417 then if w<6156384 then Q=j Nb=E(37536)o=E(37589)Z=1 z=E(37558)Tb=w b=A[T[5]]Db=0 cb=0 K=E(37503)wb=E(37738)eb=9 Eb=k[wb]wb=E(37450)Hb=12 B=Eb[wb]wb=0 Eb=B(wb,eb,cb,J)B=E(37527)cb=E(37738)eb=k[cb]vb=55 Ob=E(37490)cb=E(37450)wb=eb[cb]cb=0 eb=wb(cb,vb,Db,Hb)wb=E(37481)Hb=E(37490)Db=k[Hb]Hb=E(37481)vb=Db[Hb]Db=E(37489)cb=vb[Db]Tb=E(37553)Ab=165 vb=E(37505)gb=p[Nb]Nb=E(37709)Hb=gb or Nb Nb=E(37583)Db=Hb..Tb gb=k[Nb]Hb=E(37630)nb=85 Nb=E(37512)Tb=gb[Nb]Nb=115 gb=Tb(Nb,nb,Ab)Tb=E(37686)nb=E(37670)Nb=9 rb=k[Ob]Ob=E(37670)Mb=rb[Ob]rb=E(37735)Ab=Mb[rb]Mb=E(37595)rb=203 Ob=E(37637)C={[z]=Z;[o]=Eb,[B]=eb,[wb]=cb,[vb]=Db;[Hb]=gb,[Tb]=Nb,[nb]=Ab;[Mb]=rb,[Ob]=u}kb=b(K,C)wb=E(37738)vb=-70 o=E(37589)Z=1 Hb=12 b=A[T[5]]eb=64 Eb=k[wb]z=E(37558)Ab=220 wb=E(37450)K=E(37503)B=Eb[wb]wb=0 cb=0 Eb=B(wb,eb,cb,J)nb=E(37537)gb=w cb=E(37738)eb=k[cb]cb=E(37450)wb=eb[cb]B=E(37527)Db=0 cb=1 eb=wb(cb,vb,Db,Hb)wb=E(37481)Hb=E(37490)Db=k[Hb]Hb=E(37481)vb=Db[Hb]Db=E(37567)cb=vb[Db]vb=E(37505)Hb=E(37611)Db=k[Hb]Nb=p[nb]nb=E(37709)Tb=Nb or nb Nb=E(37583)Hb=Db(Tb)Db=E(37630)gb=k[Nb]Ib[1]=E(37490)Nb=E(37512)Ob=E(37490)Tb=gb[Nb]nb=155 Nb=180 gb=Tb(Nb,nb,Ab)nb=E(37670)Nb=9 rb=k[Ob]Ob=E(37670)Mb=rb[Ob]Tb=E(37686)rb=E(37735)Ab=Mb[rb]db=k[Ib[1]]Mb=E(37473)Ib[1]=E(37473)Ob=db[Ib[1]]db=E(37584)rb=Ob[db]db=203 Ib[1]=E(37637)Ob=E(37595)C={[z]=Z,[o]=Eb;[B]=eb,[wb]=cb,[vb]=Hb,[Db]=gb,[Tb]=Nb,[nb]=Ab,[Mb]=rb;[Ob]=db;[Ib[1]]=u}kb=b(K,C)K=96 kb=16 b=J+kb J=b kb=J>K w=kb and 3783168 or 15349760 else w=15544832 end else if w<6279821 then w=nil g={w}w=k[E(37642)]else S=.65 w=A[T[1]]V=E(37738)r=E(37527)H=A[T[2]]t=.65 d=k[V]V=E(37450)O=d[V]V=0 x=A[T[3]]f=x*t x=0 q=A[T[4]]t=q*S d=O(V,f,x,t)O=E(37558)V=.75 f=E(37490)M={[r]=d;[O]=V}r=.2 V=k[f]f=E(37516)x=E(37490)d=V[f]V=E(37707)O=d[V]f=k[x]x=E(37601)V=f[x]f=E(37541)d=V[f]g=w(H,M,r,O,d)w=A[T[1]]r=E(37558)O=1 H=A[T[5]]f=E(37490)M={[r]=O}V=k[f]f=E(37516)r=.2 d=V[f]V=E(37707)O=d[V]g=w(H,M,r,O)H=E(37671)g=k[H]H=E(37572)w=g[H]M=F(6647808,{T[6],T[7]})H=.22 g=w(H,M)g={}w=k[E(37758)]end end end else if w<6799859 then if w<6645670 then if w<6557588 then w=k[E(37689)]H=nil M=nil g={}else g=E(37643)x=false t=E(37744)q=E(37639)d=E(37479)f=E(37456)V=k[f]f=V()V=E(37605)w={[g]=H,[d]=f;[V]=x,[t]=q}d=E(37639)g=false A[T[2]]=w g={g;d}w=k[E(37612)]end else if w<6749695 then w=A[T[1]]g=E(37542)g=w[g]g=g(w)g={}w=true A[T[2]]=w w=k[E(37596)]else J=E(37714)w=k[J]J=E(37698)k[J]=w w=849408 end end else if w<6848418 then if w<6811904 then t=I(t)w=834560 x=I(x)else g=E(37643)w=H[g]g={w}w=k[E(37661)]end else if w<6882888 then d=f w=x w=9874432 else w=g and 3956224 or 14004224 end end end end else if w<7476871 then if w<7367412 then if w<7227324 then if w<7161548 then if w<7020876 then w=A[T[1]]H=E(37724)g=E(37505)d=255 w[g]=H g=E(37630)O=150 w=A[T[1]]r=E(37583)M=k[r]r=E(37512)H=M[r]r=175 M=H(r,O,d)w[g]=M H=E(37671)g=k[H]H=E(37620)w=g[H]H=L(3826688,{T[2];T[1]})g=w(H)w=k[E(37517)]g={}else Mb=A[T[2]]Ib[1]=w rb=Mb()Mb=A[T[3]]Ib[3]=w Ib[5]=E(37709)Ib[4]=rb~=Ib[5]w=Ib[4]and 4591616 or 16074752 Ib[2]=Ib[4]end else g=E(37687)w=k[g]g={w}w=k[E(37736)]end else if w<7292357 then w=1938432 else kb=A[M]g=kb w=kb and 9159168 or 13411840 end end else if w<7392759 then if w<7380114 then r=E(37558)w=A[T[1]]O=.3 M={[r]=O}H=A[T[2]]r=.12 g=w(H,M,r)g={}w=k[E(37690)]else g=E(37714)w=k[g]H=E(37698)g=k[H]H=E(37698)k[H]=w w=4194304 H=E(37714)k[H]=g H=A[T[1]]M=H()end else if w<7421424 then w=A[T[10]]M=A[T[11]]H[w]=M w=A[T[12]]M={w(H)}w=k[E(37554)]g={c(M)}else w=g and 11904000 or 1412608 end end end else if w<7697126 then if w<7612699 then if w<7531437 then w={}M=1 r=A[T[9]]O=r H=w w=2845696 r=1 d=r r=0 V=d<r r=M-d else w=x x=0 g=f or x t=200 V=g x=V==t g=x f=w w=x and 8923648 or 14260224 end else if w<7657212 then O=E(37571)r=k[O]w=r and 3414528 or 69632 g=r else d=E(37582)w=1424896 O=k[d]d=O()M=d end end else if w<7808492 then if w<7744401 then w=false g=E(37460)g={w;g}w=k[E(37704)]else f={}w=11493376 d=f end else if w<7825059 then w=true A[T[1]]=w w=k[E(37632)]g={}else d=E(37726)t=E(37478)w=k[d]x=M[t]t={w(x)}d=t[1]w=4313088 f=t[3]V=t[2]end end end end end end end else if w<12483694 then if w<10304407 then if w<9193150 then if w<8464181 then if w<8311196 then if w<8009661 then if w<7965633 then if w<7933868 then X=E(37638)S=r[X]w=12674560 t=S else w=k[E(37705)]x=true S=true U=E(37540)g=A[T[6]]X=E(37744)f=g(H,x)q=E(37456)x=E(37479)f=E(37643)t=k[q]q=t()t=E(37605)g={[f]=H,[x]=q,[t]=S;[X]=U}x=E(37540)f=true A[T[2]]=g g={f,x}end else H=E(37525)w=k[H]M=A[T[8]]r=0 H=w(M,r)w=7480320 end else if w<8245991 then X=E(37485)q=w x=w S=k[X]t=S w=S and 11568640 or 12533760 else r=E(37571)g=k[r]r=E(37631)w=g[r]r=E(37462)g=w(H)w=E(37637)O=E(37669)g=k[r]r=E(37659)r=g[r]r=r(g,O)H[w]=r w=15187968 end end else if w<8417367 then if w<8318983 then M=E(37575)H=k[M]g=H w=H and 9305088 or 15292928 else V={}w=1521152 O=V end else if w<8437827 then Ib[5]=E(37490)vb=E(37738)C=A[T[5]]cb=k[vb]Ib[2]=E(37506)Ib[1]=E(37693)wb=E(37589)B=E(37558)vb=E(37450)Db=9 Eb=1 Nb=12 Hb=0 W=kb Z=E(37503)eb=cb[vb]vb=0 cb=eb(vb,Db,Hb,Q)eb=E(37527)Hb=E(37738)Db=k[Hb]Hb=E(37450)Ob=w Mb=E(37565)Tb=-14 gb=0 vb=Db[Hb]Hb=1 Db=vb(Hb,Tb,gb,Nb)Nb=E(37490)vb=E(37481)gb=k[Nb]Nb=E(37481)Tb=gb[Nb]Nb=E(37505)gb=E(37489)Hb=Tb[gb]Tb=E(37657)Ab=k[Mb]Mb=E(37625)gb=true nb=Ab[Mb]Mb=E(37502)db=K[Ib[1]]Ib[1]=E(37709)rb=db or Ib[1]db=w Ib[1]=K[Ib[2]]Ib[2]=E(37709)Ob=Ib[1]or Ib[2]Ab=nb(Mb,rb,Ob)nb=E(37686)Mb=9 Ib[2]=E(37490)Ib[1]=k[Ib[2]]rb=E(37670)Ib[2]=E(37670)db=Ib[1][Ib[2]]Ib[1]=E(37735)Ob=db[Ib[1]]Ib[2]=E(37637)db=E(37595)Ib[1]=203 o={[B]=Eb;[wb]=cb,[eb]=Db;[vb]=Hb,[Tb]=gb,[Nb]=Ab,[nb]=Mb,[rb]=Ob;[db]=Ib[1],[Ib[2]]=P}wb=1 z=C(Z,o)eb=E(37589)z=13 Mb=w C=Q+z o=E(37503)gb=-18 Eb=E(37558)Db=E(37738)Tb=0 z=A[T[5]]Hb=13 vb=k[Db]Db=E(37450)Nb=0 cb=vb[Db]Q=C Ob=E(37504)Db=0 Ib[3]=E(37490)vb=cb(Db,Hb,Tb,Q)Tb=E(37738)nb=11 cb=E(37527)Hb=k[Tb]Tb=E(37450)Db=Hb[Tb]Tb=1 Hb=Db(Tb,gb,Nb,nb)nb=E(37490)db=185 Nb=k[nb]nb=E(37481)Db=E(37481)gb=Nb[nb]Nb=E(37567)Tb=gb[Nb]gb=E(37505)nb=E(37723)rb=K[Ob]Ob=E(37709)Ab=rb or Ob Nb=nb..Ab Ob=135 nb=E(37630)rb=E(37583)Mb=k[rb]rb=E(37512)Ab=Mb[rb]rb=150 Mb=Ab(rb,Ob,db)Ob=E(37670)rb=8 Ab=E(37686)Ib[2]=k[Ib[3]]Ib[3]=E(37670)Ib[1]=Ib[2][Ib[3]]Ib[2]=E(37735)db=Ib[1][Ib[2]]Ib[1]=E(37473)Ib[4]=k[Ib[5]]Ib[5]=E(37473)Ib[3]=Ib[4][Ib[5]]Ib[4]=E(37584)Ib[2]=Ib[3][Ib[4]]Ib[5]=E(37637)Ib[3]=E(37595)Ib[4]=203 B={[Eb]=wb,[eb]=vb,[cb]=Hb;[Db]=Tb;[gb]=Nb;[nb]=Mb;[Ab]=rb,[Ob]=db;[Ib[1]]=Ib[2];[Ib[3]]=Ib[4],[Ib[5]]=P}Z=z(o,B)Z=14 o=110 z=Q+Z Q=z Z=Q>o w=Z and 1334784 or 2778624 else P=E(37475)u=w Q=k[P]w=Q and 10899968 or 15024640 J=Q end end end else if w<8911912 then if w<8853532 then if w<8821903 then if w<8642438 then g=E(37711)O=A[H]r[g]=O O=E(37475)d=m(5582848,{H})g=k[O]w=5568512 O=g(d)else x=A[T[2]]q=x()x=A[T[3]]X=true w=k[E(37539)]S=x(q,X)x=true g={x,q}end else O=g V=d w=d and 5688832 or 13867008 end else if w<8884936 then w=A[T[2]]M=E(37737)g=E(37505)O=E(37583)w[g]=M V=200 w=A[T[2]]g=E(37630)r=k[O]O=E(37512)M=r[O]O=160 d=140 r=M(O,d,V)w[g]=r w=3444736 else g=E(37637)w=A[T[1]]H=A[T[2]]w[g]=H g={}w=k[E(37695)]end end else if w<9060496 then if w<9019757 then t=E(37709)x=d~=t w=14260224 g=x else Ib[11]=E(37589)Ib[9]=E(37560)Ib[19]=8 Ib[36]=E(37648)Ib[7]=E(37647)Ib[35]=1 Ib[3]=E(37468)Ib[21]=255 Ib[8]=.68 Ab=Ob Ib[20]=E(37583)Ib[5]=E(37459)Ib[27]=E(37487)Ib[1]=A[T[5]]Ib[6]=db[Ib[7]]Ib[10]=0 Ib[18]=1 Ib[14]=E(37738)Ib[13]=k[Ib[14]]Ib[7]=E(37558)Ib[14]=E(37450)Ib[12]=Ib[13][Ib[14]]Ib[14]=0 Ib[17]=Ab-Ib[18]Ib[18]=gb+Ib[19]Ib[34]=E(37543)Ib[16]=Ib[17]*Ib[18]Ib[18]=15 Ib[15]=nb+Ib[16]Ib[16]=0 Ib[17]=Hb+Ib[18]Ib[13]=Ib[12](Ib[14],Ib[15],Ib[16],Ib[17])Ib[12]=E(37527)Ib[17]=0 Ib[16]=E(37738)Ib[29]=E(37740)Ib[15]=k[Ib[16]]Ib[16]=E(37450)Ib[14]=Ib[15][Ib[16]]Ib[16]=0 Ib[15]=Ib[14](Ib[16],gb,Ib[17],gb)Ib[33]=0 Ib[14]=E(37662)Ib[17]=E(37702)Ib[22]=255 Ib[16]=db[Ib[17]]Ib[19]=k[Ib[20]]Ib[17]=E(37518)Ib[32]=E(37663)Ib[20]=E(37512)Ib[40]=E(37490)Ib[18]=Ib[19][Ib[20]]Ib[23]=E(37478)w=9595904 Ib[20]=255 Ib[19]=Ib[18](Ib[20],Ib[21],Ib[22])Ib[20]=202 Ib[22]=A[X]Ib[25]=A[T[5]]Ib[21]=E(37637)Ib[18]=E(37595)Ib[31]=k[Ib[32]]Ib[32]=E(37450)Ib[30]=Ib[31][Ib[32]]Ib[32]=1 Ib[31]=Ib[30](Ib[32],Ib[33])Ib[28]={[Ib[29]]=Ib[31]}Ib[26]=Ib[25](Ib[27],Ib[28])Ib[25]=A[T[5]]Ib[30]=E(37641)Ib[33]=.4 Ib[28]=E(37682)Ib[32]=E(37647)Ib[31]=db[Ib[32]]Ib[32]=E(37524)Ib[39]=k[Ib[40]]Ib[40]=E(37648)Ib[38]=Ib[39][Ib[40]]Ib[39]=E(37674)Ib[37]=Ib[38][Ib[39]]Ib[29]={[Ib[30]]=Ib[31];[Ib[32]]=Ib[33],[Ib[34]]=Ib[35],[Ib[36]]=Ib[37]}Ib[27]={Ib[25](Ib[28],Ib[29])}Ib[24]={Ib[26];c(Ib[27])}Ib[4]={[Ib[5]]=Ib[6],[Ib[7]]=Ib[8],[Ib[9]]=Ib[10];[Ib[11]]=Ib[13];[Ib[12]]=Ib[15],[Ib[14]]=Ib[16],[Ib[17]]=Ib[19],[Ib[18]]=Ib[20];[Ib[21]]=Ib[22],[Ib[23]]=Ib[24]}Ib[2]=Ib[1](Ib[3],Ib[4])Ib[4]=E(37587)Ib[1]=v()A[Ib[1]]=Ib[2]Ab=nil Ib[3]=A[Ib[1]]Ib[2]=Ib[3][Ib[4]]Ib[3]=E(37733)db=nil Ib[4]=m(11226112,{T[6];Ib[1]})Ib[3]=Ib[2][Ib[3]]Ib[3]=Ib[3](Ib[2],Ib[4])Ib[4]=E(37526)Ib[3]=A[Ib[1]]Ib[2]=Ib[3][Ib[4]]Ib[4]=m(15026176,{T[6],Ib[1]})Ib[3]=E(37733)Ib[3]=Ib[2][Ib[3]]Ib[1]=I(Ib[1])Ib[3]=Ib[3](Ib[2],Ib[4])end else if w<9090406 then g=A[T[2]]r=E(37744)M=E(37605)w=g[M]M=A[T[2]]g=M[r]g={w;g}w=k[E(37562)]else K=w Z=1 z=b[Z]Z=false C=z==Z kb=C w=C and 211968 or 14454784 end end end end else if w<9844267 then if w<9589000 then if w<9317530 then if w<9251421 then if w<9226530 then g=A[T[1]]w=not g w=w and 13860864 or 13208064 else w=k[E(37655)]g={}end else r=E(37677)M=A[T[1]]H=M[r]w=g(H)g={}w=k[E(37754)]end else if w<9409659 then S=E(37462)x=w q=k[S]S=E(37659)t=q[S]f=t w=t and 16016384 or 3209728 else g={g}w=k[E(37751)]end end else if w<9619887 then if w<9604060 then Ob,db=Mb(rb,Ob)w=Ob and 9058816 or 2997760 else O=E(37462)d=E(37692)Q=E(37605)P=false M=k[O]V=E(37514)W=E(37744)x=E(37546)O=E(37659)O=M[O]O=O(M,d)d=E(37462)X=E(37677)M=k[d]f=E(37664)d=E(37659)t=v()d=M[d]d=d(M,V)V=E(37462)M=v()A[M]=d d=k[V]u=0 V=E(37659)p=E(37721)V=d[V]V=V(d,f)j=E(37709)f=E(37462)d=v()A[d]=V V=k[f]U=E(37555)f=E(37659)f=V[f]f=f(V,x)i=E(37643)x=E(37469)S=E(37497)V=O[x]x=E(37573)z=w x=V[x]x=x(V)A[t]=x q=E(37701)x={[q]=S,[X]=U}S=e(1117696,{})q=v()A[q]=x x=v()o=w X=F(3264512,{})A[x]=S S=v()A[S]=X U=h(5033472,{S})X=v()J=E(37479)s=E(37709)A[X]=U U={[i]=s,[J]=u;[Q]=P;[W]=j}W=v()i=v()J=m(9907200,{d})u=m(14926848,{})s=R(16097792,{S,i,x;q,M;X})A[i]=U U=v()A[U]=s s=v()A[s]=J J=v()A[J]=u Q=F(11836928,{})u=v()A[u]=Q Q=v()P=y(4451328,{u,s})A[Q]=P P=E(37734)A[W]=P j=A[W]P=j..p j=v()A[j]=P b=e(10643968,{W;j,M})P=v()p=y(15664128,{W;j,M})A[P]=p p=v()Eb=E(37582)A[p]=b b=F(332800,{S;p,X,J;u,s;Q,t,U,P;q})B=k[Eb]Z=B w=B and 13542912 or 10251776 end else if w<9635773 then g=true A[T[4]]=g r=A[T[5]]V=true d=A[T[2]]O=r(d)r=A[T[6]]d=A[T[2]]f=E(37583)O=r(d,V)V=E(37706)x=230 t=130 r=A[T[7]]d=V..H O=E(37505)r[O]=d r=A[T[7]]V=k[f]f=E(37512)O=E(37630)d=V[f]f=80 V=d(f,x,t)r[O]=V O=E(37505)d=E(37477)r=A[T[8]]x=230 f=E(37583)w=6491648 r[O]=d r=A[T[8]]V=k[f]f=E(37512)O=E(37630)t=130 d=V[f]f=80 V=d(f,x,t)r[O]=V d=E(37671)O=k[d]d=E(37513)r=O[d]d=.15 O=r(d)r=A[T[9]]O=r()else H=v()A[H]=D[1]w=A[T[1]]w=w and 15938560 or 12655104 end end end else if w<9967132 then if w<9902929 then if w<9865905 then w=g and 6590464 or 814592 else M=d w=V w=11406848 end else if w<9957642 then r=D[3]O=D[4]g=O M=D[2]d=D[5]H=D[1]w=O and 8847872 or 5456896 else g=E(37720)r=E(37462)d=E(37732)w=k[g]M=k[r]O=E(37688)d=M[d]r={d(M,O)}g=w(c(r))w=g()w=16260608 end end else if w<10055084 then if w<10053187 then w=g and 7709184 or 15152640 else w=O g=r w=12889088 end else if w<10156116 then M=g g=E(37499)w=M[g]w=w and 5787648 or 12717568 else C=Z w=o w=Z and 13048320 or 12541440 end end end end end else if w<11496957 then if w<10795908 then if w<10756393 then if w<10659306 then if w<10640608 then if w<10447376 then o=1 A[M]=kb Z=A[W]z=Z+o C=b[z]K=S+C C=256 w=K%C z=A[P]S=w C=X+z w=12780544 z=256 K=C%z X=K else w=A[T[1]]M=E(37712)H=k[M]r=A[T[2]]M={H(r)}H=E(37675)H=w[H]g={H(w,c(M))}g={c(g)}w=k[E(37530)]end else M=E(37522)H=k[M]r=A[T[1]]M=H(r)g=M w=M and 14725120 or 10827776 end else if w<10710595 then q=E(37645)t=k[q]g=t w=2781696 else U=w s=E(37455)i=k[s]X=i w=i and 5378560 or 11526656 end end else if w<10777033 then if w<10763344 then A[M]=a w=A[M]w=w and 1946624 or 7245312 else w=10782720 end else if w<10784209 then t=E(37462)V=w O=w x=k[t]f=not x w=f and 9328128 or 1866752 d=f else d=D[5]M=D[2]P=E(37484)t=E(37459)Hb=E(37738)r=D[3]O=D[4]S=.28 V=v()H=D[1]f=E(37488)X=E(37560)G=0 q=E(37558)U=0 A[V]=D[6]w=A[T[1]]Y=E(37738)a=k[Y]nb=13 Y=E(37450)i=E(37589)K=E(37478)Tb=0 Eb=E(37740)u=0 s=a[Y]b=E(37637)Y=0 J=A[T[2]]a=s(Y,M,G,J)s=E(37527)j=E(37595)J=E(37738)G=k[J]J=E(37450)o=E(37487)Y=G[J]W=true J=0 p=202 Q=A[T[3]]vb=7 gb=1 G=Y(J,r,u,Q)Q=E(37709)cb=E(37663)kb=A[T[4]]u=E(37505)Y=E(37710)z=A[T[1]]eb=k[cb]J=false cb=E(37450)Ab=E(37670)wb=eb[cb]cb=0 eb=wb(cb,vb)B={[Eb]=eb}Nb=0 cb=E(37527)Z=z(o,B)B=E(37503)wb=E(37558)eb=1 z=A[T[1]]Db=k[Hb]Hb=E(37450)vb=Db[Hb]Hb=1 Db=vb(Hb,Tb,gb,Nb)db=E(37490)vb=E(37481)Nb=E(37490)gb=k[Nb]Nb=E(37481)Tb=gb[Nb]gb=E(37722)Hb=Tb[gb]Ob=k[db]Tb=E(37505)gb=E(37630)db=E(37670)rb=Ob[db]Nb=E(37686)Ob=E(37609)Mb=rb[Ob]Ob=203 rb=E(37595)Eb={[wb]=eb;[cb]=Db;[vb]=Hb,[Tb]=H,[gb]=d,[Nb]=nb,[Ab]=Mb;[rb]=Ob}o={z(B,Eb)}C={Z,c(o)}x={[t]=O;[q]=S;[X]=U,[i]=a,[s]=G;[Y]=J,[u]=Q;[P]=W;[j]=p;[b]=kb;[K]=C}g=w(f,x)f=v()A[f]=g g=A[f]x=E(37587)w=g[x]x=F(1860608,{T[5];f})g=E(37733)g=w[g]g=g(w,x)x=E(37526)g=A[f]w=g[x]x=R(13884416,{T[5];f})g=E(37733)g=w[g]g=g(w,x)g=A[f]x=E(37599)w=g[x]x=R(15814656,{T[6];f,T[7],V})g=E(37733)g=w[g]g=g(w,x)w=A[f]g={w}w=k[E(37464)]end end end else if w<11226710 then if w<10888216 then if w<10836595 then w=g and 11772416 or 2748928 else w=3297792 r=A[T[6]]M=r==H g=M end else if w<11027876 then P=w j=E(37463)W=k[j]Q=W w=W and 4396544 or 12062720 else w=A[T[1]]r=E(37558)H=A[T[2]]O=.28 M={[r]=O}r=.12 g=w(H,M,r)w=k[E(37493)]g={}end end else if w<11344704 then if w<11244688 then O=w f=E(37509)V=k[f]f=V(H)V=E(37617)d=f==V w=d and 2583040 or 10054144 r=d else r=E(37699)M=k[r]g=M w=10059776 end else if w<11461903 then w=O w=M and 2604032 or 9610240 else r=d f=v()w=V V=false A[f]=V V=A[T[1]]x=V()V=v()A[V]=x x=false t=v()A[t]=x x=A[V]w=x and 8811008 or 2289664 end end end end else if w<11836731 then if w<11662691 then if w<11576364 then if w<11561381 then if w<11544958 then q=X w=U w=3079168 else r=E(37449)f=E(37643)g=E(37475)w=k[g]M=k[r]V={[f]=H}f=E(37590)r=A[T[2]]O=A[T[3]]f=O[f]d={f(O,V)}g=w(M,r,c(d))w=k[E(37725)]H=nil g={}end else J=E(37462)U=E(37485)X=k[U]s=k[J]J=E(37692)i=s[J]U=X(i)w=12533760 X=E(37465)S=U~=X t=S end else if w<11610628 then g=E(37619)w=false g={w,g}w=k[E(37483)]else K=A[M]kb=K w=K and 2014720 or 10326528 end end else if w<11800532 then if w<11691132 then V=false r=A[T[6]]d=A[T[2]]O=r(d,V)t=E(37730)r=A[T[7]]f=H or t t=110 V=E(37709)d=V..f O=E(37505)x=w f=E(37583)r[O]=d r=A[T[7]]O=E(37630)V=k[f]f=E(37512)x=90 d=V[f]w=6491648 f=255 V=d(f,x,t)x=100 r[O]=V t=100 O=E(37505)d=E(37486)r=A[T[8]]r[O]=d O=E(37630)r=A[T[8]]f=E(37583)V=k[f]f=E(37512)d=V[f]f=200 V=d(f,x,t)r[O]=V else M=l(10640384,{T[3],T[2]})g=E(37475)w=k[g]r={w(M)}H=r[2]g=r[1]M=g w=M and 11229184 or 12889088 g=M end else if w<11834869 then w=A[T[1]]f=80 H=A[T[2]]r=E(37518)V=E(37583)d=k[V]V=E(37512)x=80 O=d[V]V=200 d=O(V,f,x)M={[r]=d}r=.16 g=w(H,M,r)w=k[E(37616)]g={}else V=r w=13266432 end end end else if w<12030891 then if w<11915850 then if w<11868195 then r=D[3]O=E(37465)M=D[2]H=D[1]g=k[O]O=E(37450)w=g[O]g=w(H)O=v()A[O]=g g=E(37453)w=k[g]f={w(M)}w=834560 g=f[1]d=f[2]V=f[3]f=g else H=E(37593)g=k[H]H=E(37687)w=g[H]g={w}w=k[E(37685)]end else if w<12007008 then g={}w=k[E(37600)]else V=80 w=A[T[2]]M=E(37680)g=E(37505)w[g]=M g=E(37630)w=A[T[2]]O=E(37583)r=k[O]O=E(37512)M=r[O]d=175 O=255 r=M(O,d,V)w[g]=r g={}w=k[E(37640)]end end else if w<12235487 then if w<12036279 then V=g x=E(37617)f=E(37577)g=k[f]f=E(37742)w=g[f]f=v()A[f]=w g=k[x]X=E(37617)x=E(37495)w=g[x]x=w q=w S=k[X]w=S and 1553920 or 5214208 t=S else w=P J=Q w=15024640 end else if w<12477943 then w=10052608 r=E(37709)M=H==r g=M else O=E(37669)r=E(37462)w=E(37637)g=k[r]r=E(37659)r=g[r]r=r(g,O)H[w]=r w=15187968 end end end end end end else if w<14415803 then if w<13346855 then if w<12719466 then if w<12657877 then if w<12580466 then if w<12544052 then if w<12538766 then w=q f=t w=t and 6869504 or 1120256 else o=E(37699)w=13048320 Z=k[o]C=Z end else g={}w=k[E(37679)]end else if w<12624897 then w=12032000 V=A[d]g=V else w=true A[T[1]]=w M=E(37505)V=150 d=E(37583)g=A[T[2]]r=E(37747)g[M]=r f=255 g=A[T[2]]M=E(37630)O=k[d]d=E(37512)r=O[d]d=175 w=k[E(37494)]O=r(d,V,f)g[M]=O r=E(37671)M=k[r]r=E(37620)g=M[r]r=m(4667392,{T[3],H;T[1],T[4],T[5],T[6];T[2];T[7],T[8]})M=g(r)g={}H=I(H)end end else if w<12673928 then if w<12668811 then g=E(37684)w=k[g]g={w}w=k[E(37739)]else Y=S==X w=10760704 a=Y end else if w<12675824 then f=t w=q w=7583232 else g=E(37745)w=k[g]w=w and 4779008 or 7625728 end end end else if w<13015218 then if w<12851572 then if w<12778443 then if w<12748451 then H=v()w=false g=E(37475)M=e(1848832,{H})A[H]=w w=k[g]g=w(M)w=A[H]w=w and 2866688 or 8881664 else X=A[x]w=13892608 U=E(37637)S=X~=U q=S end else P=I(P)W=I(W)b=nil j=I(j)p=I(p)w=663040 Q=I(Q)u=I(u)end else if w<12866013 then H=E(37757)g=E(37525)w=k[g]g=w(H)w=k[E(37534)]g={}else w=g and 6817792 or 102912 end end else if w<13213364 then if w<13098816 then w=z z=E(37731)Z=A[U]g={b}w=k[E(37717)]C[z]=Z else w=k[E(37574)]g={}end else if w<13276866 then w=f w[d]=V w=A[O]g={w}w=k[E(37627)]else w=A[T[1]]g=w()w=g and 4615680 or 12739584 end end end end else if w<13861757 then if w<13502055 then if w<13405476 then if w<13373949 then if w<13360708 then g=V w=f w=V and 3835904 or 2265088 else g=E(37749)w=k[g]M=A[T[1]]g=w(M)w=11557376 end else q=E(37462)t=k[q]q=E(37694)V=w x=t[q]t=E(37458)f=x~=t w=f and 9874432 or 8050176 d=f end else if w<13441587 then w=12780544 A[M]=g else w=k[E(37729)]g={}end end else if w<13818649 then if w<13600855 then w=10251776 Eb=E(37582)B=k[Eb]Eb=B()Z=Eb else g=E(37559)w=k[g]g={w}w=k[E(37713)]end else if w<13858212 then w=A[T[3]]g=w(H)w=k[E(37511)]H=nil g={}else w=A[T[2]]H=A[T[3]]g=w(H)w=13208064 end end end else if w<14022777 then if w<13891948 then if w<13872602 then q=E(37490)t=k[q]q=E(37601)x=t[q]t=E(37564)w=5688832 f=x[t]V=f else O=.28 w=A[T[1]]H=A[T[2]]r=E(37558)M={[r]=O}r=.16 g=w(H,M,r)w=k[E(37529)]g={}end else if w<13986175 then w=q and 3979264 or 6808576 else M=E(37593)H=k[M]w=H and 2690048 or 7457792 g=H end end else if w<14257984 then if w<14064230 then rb=E(37505)Mb=A[kb]Ob=A[Ab]Mb[rb]=Ob Ob=E(37671)rb=k[Ob]Ob=E(37741)Mb=rb[Ob]Ob=F(9208320,{f,Db;Ab})w=1555968 rb=Mb(Ob)else w=A[T[1]]g=A[T[2]]H=A[T[3]]w[g]=H w=k[E(37519)]g={}end else if w<14261771 then w=f w=g and 7934464 or 14942720 else O=true g=E(37452)r[g]=O g=E(37649)O=true r[g]=O w=4548608 g=E(37550)O=true r[g]=O end end end end end else if w<15696499 then if w<15025162 then if w<14899433 then if w<14769286 then if w<14760383 then if w<14681981 then w=K w=13411840 g=kb else M=E(37606)H=k[M]r=A[T[2]]w=10827776 M=H(r)g=M end else w=g and 6102016 or 15736320 end else if w<14843216 then w=A[T[1]]x=0 M=r t=255 f=w(x,t)w=2845696 H[M]=f M=nil else O=true r=H==O w=9426944 g=r end end else if w<14983105 then if w<14933066 then H=D[1]r=w d=E(37582)O=k[d]w=O and 7666688 or 1424896 M=O else t=E(37479)i=E(37570)U=E(37744)x=E(37643)S=E(37456)X=false w=k[E(37743)]q=k[S]S=q()q=E(37605)f={[x]=H;[t]=S;[q]=X;[U]=i}A[T[2]]=f t=E(37570)x=false g={x,t}end else if w<14999368 then g=E(37505)w=A[T[1]]M=w O=E(37621)r=k[O]O=r()r=E(37709)H=O or r w[g]=H w=11964928 else w=u i=J w=891904 end end end else if w<15291530 then if w<15163223 then if w<15098428 then w=A[T[1]]r=E(37558)O=.68 M={[r]=O}H=A[T[2]]r=.16 g=w(H,M,r)g={}w=k[E(37633)]else d=E(37643)O=A[T[2]]r=O[d]M=r==H w=M and 2481152 or 5636608 g=M end else if w<15225195 then w=k[E(37581)]M=nil H=nil g={}else w=true w=w and 1679872 or 9226752 end end else if w<15375162 then if w<15306261 then w=9305088 M=E(37623)H=k[M]g=H else p=nil Q=nil w=2909184 end else if w<15628946 then w=A[O]t=E(37637)x=M[t]f=w d=E(37637)w=x and 13266432 or 11836416 V=x else H=D[1]M=E(37522)g=k[M]r=A[T[1]]M=g(r)w=not M w=w and 13366784 or 11557376 end end end end else if w<16118214 then if w<15976641 then if w<15767501 then if w<15748119 then if w<15730865 then w=9610240 else w=A[T[7]]w=w and 7987200 or 7480320 end else r=9073665 g=6360577 M=E(37576)H=M^r w=g-H H=w g=E(37592)w=g/H g={w}w=k[E(37719)]end else if w<15891333 then d=E(37696)w=A[T[1]]H=A[T[2]]O=E(37551)r=A[T[3]]M=r[O]O=A[T[3]]r=O[d]g=w(H,M,r)w=A[T[4]]g=w()g={}w=k[E(37668)]else w=k[E(37591)]g={}end end else if w<16046837 then if w<16030672 then q=E(37462)S=E(37626)t=k[q]w=3209728 q=E(37659)q=t[q]q=q(t,S)f=q else w=false A[T[1]]=w w=k[E(37683)]g=A[T[2]]H=g()g={}end else if w<16087416 then w=Ib[3]Ib[1]=A[V]Ib[3]=nil db=Ib[2]or Ib[3]Ob=Mb(db,Ib[1])Mb=A[V]g={Mb;rb}w=k[E(37471)]else H=D[1]w=A[T[1]]g=w()w=g and 3235328 or 3223552 end end end else if w<16311597 then if w<16226313 then if w<16166860 then H=E(37505)g=A[T[1]]w=g[H]H=w M=not H g=M w=M and 4798464 or 2447872 else w=15279616 end else if w<16277283 then g={}w=k[E(37454)]H=nil else d=2 M=A[T[1]]O=1 r=M(O,d)M=1 H=r==M g=H w=H and 14764544 or 4494336 end end else if w<16556632 then if w<16456351 then Y=A[M]a=Y w=Y and 12669952 or 10760704 else V=x w=t w=13359616 end else if w<16624302 then H=true g=2753915549 M=85211729168715 r=true q=100117331123089 d=true f=true x=7449423635 t=true S=true O=4442272183 V=79091703265657 w={[g]=H,[M]=r,[O]=d;[V]=f;[x]=t;[q]=S}H=w r=E(37462)M=k[r]r=E(37727)g=M[r]w=H[g]w=w and 9963008 or 16260608 else w=true M=w w=3831808 end end end end end end end end end w=#n return c(g)end,function(k)local E,w=1,k[1]while w do H[w],E=H[w]-1,E+1 if H[w]==0 then H[w],A[w]=nil,nil end w=k[E]end end,function(k)for E=1,#k,1 do H[k[E]]=1+H[k[E]]end if D then local w=D(true)local c=n(w)c[E(37552)],c[E(37622)],c[E(37658)]=k,O,function()return-2694400 end return w else return T({},{[E(37622)]=O;[E(37552)]=k;[E(37658)]=function()return-2694400 end})end end,function(k,E)local c=r(E)local D=function(...)return w(k,{...},E,c)end return D end,function(k,E)local c=r(E)local D=function(D,T,n,N,g)return w(k,{D;T;n,N;g},E,c)end return D end,function(k,E)local c=r(E)local D=function(D,T,n,N,g,A,H)return w(k,{D,T,n;N,g;A;H},E,c)end return D end,{},function(k)H[k]=H[k]-1 if H[k]==0 then H[k],A[k]=nil,nil end end,function(k,E)local c=r(E)local D=function()return w(k,{},E,c)end return D end,function(k,E)local c=r(E)local D=function(D,T)return w(k,{D;T},E,c)end return D end,function()M=M+1 H[M]=1 return M end,function(k,E)local c=r(E)local D=function(D,T,n,N,g,A)return w(k,{D;T;n;N,g;A},E,c)end return D end return(d(3708416,{}))(c(g))end)(getfenv and getfenv()or _ENV,unpack or table[E(37645)],newproxy,setmetatable,getmetatable,select,{...})end)(...)
+if not game and game.GetService and game:GetService("RunService") or game.ClassName ~= "DataModel" or (typeof and typeof(game.Players) ~= "Instance") or not (getmetatable and setmetatable and type and pcall and rawget and rawset) then
+    repeat task.wait() warn("stop skidding - flazhy") until false
+end
+local Players        = game:GetService("Players")
+local HttpService    = game:GetService("HttpService")
+local TweenService   = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer    = Players.LocalPlayer
+local Mouse          = LocalPlayer:GetMouse()
+
+local LUARMOR = {
+    PROJECT_ID  = "b51bc445318cbb9c68b360ff37884e84",
+    GET_KEY_URL = "https://ads.luarmor.net/get_key?project=b51bc445318cbb9c68b360ff37884e84",
+}
+
+local function GetHTTP()
+    if syn and syn.request then return syn.request end
+    if http and http.request then return http.request end
+    if typeof(http_request) == "function" then return http_request end
+    if typeof(request) == "function" then return request end
+    if typeof(httprequest) == "function" then return httprequest end
+    return nil
+end
+local function LuarmorLoaderPremium()
+    local ok, v = pcall(function() return LRM_IsUserPremium == true end)
+    return ok and v == true
+end
+
+local function ApplyPremiumState(keyStr, isPremium)
+    local env = (getgenv and getgenv()) or _G
+    if LuarmorLoaderPremium() then
+        isPremium = true
+    end
+    if isPremium == true then
+        env.QuantumLuarmorVerified = true
+        env.LRM_IsUserPremium = true
+        env.QuantumKeyPremium = true
+    else
+        env.QuantumLuarmorVerified = false
+        env.LRM_IsUserPremium = false
+        env.QuantumKeyPremium = false
+    end
+    if keyStr and keyStr ~= "" then
+        env.Key = keyStr
+        pcall(function() script_key = keyStr end)
+    end
+end
+
+local _apiCache = { key = "", at = 0, valid = false, msg = "" }
+
+local function CheckKeyViaLuarmorAPI(keyStr)
+    if LuarmorLoaderPremium() then
+        return true, "Premium via Luarmor"
+    end
+
+    if not keyStr or keyStr == "" then
+        return false, "No key entered"
+    end
+    local luarmorKey = nil
+    pcall(function() luarmorKey = script_key end)
+
+    if luarmorKey and luarmorKey ~= "" and luarmorKey == keyStr then
+        if LuarmorLoaderPremium() then
+            ApplyPremiumState(keyStr, true)
+            _apiCache = { key = keyStr, at = tick(), valid = true, msg = "Key verified" }
+            return true, "Key verified"
+        end
+    end
+    _apiCache = { key = keyStr, at = tick(), valid = false, msg = "Key invalid" }
+    return false, "Key invalid"
+end
+local function Tween(obj, props, t, style, dir)
+    style = style or Enum.EasingStyle.Quint
+    dir   = dir   or Enum.EasingDirection.Out
+    TweenService:Create(obj, TweenInfo.new(t, style, dir), props):Play()
+end
+
+local function Protect(gui)
+    local env = (getgenv and getgenv()) or _G
+    if env.HIDEUI then
+        gui.Parent = env.HIDEUI
+    elseif gethui then
+        gui.Parent = gethui()
+    elseif syn and syn.protect_gui then
+        syn.protect_gui(gui)
+        gui.Parent = game:GetService("CoreGui")
+    else
+        gui.Parent = game:GetService("CoreGui")
+    end
+end
+
+local function New(class, props, parent)
+    local inst = Instance.new(class)
+    for k, v in pairs(props) do
+        if k ~= "Children" and k ~= "Parent" then
+            pcall(function() inst[k] = v end)
+        end
+    end
+    if props.Children then
+        for _, c in ipairs(props.Children) do
+            pcall(function() c.Parent = inst end)
+        end
+    end
+    inst.Parent = props.Parent or parent
+    return inst
+end
+
+local function CircleRipple(btn, mx, my)
+    task.spawn(function()
+        btn.ClipsDescendants = true
+        local nx = mx - btn.AbsolutePosition.X
+        local ny = my - btn.AbsolutePosition.Y
+        local sz = math.max(btn.AbsoluteSize.X, btn.AbsoluteSize.Y) * 1.6
+        local c  = New("ImageLabel", {
+            Name = "Ripple",
+            Image = "rbxassetid://266543268",
+            ImageColor3 = Color3.fromRGB(255,255,255),
+            ImageTransparency = 0.82,
+            BackgroundTransparency = 1,
+            ZIndex = btn.ZIndex + 5,
+            Size = UDim2.new(0,0,0,0),
+            Position = UDim2.new(0,nx,0,ny),
+        }, btn)
+        Tween(c, { Size=UDim2.new(0,sz,0,sz), Position=UDim2.new(0.5,-sz/2,0.5,-sz/2) }, 0.45, Enum.EasingStyle.Quad)
+        Tween(c, { ImageTransparency=1 }, 0.45, Enum.EasingStyle.Linear)
+        task.wait(0.46)
+        c:Destroy()
+    end)
+end
+local FOLDER = "Quantum Onyx Hub"
+local KEY_FILE = FOLDER .. "/Key.json"
+
+local function SaveKey(key)
+    if not isfolder(FOLDER) then makefolder(FOLDER) end
+    pcall(writefile, KEY_FILE, HttpService:JSONEncode({ key = key }))
+end
+
+local function LoadSavedKey()
+    if isfolder(FOLDER) and isfile(KEY_FILE) then
+        local ok, v = pcall(function()
+            return HttpService:JSONDecode(readfile(KEY_FILE))
+        end)
+        if ok and type(v) == "table" and v.key then return v.key end
+    end
+    return ""
+end
+local function RunKeyLoader(hubName, supportInfo, updateLog)
+    hubName = hubName or "Quantum Onyx"
+    supportInfo = supportInfo or {}
+    updateLog = updateLog   or {}
+
+    local done = false
+    local isPremium = LuarmorLoaderPremium()
+    local verifying = false
+
+    if isPremium then
+        local saved = LoadSavedKey()
+        ApplyPremiumState(saved, true)
+        return true, saved
+    end
+
+    local SG = Instance.new("ScreenGui")
+    SG.Name = "KL_" .. tostring(math.random(1e6))
+    SG.ZIndexBehavior  = Enum.ZIndexBehavior.Global
+    SG.ResetOnSpawn = false
+    SG.IgnoreGuiInset  = true
+    Protect(SG)
+
+    local Backdrop = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(0,0,0),
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        Size = UDim2.new(1,0,1,0),
+        ZIndex = 200,
+        Parent = SG,
+    })
+
+    local W, H = 450, 310
+    local Card = New("Frame", {
+        AnchorPoint = Vector2.new(0.5,0.5),
+        Position = UDim2.new(0.5,0,0.5,0),
+        Size = UDim2.new(0, W*0.5, 0, H*0.5),
+        BackgroundColor3 = Color3.fromRGB(6,3,12),
+        BackgroundTransparency = 0.80,
+        BorderSizePixel = 0,
+        ZIndex = 201,
+        ClipsDescendants = true,
+        Parent = SG,
+        Children = {
+            New("UICorner", { CornerRadius = UDim.new(0,14) }),
+            New("UIStroke", {
+                Color = Color3.fromRGB(110,50,210),
+                Transparency = 0.38,
+                Thickness = 1,
+                ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+            }),
+        }
+    })
+
+    New("Frame", { BackgroundColor3=Color3.fromRGB(80,20,160), BackgroundTransparency=0.88,
+        BorderSizePixel=0, Position=UDim2.new(0,-60,0,-60), Size=UDim2.new(0,220,0,220),
+        ZIndex=201, Parent=Card, Children={ New("UICorner",{CornerRadius=UDim.new(1,0)}) } })
+    New("Frame", { BackgroundColor3=Color3.fromRGB(40,10,110), BackgroundTransparency=0.90,
+        BorderSizePixel=0, Position=UDim2.new(1,-100,1,-100), Size=UDim2.new(0,180,0,180),
+        ZIndex=201, Parent=Card, Children={ New("UICorner",{CornerRadius=UDim.new(1,0)}) } })
+
+    local Header = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(9,5,18),
+        BorderSizePixel  = 0,
+        Size = UDim2.new(1,0,0,44),
+        ZIndex = 202,
+        Parent = Card,
+        Children = {
+            New("UICorner", { CornerRadius=UDim.new(0,14) }),
+            New("Frame", { BackgroundColor3=Color3.fromRGB(9,5,18), BorderSizePixel=0,
+                Position=UDim2.new(0,0,0.5,0), Size=UDim2.new(1,0,0.5,0), ZIndex=202 }),
+        }
+    })
+    New("ImageLabel", { BackgroundTransparency=1, Position=UDim2.new(0,13,0.5,-8),
+        Size=UDim2.new(0,16,0,16), Image="rbxassetid://7733992528",
+        ImageColor3=Color3.fromRGB(155,90,255), ZIndex=203, Parent=Header })
+    New("TextLabel", { BackgroundTransparency=1, Position=UDim2.new(0,35,0,0),
+        Size=UDim2.new(1,-130,1,0), Font=Enum.Font.FredokaOne,
+        Text=hubName.." — Key System", TextColor3=Color3.fromRGB(220,200,255),
+        TextSize=14, TextXAlignment=Enum.TextXAlignment.Left, ZIndex=203, Parent=Header })
+
+    New("Frame", { AnchorPoint=Vector2.new(1,0.5), BackgroundColor3=Color3.fromRGB(30,60,20),
+        BackgroundTransparency=0.35, BorderSizePixel=0, Position=UDim2.new(1,-40,0.5,0),
+        Size=UDim2.new(0,72,0,20), ZIndex=203, Parent=Header,
+        Children = {
+            New("UICorner",{CornerRadius=UDim.new(0,5)}),
+            New("UIStroke",{Color=Color3.fromRGB(80,200,110),Transparency=0.45,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border}),
+            New("TextLabel",{ BackgroundTransparency=1, Size=UDim2.new(1,0,1,0),
+                Font=Enum.Font.GothamBold, Text="Freemium", TextColor3=Color3.fromRGB(130,235,160),
+                TextSize=10, TextXAlignment=Enum.TextXAlignment.Center, ZIndex=204 }),
+        }
+    })
+
+    local CloseBtn = New("ImageButton", { BackgroundTransparency=1,
+        AnchorPoint=Vector2.new(1,0.5), Position=UDim2.new(1,-8,0.5,0),
+        Size=UDim2.new(0,20,0,20), Image="rbxassetid://79324227570635",
+        ImageColor3=Color3.fromRGB(200,80,80), ZIndex=203, Parent=Header })
+
+    New("Frame", { BackgroundColor3=Color3.fromRGB(110,50,210), BackgroundTransparency=0.55,
+        BorderSizePixel=0, Position=UDim2.new(0,0,0,44), Size=UDim2.new(1,0,0,1),
+        ZIndex=202, Parent=Card,
+        Children={ New("UIGradient",{ Transparency=NumberSequence.new({
+            NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(0.1,0),
+            NumberSequenceKeypoint.new(0.9,0), NumberSequenceKeypoint.new(1,1) }) }) }
+    })
+
+    local LW = 180
+    local RX = LW + 18
+    local RW = W - RX - 10
+
+    New("Frame", { BackgroundColor3=Color3.fromRGB(100,50,200), BackgroundTransparency=0.65,
+        BorderSizePixel=0, Position=UDim2.new(0,LW+8,0,52), Size=UDim2.new(0,1,0,H-60),
+        ZIndex=202, Parent=Card,
+        Children={ New("UIGradient",{ Rotation=90, Transparency=NumberSequence.new({
+            NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(0.08,0),
+            NumberSequenceKeypoint.new(0.92,0), NumberSequenceKeypoint.new(1,1) }) }) }
+    })
+
+    local InfoBox = New("Frame", { BackgroundColor3=Color3.fromRGB(9,5,18), BackgroundTransparency=0.20,
+        BorderSizePixel=0, Position=UDim2.new(0,8,0,52), Size=UDim2.new(0,LW,0,112),
+        ZIndex=202, Parent=Card,
+        Children={ New("UICorner",{CornerRadius=UDim.new(0,8)}),
+            New("UIStroke",{Color=Color3.fromRGB(100,50,190),Transparency=0.58,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border}) }
+    })
+    New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,9,0,5),Size=UDim2.new(1,-14,0,13),
+        Font=Enum.Font.GothamBold,Text="Information",TextColor3=Color3.fromRGB(130,85,210),
+        TextSize=9,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=203,Parent=InfoBox})
+    New("Frame",{BackgroundColor3=Color3.fromRGB(110,60,200),BackgroundTransparency=0.72,
+        BorderSizePixel=0,Position=UDim2.new(0,7,0,20),Size=UDim2.new(1,-14,0,1),ZIndex=203,Parent=InfoBox,
+        Children={New("UIGradient",{Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1),
+            NumberSequenceKeypoint.new(0.1,0),NumberSequenceKeypoint.new(0.9,0),NumberSequenceKeypoint.new(1,1)})})}})
+    local rowY = 26
+    for _, info in ipairs(supportInfo) do
+        New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,9,0,rowY),Size=UDim2.new(0,55,0,12),
+            Font=Enum.Font.GothamBold,Text=(info.label or "")..":",TextColor3=Color3.fromRGB(115,85,165),
+            TextSize=9,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=203,Parent=InfoBox})
+        New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,64,0,rowY),Size=UDim2.new(1,-70,0,12),
+            Font=Enum.Font.Gotham,Text=tostring(info.value or ""),TextColor3=Color3.fromRGB(180,155,220),
+            TextSize=9,TextXAlignment=Enum.TextXAlignment.Left,TextTruncate=Enum.TextTruncate.AtEnd,ZIndex=203,Parent=InfoBox})
+        rowY = rowY + 16
+        if rowY > 96 then break end
+    end
+
+    local LogBox = New("Frame",{BackgroundColor3=Color3.fromRGB(9,5,18),BackgroundTransparency=0.20,
+        BorderSizePixel=0,Position=UDim2.new(0,8,0,170),Size=UDim2.new(0,LW,0,128),
+        ZIndex=202,Parent=Card,
+        Children={New("UICorner",{CornerRadius=UDim.new(0,8)}),
+            New("UIStroke",{Color=Color3.fromRGB(100,50,190),Transparency=0.58,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})}})
+    New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,9,0,5),Size=UDim2.new(1,-14,0,13),
+        Font=Enum.Font.GothamBold,Text="Update Log",TextColor3=Color3.fromRGB(130,85,210),
+        TextSize=9,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=203,Parent=LogBox})
+    New("Frame",{BackgroundColor3=Color3.fromRGB(110,60,200),BackgroundTransparency=0.72,
+        BorderSizePixel=0,Position=UDim2.new(0,7,0,20),Size=UDim2.new(1,-14,0,1),ZIndex=203,Parent=LogBox,
+        Children={New("UIGradient",{Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1),
+            NumberSequenceKeypoint.new(0.1,0),NumberSequenceKeypoint.new(0.9,0),NumberSequenceKeypoint.new(1,1)})})}})
+    local logY = 26
+    for _, entry in ipairs(updateLog) do
+        New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,9,0,logY),Size=UDim2.new(1,-14,0,12),
+            Font=Enum.Font.GothamBold,RichText=true,
+            Text=string.format('<font color="#a855f7">%s</font>  <font color="#554466">%s</font>',
+                entry.version or "", entry.date or ""),
+            TextSize=9,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=203,Parent=LogBox})
+        logY = logY + 13
+        New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,13,0,logY),Size=UDim2.new(1,-18,0,11),
+            Font=Enum.Font.Gotham,Text="• "..(entry.notes or ""),TextColor3=Color3.fromRGB(150,135,185),
+            TextSize=8,TextXAlignment=Enum.TextXAlignment.Left,TextTruncate=Enum.TextTruncate.AtEnd,ZIndex=203,Parent=LogBox})
+        logY = logY + 14
+        if logY > 110 then break end
+    end
+
+    local NoticeBg = New("Frame",{BackgroundColor3=Color3.fromRGB(9,5,18),BackgroundTransparency=0.22,
+        BorderSizePixel=0,Position=UDim2.new(0,RX,0,52),Size=UDim2.new(0,RW,0,50),ZIndex=202,Parent=Card,
+        Children={New("UICorner",{CornerRadius=UDim.new(0,7)}),
+            New("UIStroke",{Color=Color3.fromRGB(80,200,110),Transparency=0.52,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border}),
+            New("Frame",{BackgroundColor3=Color3.fromRGB(80,200,110),BorderSizePixel=0,
+                Position=UDim2.new(0,0,0.5,-10),Size=UDim2.new(0,3,0,20),ZIndex=203,
+                Children={New("UICorner",{CornerRadius=UDim.new(1,0)})}}) }})
+    New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,12,0,0),Size=UDim2.new(1,-16,1,0),
+        Font=Enum.Font.Gotham,TextColor3=Color3.fromRGB(140,230,170),TextSize=10,TextWrapped=true,
+        TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Center,ZIndex=203,
+        Text="Freemium — key is optional.\nEnter a key to unlock premium features.",Parent=NoticeBg})
+
+    local LRMBar = New("Frame",{BackgroundColor3=Color3.fromRGB(9,5,18),BackgroundTransparency=0.22,
+        BorderSizePixel=0,Position=UDim2.new(0,RX,0,110),Size=UDim2.new(0,RW,0,28),ZIndex=202,Parent=Card,
+        Children={New("UICorner",{CornerRadius=UDim.new(0,6)}),
+            New("UIStroke",{Color=Color3.fromRGB(100,50,190),Transparency=0.60,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})}})
+    New("ImageLabel",{BackgroundTransparency=1,Position=UDim2.new(0,8,0.5,-6),Size=UDim2.new(0,12,0,12),
+        Image="rbxassetid://7733992528",ImageColor3=Color3.fromRGB(130,80,200),ZIndex=203,Parent=LRMBar})
+    local LRMStatusLabel = New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,25,0,0),
+        Size=UDim2.new(1,-30,1,0),Font=Enum.Font.GothamBold,Text="Checking Luarmor...",
+        TextColor3=Color3.fromRGB(160,140,200),TextSize=10,TextXAlignment=Enum.TextXAlignment.Left,
+        ZIndex=203,Parent=LRMBar})
+
+    local InputBg = New("Frame",{BackgroundColor3=Color3.fromRGB(4,2,9),BackgroundTransparency=0,
+        BorderSizePixel=0,Position=UDim2.new(0,RX,0,146),Size=UDim2.new(0,RW,0,34),ZIndex=202,Parent=Card,
+        Children={New("UICorner",{CornerRadius=UDim.new(0,7)}),
+            New("UIStroke",{Color=Color3.fromRGB(110,55,200),Transparency=0.48,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})}})
+    New("ImageLabel",{BackgroundTransparency=1,Position=UDim2.new(0,10,0.5,-7),Size=UDim2.new(0,14,0,14),
+        Image="rbxassetid://7733992528",ImageColor3=Color3.fromRGB(120,75,195),ZIndex=203,Parent=InputBg})
+    local KeyInput = New("TextBox",{BackgroundTransparency=1,Position=UDim2.new(0,30,0,0),
+        Size=UDim2.new(1,-54,1,0),Font=Enum.Font.GothamBold,PlaceholderText="Enter premium key...",
+        PlaceholderColor3=Color3.fromRGB(85,60,125),Text="",TextColor3=Color3.fromRGB(200,175,255),
+        TextSize=11,TextXAlignment=Enum.TextXAlignment.Left,ClearTextOnFocus=false,ZIndex=203,Parent=InputBg})
+    local PasteBtn = New("ImageButton",{BackgroundColor3=Color3.fromRGB(75,35,155),BackgroundTransparency=0.62,
+        BorderSizePixel=0,AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-5,0.5,0),
+        Size=UDim2.new(0,24,0,24),Image="rbxassetid://3926305904",ImageRectOffset=Vector2.new(324,684),
+        ImageRectSize=Vector2.new(36,36),ImageColor3=Color3.fromRGB(155,115,225),ZIndex=204,Parent=InputBg,
+        Children={New("UICorner",{CornerRadius=UDim.new(0,5)})}})
+    PasteBtn.MouseEnter:Connect(function() Tween(PasteBtn,{BackgroundTransparency=0.30},0.12) end)
+    PasteBtn.MouseLeave:Connect(function() Tween(PasteBtn,{BackgroundTransparency=0.62},0.16) end)
+    PasteBtn.MouseButton1Click:Connect(function()
+        if getclipboard then KeyInput.Text = getclipboard() or "" end
+    end)
+
+    local StatusLabel = New("TextLabel",{BackgroundTransparency=1,
+        Position=UDim2.new(0,RX,0,185),Size=UDim2.new(0,RW,0,13),
+        Font=Enum.Font.GothamBold,Text="",TextColor3=Color3.fromRGB(155,135,190),
+        TextSize=9,TextXAlignment=Enum.TextXAlignment.Center,ZIndex=202,Parent=Card})
+
+    local BtnY = 202
+    local BtnH = 30
+    local BtnGap = 6
+    local BtnW = math.floor((RW - BtnGap*2) / 3)
+
+    local function MakeBtn(label, px, w, bg, tc, cb)
+        local btn = New("TextButton",{BackgroundColor3=bg,BackgroundTransparency=0.28,
+            BorderSizePixel=0,Position=UDim2.new(0,px,0,BtnY),Size=UDim2.new(0,w,0,BtnH),
+            AutoButtonColor=false,Text="",ClipsDescendants=true,ZIndex=202,Parent=Card,
+            Children={New("UICorner",{CornerRadius=UDim.new(0,7)}),
+                New("TextLabel",{BackgroundTransparency=1,Size=UDim2.new(1,0,1,0),
+                    Font=Enum.Font.FredokaOne,Text=label,TextColor3=tc,TextSize=13,
+                    TextXAlignment=Enum.TextXAlignment.Center,ZIndex=203})}})
+        btn.MouseEnter:Connect(function() Tween(btn,{BackgroundTransparency=0.08},0.12) end)
+        btn.MouseLeave:Connect(function() Tween(btn,{BackgroundTransparency=0.28},0.16) end)
+        btn.MouseButton1Click:Connect(function()
+            CircleRipple(btn, Mouse.X, Mouse.Y)
+            cb()
+        end)
+        return btn
+    end
+
+    local function AnimateClose()
+        Tween(Card, {Size=UDim2.new(0,W*0.65,0,H*0.65),BackgroundTransparency=0.75}, 0.20, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
+        Tween(Backdrop, {BackgroundTransparency=1}, 0.20, Enum.EasingStyle.Quint)
+        task.delay(0.22, function() SG:Destroy() done = true end)
+    end
+
+    local function VerifyKey(keyStr)
+        if verifying then return end
+        verifying = true
+
+        StatusLabel.Text = "Checking Luarmor API..."
+        StatusLabel.TextColor3 = Color3.fromRGB(175,150,255)
+
+        task.spawn(function()
+            local valid, message = CheckKeyViaLuarmorAPI(keyStr)
+            verifying = false
+
+            if valid then
+                isPremium = true
+                SaveKey(keyStr)
+                ApplyPremiumState(keyStr, true)
+                StatusLabel.Text = " " .. message
+                StatusLabel.TextColor3 = Color3.fromRGB(80,230,130)
+                LRMStatusLabel.Text = "Premium Active"
+                LRMStatusLabel.TextColor3 = Color3.fromRGB(80,230,130)
+                task.wait(0.15)
+                AnimateClose()
+            else
+                ApplyPremiumState(keyStr, false)
+                StatusLabel.Text = "" .. (message or "Key invalid")
+                StatusLabel.TextColor3 = Color3.fromRGB(255,90,110)
+                LRMStatusLabel.Text = "Not Verified"
+                LRMStatusLabel.TextColor3 = Color3.fromRGB(200,100,100)
+            end
+        end)
+    end
+
+    MakeBtn("Free Version", RX, BtnW,
+        Color3.fromRGB(35,14,70), Color3.fromRGB(170,130,255),
+        function()
+            isPremium = false
+            AnimateClose()
+        end)
+
+    MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW,
+        Color3.fromRGB(12,35,70), Color3.fromRGB(105,175,255),
+        function()
+            StatusLabel.Text = "Opening key link..."
+            StatusLabel.TextColor3 = Color3.fromRGB(175,150,255)
+            task.spawn(function()
+                pcall(function() (setclipboard or toclipboard)(LUARMOR.GET_KEY_URL) end)
+                StatusLabel.Text = "Key link copied to clipboard!"
+                StatusLabel.TextColor3 = Color3.fromRGB(105,195,255)
+            end)
+        end)
+
+    MakeBtn("Enter Key", RX + (BtnW + BtnGap)*2, BtnW,
+        Color3.fromRGB(48,14,100), Color3.fromRGB(200,150,255),
+        function()
+            local k = KeyInput.Text
+            if not k or k == "" then
+                StatusLabel.Text = "Please enter a key first."
+                StatusLabel.TextColor3 = Color3.fromRGB(255,175,80)
+                return
+            end
+            VerifyKey(k)
+        end)
+
+    local SY = BtnY + BtnH + 14
+    New("TextLabel",{BackgroundTransparency=1,Position=UDim2.new(0,RX,0,SY),Size=UDim2.new(0,RW,0,12),
+        Font=Enum.Font.GothamBold,Text="Community",TextColor3=Color3.fromRGB(200,170,65),
+        TextSize=9,TextXAlignment=Enum.TextXAlignment.Center,ZIndex=202,Parent=Card})
+
+    local socials = {
+        { img="rbxassetid://129297846250682", col=Color3.fromRGB(100,120,255) },
+        { img="http://www.roblox.com/asset/?id=14620084334", col=Color3.fromRGB(185,130,255) },
+    }
+    local icSz = 26
+    local totW = #socials * icSz + (#socials-1)*8
+    local stX  = RX + math.floor((RW - totW)/2)
+    for i, sd in ipairs(socials) do
+        local ic = New("ImageButton",{BackgroundColor3=sd.col,BackgroundTransparency=0.68,BorderSizePixel=0,
+            Position=UDim2.new(0,stX+(i-1)*(icSz+8),0,SY+15),Size=UDim2.new(0,icSz,0,icSz),
+            Image=sd.img,ImageColor3=Color3.fromRGB(255,255,255),ZIndex=202,Parent=Card,
+            Children={New("UICorner",{CornerRadius=UDim.new(1,0)}),
+                New("UIStroke",{Color=sd.col,Transparency=0.40,Thickness=1,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})}})
+        ic.MouseEnter:Connect(function() Tween(ic,{BackgroundTransparency=0.28},0.12) end)
+        ic.MouseLeave:Connect(function() Tween(ic,{BackgroundTransparency=0.68},0.16) end)
+    end
+
+    CloseBtn.MouseEnter:Connect(function() Tween(CloseBtn,{ImageColor3=Color3.fromRGB(255,70,70)},0.12) end)
+    CloseBtn.MouseLeave:Connect(function() Tween(CloseBtn,{ImageColor3=Color3.fromRGB(200,80,80)},0.16) end)
+    CloseBtn.MouseButton1Click:Connect(function()
+        isPremium = false
+        AnimateClose()
+    end)
+
+    Tween(Backdrop, {BackgroundTransparency=0.50}, 0.28, Enum.EasingStyle.Quint)
+    Tween(Card, {Size=UDim2.new(0,W,0,H), BackgroundTransparency=0}, 0.36, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+
+    task.spawn(function()
+        if LuarmorLoaderPremium() then
+            LRMStatusLabel.Text = "● Premium (Luarmor)"
+            LRMStatusLabel.TextColor3 = Color3.fromRGB(80,230,130)
+            StatusLabel.Text = "Luarmor premium detected — click Enter Key to continue."
+            StatusLabel.TextColor3 = Color3.fromRGB(130,220,160)
+        else
+            local isFree = false
+            pcall(function() isFree = (LRM_IsUserFree == true) end)
+            if isFree then
+                LRMStatusLabel.Text = "Free User"
+                LRMStatusLabel.TextColor3 = Color3.fromRGB(255,200,80)
+            else
+                LRMStatusLabel.Text = "API Check Ready"
+                LRMStatusLabel.TextColor3 = Color3.fromRGB(160,140,200)
+            end
+        end
+    end)
+
+    local savedKey = LoadSavedKey()
+    if savedKey ~= "" then
+        KeyInput.Text = savedKey
+        task.defer(function()
+            if not done then VerifyKey(savedKey) end
+        end)
+    end
+
+    repeat task.wait(0.08) until done
+
+    local finalKey = LoadSavedKey()
+    ApplyPremiumState((finalKey ~= "" and finalKey) or nil, isPremium)
+    return isPremium, finalKey
+end
+
+local env = (getgenv and getgenv()) or _G
+env.QuantumCheckKey = CheckKeyViaLuarmorAPI
+
+return RunKeyLoader
