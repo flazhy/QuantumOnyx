@@ -1,4 +1,6 @@
-
+if not game and game.GetService and game:GetService("RunService") or game.ClassName ~= "DataModel" or (typeof and typeof(game.Players) ~= "Instance") or not (getmetatable and setmetatable and type and pcall and rawget and rawset) then
+    repeat task.wait() warn("stop skidding - flazhy") until false
+end
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
@@ -10,12 +12,11 @@ local LUARMOR = {
     GET_KEY_URL = "https://ads.luarmor.net/get_key?project=b51bc445318cbb9c68b360ff37884e84",
 }
 local function LuarmorLoaderPremium()
-    local ok, v = pcall(function() return LRM_IsUserPremium == true end)
-    return ok and v == true
+    local i, v = pcall(function() return LRM_IsUserPremium == true end)
+    return i and v == true
 end
-local _verifiedPremium = false
-local function MarkVerified() _verifiedPremium = true end
-local function IsPremiumActive() return _verifiedPremium end
+local _VerifiedPremium = false
+local function MarkVerified() _VerifiedPremium = true end
 local function ApplyPremiumState(keyStr, isPremium)
    
     if LuarmorLoaderPremium() then
@@ -23,13 +24,6 @@ local function ApplyPremiumState(keyStr, isPremium)
     end
     if isPremium == true then
         MarkVerified()
-        env.QuantumLuarmorVerified = true
-        env.LRM_IsUserPremium = true
-        env.QuantumKeyPremium = true
-    else
-        env.QuantumLuarmorVerified = false
-        env.LRM_IsUserPremium = false
-        env.QuantumKeyPremium = false
     end
     if keyStr and keyStr ~= "" then
         env.Key = keyStr
@@ -42,38 +36,38 @@ local SCRIPT_ID = "0ae9fe4cf963e3a13d25eed0e2ce5940"
 local LuarmorAPI = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
 LuarmorAPI.script_id = SCRIPT_ID
 
-local function CheckKeyViaLuarmorAPI(keyStr)
+local function CheckKeyViaLuarmorAPI(KeyStr)
     if LuarmorLoaderPremium() then
         return true, "Premium via Luarmor"
     end
 
-    if not keyStr or keyStr == "" then
+    if not KeyStr or KeyStr == "" then
         return false, "No key entered"
     end
 
-    if _ApiCache.key == keyStr and (tick() - _ApiCache.at) < 30 then
+    if _ApiCache.key == KeyStr and (tick() - _ApiCache.at) < 30 then
         return _ApiCache.valid, _ApiCache.msg
     end
-    local status = LuarmorAPI.check_key(keyStr)
+    local status = LuarmorAPI.check_key(KeyStr)
     if status.code == "KEY_VALID" then
         MarkVerified()
-        ApplyPremiumState(keyStr, true)
-        _ApiCache = { key = keyStr, at = tick(), valid = true, msg = "Key verified" }
+        ApplyPremiumState(KeyStr, true)
+        _ApiCache = { key = KeyStr, at = tick(), valid = true, msg = "Key verified" }
         return true, "Key verified"
     elseif status.code == "KEY_HWID_LOCKED" then
-        _ApiCache = { key = keyStr, at = tick(), valid = false, msg = "HWID mismatch – reset key" }
+        _ApiCache = { key = KeyStr, at = tick(), valid = false, msg = "HWID mismatch – reset key" }
         return false, "HWID mismatch – reset key"
     elseif status.code == "KEY_EXPIRED" then
-        _ApiCache = { key = keyStr, at = tick(), valid = false, msg = "Key expired" }
+        _ApiCache = { key = KeyStr, at = tick(), valid = false, msg = "Key expired" }
         return false, "Key expired"
     elseif status.code == "KEY_BANNED" then
-        _ApiCache = { key = keyStr, at = tick(), valid = false, msg = "Key banned" }
+        _ApiCache = { key = KeyStr, at = tick(), valid = false, msg = "Key banned" }
         return false, "Key banned"
     elseif status.code == "KEY_INCORRECT" then
-        _ApiCache = { key = keyStr, at = tick(), valid = false, msg = "Key not found" }
+        _ApiCache = { key = KeyStr, at = tick(), valid = false, msg = "Key not found" }
         return false, "Key not found"
     else
-        _ApiCache = { key = keyStr, at = tick(), valid = false, msg = status.message or "Invalid key" }
+        _ApiCache = { key = KeyStr, at = tick(), valid = false, msg = status.message or "Invalid key" }
         return false, status.message or "Invalid key"
     end
 end
@@ -84,7 +78,6 @@ local function Tween(obj, props, t, style, dir)
 end
 
 local function Protect(gui)
-    local env = (getgenv and getgenv()) or _G
     if env.HIDEUI then
         gui.Parent = env.HIDEUI
     elseif gethui then
@@ -494,7 +487,7 @@ local function RunKeyLoader(hubName, supportInfo, updateLog)
 
     task.spawn(function()
         if LuarmorLoaderPremium() then
-            LRMStatusLabel.Text = "Premium (Luarmor)"
+            LRMStatusLabel.Text = "● Premium (Luarmor)"
             LRMStatusLabel.TextColor3 = Color3.fromRGB(80,230,130)
             StatusLabel.Text = "Luarmor premium detected — click Enter Key to continue."
             StatusLabel.TextColor3 = Color3.fromRGB(130,220,160)
@@ -525,8 +518,5 @@ local function RunKeyLoader(hubName, supportInfo, updateLog)
     ApplyPremiumState((finalKey ~= "" and finalKey) or nil, isPremium)
     return isPremium, finalKey
 end
-
-local env = (getgenv and getgenv()) or _G
-env.QuantumCheckKey = CheckKeyViaLuarmorAPI
 
 return RunKeyLoader
