@@ -1,12 +1,12 @@
 if not game and game.GetService and game:GetService("RunService") or game.ClassName ~= "DataModel" or (typeof and typeof(game.Players) ~= "Instance") or not (getmetatable and setmetatable and type and pcall and rawget and rawset) then
     repeat task.wait() warn("stop skidding - flazhy") until false
 end
-local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
-local TweenService = game:GetService("TweenService")
+local Players        = game:GetService("Players")
+local HttpService    = game:GetService("HttpService")
+local TweenService   = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
+local LocalPlayer    = Players.LocalPlayer
+local Mouse          = LocalPlayer:GetMouse()
 
 local LUARMOR = {
     PROJECT_ID  = "b51bc445318cbb9c68b360ff37884e84",
@@ -53,23 +53,63 @@ local function CheckKeyViaLuarmorAPI(keyStr)
         return true, "Premium via Luarmor"
     end
 
-    
     if not keyStr or keyStr == "" then
         return false, "No key entered"
     end
-    local luarmorKey = nil
-    pcall(function() luarmorKey = script_key end)
 
-    if luarmorKey and luarmorKey ~= "" and luarmorKey == keyStr then
-        if LuarmorLoaderPremium() then
-            ApplyPremiumState(keyStr, true)
-            _apiCache = { key = keyStr, at = tick(), valid = true, msg = "Key verified" }
-            return true, "Key verified"
-        end
+    if _apiCache.key == keyStr and (tick() - _apiCache.at) < 30 then
+        return _apiCache.valid, _apiCache.msg
     end
-    _apiCache = { key = keyStr, at = tick(), valid = false, msg = "Key invalid" }
-    
-    return false, "Key invalid"
+
+    local httpReq = GetHTTP()
+    if not httpReq then
+        return false, "HTTP not available"
+    end
+
+    local url = "https://api.luarmor.net/v3/projects/" .. LUARMOR.PROJECT_ID .. "/users?user_key=" .. HttpService:UrlEncode(keyStr)
+    local headers = {
+        ["Authorization"] = "d0b0c954f652b6ad06cdfe0d0458b9acc6f3151fdc15195b90a2",
+        ["Content-Type"] = "application/json"
+    }
+
+    local success, res = pcall(httpReq, {
+        Url = url,
+        Method = "GET",
+        Headers = headers
+    })
+
+    if not success or not res then
+        _apiCache = { key = keyStr, at = tick(), valid = false, msg = "Request failed" }
+        warn("HTTP request error:", res)
+        return false, "Request failed"
+    end
+    local body = (type(res) == "table" and (res.Body or res.body)) or tostring(res) or ""
+    local status = (type(res) == "table" and (res.StatusCode or res.statusCode)) or 0
+    print("[DEBUG] Status:", status)
+    print("[DEBUG] Body:", body)
+
+    local decoded = nil
+    if body ~= "" then
+        local ok, data = pcall(HttpService.JSONDecode, HttpService, body)
+        if ok then decoded = data end
+    end
+    if status == 200 and decoded and decoded.success and decoded.users and #decoded.users > 0 then
+        ApplyPremiumState(keyStr, true)
+        _apiCache = { key = keyStr, at = tick(), valid = true, msg = "Key verified" }
+        return true, "Key verified"
+    end
+    local errMsg = "Key not found"
+    if decoded and decoded.message then
+        errMsg = decoded.message
+    elseif status == 403 then
+        errMsg = "Invalid API key or permission denied"
+    elseif status == 404 then
+        errMsg = "Project not found"
+    elseif status == 429 then
+        errMsg = "Rate limited, try again later"
+    end
+    _apiCache = { key = keyStr, at = tick(), valid = false, msg = errMsg }
+    return false, errMsg
 end
 local function Tween(obj, props, t, style, dir)
     style = style or Enum.EasingStyle.Quint
@@ -505,11 +545,6 @@ local function RunKeyLoader(hubName, supportInfo, updateLog)
         end
     end)
 
-    if LuarmorLoaderPremium() then
-        local saved = LoadSavedKey()
-        ApplyPremiumState(saved, true)
-        return true, saved
-    end
     local savedKey = LoadSavedKey()
     if savedKey ~= "" then
         KeyInput.Text = savedKey
