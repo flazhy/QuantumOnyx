@@ -1,12 +1,12 @@
 if not game and game.GetService and game:GetService("RunService") or game.ClassName ~= "DataModel" or (typeof and typeof(game.Players) ~= "Instance") or not (getmetatable and setmetatable and type and pcall and rawget and rawset) then
     repeat task.wait() warn("stop skidding - flazhy") until false
 end
-local Players        = game:GetService("Players")
-local HttpService    = game:GetService("HttpService")
-local TweenService   = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local LocalPlayer    = Players.LocalPlayer
-local Mouse          = LocalPlayer:GetMouse()
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
 
 local LUARMOR = {
     PROJECT_ID  = "b51bc445318cbb9c68b360ff37884e84",
@@ -53,6 +53,7 @@ local function CheckKeyViaLuarmorAPI(keyStr)
         return true, "Premium via Luarmor"
     end
 
+    
     if not keyStr or keyStr == "" then
         return false, "No key entered"
     end
@@ -67,6 +68,7 @@ local function CheckKeyViaLuarmorAPI(keyStr)
         end
     end
     _apiCache = { key = keyStr, at = tick(), valid = false, msg = "Key invalid" }
+    
     return false, "Key invalid"
 end
 local function Tween(obj, props, t, style, dir)
@@ -503,6 +505,11 @@ local function RunKeyLoader(hubName, supportInfo, updateLog)
         end
     end)
 
+    if LuarmorLoaderPremium() then
+        local saved = LoadSavedKey()
+        ApplyPremiumState(saved, true)
+        return true, saved
+    end
     local savedKey = LoadSavedKey()
     if savedKey ~= "" then
         KeyInput.Text = savedKey
