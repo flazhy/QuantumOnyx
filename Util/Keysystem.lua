@@ -1,3 +1,4 @@
+
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
@@ -12,13 +13,16 @@ local function LuarmorLoaderPremium()
     local ok, v = pcall(function() return LRM_IsUserPremium == true end)
     return ok and v == true
 end
-
+local _verifiedPremium = false
+local function MarkVerified() _verifiedPremium = true end
+local function IsPremiumActive() return _verifiedPremium end
 local function ApplyPremiumState(keyStr, isPremium)
    
     if LuarmorLoaderPremium() then
         isPremium = true
     end
     if isPremium == true then
+        MarkVerified()
         env.QuantumLuarmorVerified = true
         env.LRM_IsUserPremium = true
         env.QuantumKeyPremium = true
@@ -52,6 +56,7 @@ local function CheckKeyViaLuarmorAPI(keyStr)
     end
     local status = LuarmorAPI.check_key(keyStr)
     if status.code == "KEY_VALID" then
+        MarkVerified()
         ApplyPremiumState(keyStr, true)
         _ApiCache = { key = keyStr, at = tick(), valid = true, msg = "Key verified" }
         return true, "Key verified"
@@ -489,7 +494,7 @@ local function RunKeyLoader(hubName, supportInfo, updateLog)
 
     task.spawn(function()
         if LuarmorLoaderPremium() then
-            LRMStatusLabel.Text = "● Premium (Luarmor)"
+            LRMStatusLabel.Text = "Premium (Luarmor)"
             LRMStatusLabel.TextColor3 = Color3.fromRGB(80,230,130)
             StatusLabel.Text = "Luarmor premium detected — click Enter Key to continue."
             StatusLabel.TextColor3 = Color3.fromRGB(130,220,160)
