@@ -12,8 +12,6 @@ local Scripts = {
         [994732206] = Api .. "/0ae9fe4cf963e3a13d25eed0e2ce5940.lua"
     }
 }
-
-local LUARMOR_PROJECT = "b51bc445318cbb9c68b360ff37884e84"
 local SCRIPT_ID = "0ae9fe4cf963e3a13d25eed0e2ce5940"
 local FOLDER = "Quantum Onyx Hub"
 local KEY_FILE = FOLDER .. "/Key.json"
