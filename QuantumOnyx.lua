@@ -2,14 +2,14 @@ local Directory = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/hea
 local Api = "https://api.luarmor.net/files/v4/loaders"
 local Scripts = {
     Free = {
-        [994732206]   = Directory .. "/BloxFruits.lua",
-        [9186719164]  = Directory .. "/SailorPiece.lua",
-        [8191429227]  = Directory .. "/CutTrees.lua",
-        [9792947201]  = Directory .. "/SlimeRNG.lua",
-        [10004244222] = Directory .. "/KickALuckyBlock.lua"
+        [994732206] = Directory .. "/BloxFruits.lua",
+        [9186719164] = Directory .. "/SailorPiece.lua",
+        [8191429227] = Directory .. "/CutTrees.lua",
     },
     Premium = {
-        [994732206] = Api .. "/0ae9fe4cf963e3a13d25eed0e2ce5940.lua"
+        [994732206] = Api .. "/0ae9fe4cf963e3a13d25eed0e2ce5940.lua",
+        [10004244222] = Api .. "/63980a492928552d074ceee243a918d6.lua",
+        [9792947201] = Api .. "/50e8e00251d97215e14313c0bb012058.lua",
     }
 }
 local SCRIPT_ID = "0ae9fe4cf963e3a13d25eed0e2ce5940"
@@ -713,10 +713,14 @@ local function ShowKeyUI()
     end
 
     MakeBtn("Free Version", RX, BtnW,
-        Color3.fromRGB(35, 14, 70), Color3.fromRGB(170, 130, 255),
+    Color3.fromRGB(35, 14, 70), Color3.fromRGB(170, 130, 255),
         function()
-            isPremium = false
-            AnimateClose()
+            if not Scripts.Free[gameId] then
+                SetStatus("No free version for this game.", Color3.fromRGB(255, 150, 80))
+            else
+                isPremium = false
+                AnimateClose()
+            end
         end)
 
     MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW,
