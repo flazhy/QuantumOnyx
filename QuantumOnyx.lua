@@ -722,9 +722,7 @@ local function ShowKeyUI()
     MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW,
         Color3.fromRGB(12, 35, 70), Color3.fromRGB(105, 175, 255),
         function()
-            local link = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-JolbGpjvZquA"
-            pcall(function() (setclipboard or toclipboard)(link) end)
-            SetStatus("Key link copied to clipboard!", Color3.fromRGB(105, 195, 255))
+            SetStatus("Restocking Free Keys wait for atleast an hour or more", Color3.fromRGB(105, 195, 255))
         end)
 
     MakeBtn("Enter Key", RX + (BtnW + BtnGap) * 2, BtnW,
