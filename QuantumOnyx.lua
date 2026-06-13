@@ -10,8 +10,10 @@ local Scripts = {
         [994732206] = Api .. "/0ae9fe4cf963e3a13d25eed0e2ce5940.lua",
         [10004244222] = Api .. "/63980a492928552d074ceee243a918d6.lua",
         [9792947201] = Api .. "/50e8e00251d97215e14313c0bb012058.lua",
+        [10200395747] = Api.."/65265b2869c03f57430ee45357d8c3f9.lua"
     }
 }
+
 local SCRIPT_ID = "0ae9fe4cf963e3a13d25eed0e2ce5940"
 local FOLDER = "Quantum Onyx Hub"
 local KEY_FILE = FOLDER .. "/Key.json"
