@@ -10,27 +10,24 @@ local Scripts = {
         [994732206] = Api .. "/0ae9fe4cf963e3a13d25eed0e2ce5940.lua",
         [10004244222] = Api .. "/63980a492928552d074ceee243a918d6.lua",
         [9792947201] = Api .. "/50e8e00251d97215e14313c0bb012058.lua",
-        [10200395747] = Api.."/65265b2869c03f57430ee45357d8c3f9.lua"
+        [10200395747] = Api .. "/65265b2869c03f57430ee45357d8c3f9.lua"
     }
 }
-
 local SCRIPT_ID = "0ae9fe4cf963e3a13d25eed0e2ce5940"
 local FOLDER = "Quantum Onyx Hub"
 local KEY_FILE = FOLDER .. "/Key.json"
-
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local gameId = game.GameId
-
 local function Tween(obj, props, t, style, dir)
     style = style or Enum.EasingStyle.Quint
     dir = dir or Enum.EasingDirection.Out
     TweenService:Create(obj, TweenInfo.new(t, style, dir), props):Play()
 end
-
 local function Protect(gui)
     local env = (getgenv and getgenv()) or _G
     if env.HIDEUI then
@@ -44,7 +41,6 @@ local function Protect(gui)
         gui.Parent = game:GetService("CoreGui")
     end
 end
-
 local function New(class, props, parent)
     local inst = Instance.new(class)
     for k, v in pairs(props) do
@@ -60,7 +56,6 @@ local function New(class, props, parent)
     inst.Parent = props.Parent or parent
     return inst
 end
-
 local function CircleRipple(btn, mx, my)
     task.spawn(function()
         btn.ClipsDescendants = true
@@ -83,12 +78,10 @@ local function CircleRipple(btn, mx, my)
         c:Destroy()
     end)
 end
-
 local function SaveKey(key)
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({ key = key }))
 end
-
 local function LoadSavedKey()
     if isfolder(FOLDER) and isfile(KEY_FILE) then
         local ok, v = pcall(function()
@@ -98,12 +91,10 @@ local function LoadSavedKey()
     end
     return ""
 end
-
 local function ClearKey()
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({}))
 end
-
 local function LoadScript(tier, key)
     local tbl = Scripts[tier]
     if not tbl then return end
@@ -118,31 +109,25 @@ local function LoadScript(tier, key)
     local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
     if not ok then warn("[Quantum Onyx] Error: " .. tostring(err)) end
 end
-
 local function ShowKeyUI()
     local done = false
     local isPremium = false
     local resultKey = ""
     local submitting = false
-
     local supportInfo = {
         { label = "Discord", value = "discord.gg/onyxfam" },
-        { label = "Game", value = (pcall(function()
-            return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name end) and game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) or "Unknown" },
+        { label = "Game", value = (pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name end) and game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) or "Unknown" },
         { label = "Version", value = "v.Freemium" },
     }
-
     local UpdateLog = {
-        { version = "v2.1", date = "2026", notes = "Luarmor API key check" },
+        { version = "v2.2", date = "2026", notes = "Added Linkvertise as key service" },
     }
-
     local SG = Instance.new("ScreenGui")
     SG.Name = "KL_" .. tostring(math.random(1e6))
     SG.ZIndexBehavior = Enum.ZIndexBehavior.Global
     SG.ResetOnSpawn = false
     SG.IgnoreGuiInset = true
     Protect(SG)
-
     local Backdrop = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = 1,
@@ -151,7 +136,6 @@ local function ShowKeyUI()
         ZIndex = 200,
         Parent = SG,
     })
-
     local W, H = 450, 310
     local Card = New("Frame", {
         AnchorPoint = Vector2.new(0.5, 0.5),
@@ -173,7 +157,6 @@ local function ShowKeyUI()
             }),
         }
     })
-
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(80, 20, 160),
         BackgroundTransparency = 0.88,
@@ -194,7 +177,6 @@ local function ShowKeyUI()
         Parent = Card,
         Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
     })
-
     local Header = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BorderSizePixel = 0,
@@ -267,7 +249,6 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = Header
     })
-
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(110, 50, 210),
         BackgroundTransparency = 0.55,
@@ -285,11 +266,9 @@ local function ShowKeyUI()
             })
         }) }
     })
-
     local LW = 180
     local RX = LW + 18
     local RW = W - RX - 10
-
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(100, 50, 200),
         BackgroundTransparency = 0.65,
@@ -308,7 +287,6 @@ local function ShowKeyUI()
             })
         }) }
     })
-
     local InfoBox = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.20,
@@ -381,7 +359,6 @@ local function ShowKeyUI()
         rowY = rowY + 16
         if rowY > 96 then break end
     end
-
     local LogBox = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.20,
@@ -455,7 +432,6 @@ local function ShowKeyUI()
         logY = logY + 14
         if logY > 110 then break end
     end
-
     local NoticeBg = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.22,
@@ -491,7 +467,6 @@ local function ShowKeyUI()
         Text = "Freemium — key is optional.\nEnter a key to unlock premium features.",
         Parent = NoticeBg
     })
-
     local LRMBar = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.22,
@@ -526,7 +501,6 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = LRMBar
     })
-
     local InputBg = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(4, 2, 9),
         BackgroundTransparency = 0,
@@ -584,7 +558,6 @@ local function ShowKeyUI()
     PasteBtn.MouseButton1Click:Connect(function()
         if getclipboard then KeyInput.Text = getclipboard() or "" end
     end)
-
     local StatusLabel = New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, RX, 0, 185),
@@ -597,22 +570,18 @@ local function ShowKeyUI()
         ZIndex = 202,
         Parent = Card
     })
-
     local function SetStatus(msg, col)
         StatusLabel.Text = msg
         StatusLabel.TextColor3 = col or Color3.fromRGB(155, 135, 190)
     end
-
     local function AnimateClose()
-        Tween(Card, { Size = UDim2.new(0, W * 0.65, 0, H * 0.65), BackgroundTransparency = 0.75 }, 0.20,
-            Enum.EasingStyle.Quint, Enum.EasingDirection.In)
+        Tween(Card, { Size = UDim2.new(0, W * 0.65, 0, H * 0.65), BackgroundTransparency = 0.75 }, 0.20, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
         Tween(Backdrop, { BackgroundTransparency = 1 }, 0.20, Enum.EasingStyle.Quint)
         task.delay(0.22, function()
             SG:Destroy()
             done = true
         end)
     end
-
     local function SubmitKey(keyStr)
         if submitting then return end
         if not keyStr or keyStr == "" then
@@ -621,20 +590,16 @@ local function ShowKeyUI()
         end
         submitting = true
         SetStatus("Submitting key...", Color3.fromRGB(175, 150, 255))
-
         task.spawn(function()
             local sdk, LuarmorAPI = pcall(function()
                 return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
             end)
-
             if not sdk or type(LuarmorAPI) ~= "table" then
                 submitting = false
                 SetStatus("Failed to reach Luarmor SDK.", Color3.fromRGB(255, 90, 110))
                 return
             end
-
             LuarmorAPI.script_id = SCRIPT_ID
-
             local check, status = pcall(function()
                 return LuarmorAPI.check_key(keyStr)
             end)
@@ -643,7 +608,6 @@ local function ShowKeyUI()
                 SetStatus("Verification error — try again.", Color3.fromRGB(255, 90, 110))
                 return
             end
-
             local code = status.code or ""
             if code == "KEY_VALID" then
                 isPremium = true
@@ -673,12 +637,10 @@ local function ShowKeyUI()
             end
         end)
     end
-
     local BtnY = 202
     local BtnH = 30
     local BtnGap = 6
     local BtnW = math.floor((RW - BtnGap * 2) / 3)
-
     local function MakeBtn(label, px, w, bg, tc, cb)
         local btn = New("TextButton", {
             BackgroundColor3 = bg,
@@ -713,32 +675,89 @@ local function ShowKeyUI()
         end)
         return btn
     end
-
-    MakeBtn("Free Version", RX, BtnW,
-    Color3.fromRGB(35, 14, 70), Color3.fromRGB(170, 130, 255),
-        function()
-            if not Scripts.Free[gameId] then
-                SetStatus("No free version for this game.", Color3.fromRGB(255, 150, 80))
-            else
-                isPremium = false
-                AnimateClose()
-            end
-        end)
-
-    MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW,
-        Color3.fromRGB(12, 35, 70), Color3.fromRGB(105, 175, 255),
-        function()
-            local link = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-FpNBDhxVzYzS"
+    MakeBtn("Free Version", RX, BtnW, Color3.fromRGB(35, 14, 70), Color3.fromRGB(170, 130, 255), function()
+        if not Scripts.Free[gameId] then
+            SetStatus("No free version for this game.", Color3.fromRGB(255, 150, 80))
+        else
+            isPremium = false
+            AnimateClose()
+        end
+    end)
+    local panelOpen = false
+    local OptionPanel = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(4, 2, 9),
+        BackgroundTransparency = 0,
+        BorderSizePixel = 0,
+        Position = UDim2.new(0, RX + BtnW + BtnGap, 0, BtnY - 78),
+        Size = UDim2.new(0, BtnW, 0, 72),
+        ZIndex = 215,
+        Visible = false,
+        ClipsDescendants = false,
+        Parent = Card,
+        Children = {
+            New("UICorner", { CornerRadius = UDim.new(0, 7) }),
+            New("UIStroke", {
+                Color = Color3.fromRGB(110, 55, 200),
+                Transparency = 0.48,
+                Thickness = 1,
+                ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+            }),
+        }
+    })
+    local function MakeOptionBtn(label, yPos, link, statusMsg)
+        local btn = New("TextButton", {
+            BackgroundColor3 = Color3.fromRGB(30, 10, 70),
+            BackgroundTransparency = 0.30,
+            BorderSizePixel = 0,
+            Position = UDim2.new(0, 4, 0, yPos),
+            Size = UDim2.new(1, -8, 0, 30),
+            AutoButtonColor = false,
+            Text = label,
+            Font = Enum.Font.GothamBold,
+            TextColor3 = Color3.fromRGB(190, 160, 255),
+            TextSize = 11,
+            ZIndex = 216,
+            Parent = OptionPanel,
+            Children = { New("UICorner", { CornerRadius = UDim.new(0, 5) }) }
+        })
+        btn.MouseEnter:Connect(function() Tween(btn, { BackgroundTransparency = 0.08 }, 0.10) end)
+        btn.MouseLeave:Connect(function() Tween(btn, { BackgroundTransparency = 0.30 }, 0.12) end)
+        btn.MouseButton1Click:Connect(function()
+            CircleRipple(btn, Mouse.X, Mouse.Y)
             pcall(function() (setclipboard or toclipboard)(link) end)
-            SetStatus("Key Link Copied", Color3.fromRGB(105, 195, 255))
+            SetStatus(statusMsg, Color3.fromRGB(105, 195, 255))
+            task.delay(0.12, function()
+                panelOpen = false
+                OptionPanel.Visible = false
+            end)
         end)
-
-    MakeBtn("Enter Key", RX + (BtnW + BtnGap) * 2, BtnW,
-        Color3.fromRGB(48, 14, 100), Color3.fromRGB(200, 150, 255),
-        function()
-            SubmitKey(KeyInput.Text)
-        end)
-
+        return btn
+    end
+    MakeOptionBtn("Lootlabs", 4, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-FpNBDhxVzYzS", "Lootlabs Link Copied")
+    MakeOptionBtn("Linkvertise", 38, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-TcgtEiNunUTO", "Linkvertise Link Copied")
+    local getKeyBtn = MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW, Color3.fromRGB(12, 35, 70), Color3.fromRGB(105, 175, 255), function()
+        panelOpen = not panelOpen
+        OptionPanel.Visible = panelOpen
+    end)
+    UserInputService.InputBegan:Connect(function(input, processed)
+        if not panelOpen then return end
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            local pos = input.Position
+            local ap = OptionPanel.AbsolutePosition
+            local as = OptionPanel.AbsoluteSize
+            local onPanel = pos.X >= ap.X and pos.X <= ap.X + as.X and pos.Y >= ap.Y and pos.Y <= ap.Y + as.Y
+            local gkp = getKeyBtn.AbsolutePosition
+            local gks = getKeyBtn.AbsoluteSize
+            local onBtn = pos.X >= gkp.X and pos.X <= gkp.X + gks.X and pos.Y >= gkp.Y and pos.Y <= gkp.Y + gks.Y
+            if not onPanel and not onBtn then
+                panelOpen = false
+                OptionPanel.Visible = false
+            end
+        end
+    end)
+    MakeBtn("Enter Key", RX + (BtnW + BtnGap) * 2, BtnW, Color3.fromRGB(48, 14, 100), Color3.fromRGB(200, 150, 255), function()
+        SubmitKey(KeyInput.Text)
+    end)
     local SY = BtnY + BtnH + 14
     New("TextLabel", {
         BackgroundTransparency = 1,
@@ -752,7 +771,6 @@ local function ShowKeyUI()
         ZIndex = 202,
         Parent = Card
     })
-
     local socials = {
         { img = "rbxassetid://129297846250682", col = Color3.fromRGB(100, 120, 255) },
         { img = "http://www.roblox.com/asset/?id=14620084334", col = Color3.fromRGB(185, 130, 255) },
@@ -779,18 +797,14 @@ local function ShowKeyUI()
         ic.MouseEnter:Connect(function() Tween(ic, { BackgroundTransparency = 0.28 }, 0.12) end)
         ic.MouseLeave:Connect(function() Tween(ic, { BackgroundTransparency = 0.68 }, 0.16) end)
     end
-
     CloseBtn.MouseEnter:Connect(function() Tween(CloseBtn, { ImageColor3 = Color3.fromRGB(255, 70, 70) }, 0.12) end)
     CloseBtn.MouseLeave:Connect(function() Tween(CloseBtn, { ImageColor3 = Color3.fromRGB(200, 80, 80) }, 0.16) end)
     CloseBtn.MouseButton1Click:Connect(function()
         isPremium = false
         AnimateClose()
     end)
-
     Tween(Backdrop, { BackgroundTransparency = 0.50 }, 0.28, Enum.EasingStyle.Quint)
-    Tween(Card, { Size = UDim2.new(0, W, 0, H), BackgroundTransparency = 0 }, 0.36,
-        Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-
+    Tween(Card, { Size = UDim2.new(0, W, 0, H), BackgroundTransparency = 0 }, 0.36, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
     task.spawn(function()
         task.wait(1.5)
         if LRM_IsUserPremium == true then
@@ -819,7 +833,6 @@ local function ShowKeyUI()
 end
 local function AuthenticateAndLoad()
     local SavedKey = LoadSavedKey()
-
     if SavedKey and SavedKey ~= "" then
         local sdk, LuarmorAPI = pcall(function()
             return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
