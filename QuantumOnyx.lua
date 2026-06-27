@@ -115,7 +115,7 @@ local function ShowKeyUI()
     local resultKey = ""
     local submitting = false
     local supportInfo = {
-        { label = "Discord", value = "discord.gg/onyxfam" },
+        { label = "Discord", value = "discord.gg/quantumonyx" },
         { label = "Game", value = (pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name end) and game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) or "Unknown" },
         { label = "Version", value = "v.Freemium" },
     }
