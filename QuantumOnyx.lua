@@ -23,11 +23,13 @@ local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local gameId = game.GameId
+
 local function Tween(obj, props, t, style, dir)
     style = style or Enum.EasingStyle.Quint
     dir = dir or Enum.EasingDirection.Out
     TweenService:Create(obj, TweenInfo.new(t, style, dir), props):Play()
 end
+
 local function Protect(gui)
     local env = (getgenv and getgenv()) or _G
     if env.HIDEUI then
@@ -41,6 +43,7 @@ local function Protect(gui)
         gui.Parent = game:GetService("CoreGui")
     end
 end
+
 local function New(class, props, parent)
     local inst = Instance.new(class)
     for k, v in pairs(props) do
@@ -56,6 +59,7 @@ local function New(class, props, parent)
     inst.Parent = props.Parent or parent
     return inst
 end
+
 local function CircleRipple(btn, mx, my)
     task.spawn(function()
         btn.ClipsDescendants = true
@@ -78,10 +82,12 @@ local function CircleRipple(btn, mx, my)
         c:Destroy()
     end)
 end
+
 local function SaveKey(key)
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({ key = key }))
 end
+
 local function LoadSavedKey()
     if isfolder(FOLDER) and isfile(KEY_FILE) then
         local ok, v = pcall(function()
@@ -91,24 +97,260 @@ local function LoadSavedKey()
     end
     return ""
 end
+
 local function ClearKey()
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({}))
 end
-local function LoadScript(tier, key)
-    local tbl = Scripts[tier]
-    if not tbl then return end
-    local url = tbl[gameId]
-    if not url then
-        warn("[Quantum Onyx] No " .. tier .. " script for GameId: " .. tostring(gameId))
-        return
+
+local SDK_RETRIES = 4
+local SDK_RETRY_DELAY = 2.5
+local _cachedAPI = nil
+
+local function LoadSDK()
+    local ok, result = pcall(function()
+        local src = game:HttpGet("https://sdkapi-public.luarmor.net/library.lua")
+        if not src or #src < 50 then
+            error("SDK source too short")
+        end
+        local fn, err = loadstring(src)
+        if not fn then error("SDK loadstring failed: " .. tostring(err)) end
+        local api = fn()
+        if type(api) ~= "table" then
+            error("SDK returned unexpected type: " .. type(api))
+        end
+        return api
+    end)
+    return ok, result
+end
+
+local function VerifyKey(keyStr, onStatus)
+    local function notify(msg, col)
+        if onStatus then onStatus(msg, col) end
     end
+
+    task.wait(0.5)
+
+    local succeeded = false
+    local finalStatus = nil
+
+    for attempt = 1, SDK_RETRIES do
+        if not succeeded then
+            if attempt > 1 then
+                notify("Retrying... (" .. attempt .. "/" .. SDK_RETRIES .. ")", Color3.fromRGB(210, 165, 80))
+            end
+            local sdkOk, api = LoadSDK()
+            if sdkOk then
+                api.script_id = SCRIPT_ID
+                local checkOk, status = pcall(function()
+                    return api.check_key(keyStr)
+                end)
+                if checkOk and type(status) == "table" then
+                    _cachedAPI = api
+                    succeeded = true
+                    finalStatus = status
+                else
+                    warn(string.format("[QO] check_key error (attempt %d/%d): %s", attempt, SDK_RETRIES, tostring(status)))
+                    if attempt < SDK_RETRIES then task.wait(SDK_RETRY_DELAY) end
+                end
+            else
+                warn(string.format("[QO] SDK load failed (attempt %d/%d): %s", attempt, SDK_RETRIES, tostring(api)))
+                if attempt < SDK_RETRIES then task.wait(SDK_RETRY_DELAY) end
+            end
+        end
+    end
+    if succeeded then
+        return true, finalStatus
+    end
+    return false, {
+        code = "SDK_UNREACHABLE",
+        message = "Could not reach Luarmor after " .. SDK_RETRIES .. " attempts. Check your connection and try again."
+    }
+end
+
+local function ShowLoadingScreen()
+    local SG2 = Instance.new("ScreenGui")
+    SG2.Name = "QO_Loading_" .. tostring(math.random(1e6))
+    SG2.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    SG2.ResetOnSpawn = false
+    SG2.IgnoreGuiInset = true
+    Protect(SG2)
+
+    local Box = New("Frame", {
+        AnchorPoint = Vector2.new(1, 1),
+        Position = UDim2.new(1, 18, 1, -18),
+        Size = UDim2.new(0, 220, 0, 70),
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BackgroundTransparency = 0.10,
+        BorderSizePixel = 0,
+        ZIndex = 300,
+        Parent = SG2,
+        Children = {
+            New("UICorner", { CornerRadius = UDim.new(0, 10) }),
+            New("UIStroke", {
+                Color = Color3.fromRGB(40, 40, 40),
+                Transparency = 0.20,
+                Thickness = 1,
+                ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+            }),
+        }
+    })
+
+    local MsgLabel = New("TextLabel", {
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0, 14, 0, 10),
+        Size = UDim2.new(1, -28, 0, 16),
+        Font = Enum.Font.GothamBold,
+        Text = "Loading...",
+        TextColor3 = Color3.fromRGB(210, 210, 210),
+        TextSize = 11,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+        ZIndex = 301,
+        Parent = Box
+    })
+
+    local BarTrack = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(28, 28, 28),
+        BorderSizePixel = 0,
+        Position = UDim2.new(0, 14, 0, 34),
+        Size = UDim2.new(1, -28, 0, 4),
+        ZIndex = 301,
+        Parent = Box,
+        Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
+    })
+
+    local BarFill = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(160, 160, 160),
+        BorderSizePixel = 0,
+        Size = UDim2.new(0, 0, 1, 0),
+        ZIndex = 302,
+        Parent = BarTrack,
+        Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
+    })
+
+    local SubLabel = New("TextLabel", {
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0, 14, 0, 47),
+        Size = UDim2.new(1, -28, 0, 14),
+        Font = Enum.Font.Gotham,
+        Text = "",
+        TextColor3 = Color3.fromRGB(90, 90, 90),
+        TextSize = 9,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        ZIndex = 301,
+        Parent = Box
+    })
+
+    Tween(Box, { Position = UDim2.new(1, -18, 1, -18) }, 0.28, Enum.EasingStyle.Quint)
+
+    local animRunning = true
+    local dismissed = false
+
+    local function Dismiss()
+        if dismissed then return end
+        dismissed = true
+        animRunning = false
+        SubLabel.Text = ""
+        local env = getgenv and getgenv()
+        if not (env and env.LoadedQuantum == true) then
+            MsgLabel.Text = "Loaded Script"
+            MsgLabel.TextColor3 = Color3.fromRGB(160, 230, 160)
+            BarFill.Size = UDim2.new(1, 0, 1, 0)
+            BarFill.BackgroundColor3 = Color3.fromRGB(120, 210, 120)
+        end
+        task.wait(0.5)
+        Tween(Box, { Position = UDim2.new(1, 18, 1, -18) }, 0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
+        task.wait(0.28)
+        SG2:Destroy()
+    end
+
+    task.spawn(function()
+        local msgs = {
+            { t = 0.0, msg = "Fetching script...",       pct = 0.20 },
+            { t = 1.8, msg = "Injecting modules...",      pct = 0.45 },
+            { t = 3.6, msg = "Setting up environment...", pct = 0.75 },
+        }
+        local start = tick()
+        for _, s in ipairs(msgs) do
+            local wait = s.t - (tick() - start)
+            if wait > 0 then task.wait(wait) end
+            if not animRunning then return end
+            MsgLabel.Text = s.msg
+            Tween(BarFill, { Size = UDim2.new(s.pct, 0, 1, 0) }, 0.6, Enum.EasingStyle.Quint)
+        end
+    end)
+
+    task.spawn(function()
+        local d = 0
+        while animRunning do
+            d = (d % 3) + 1
+            SubLabel.Text = string.rep("•", d)
+            task.wait(0.4)
+        end
+    end)
+
+    task.spawn(function()
+        while animRunning do
+            local env = getgenv and getgenv()
+            if env and env.LoadedQuantum == true then
+                animRunning = false
+                MsgLabel.Text = "✓  Loaded"
+                MsgLabel.TextColor3 = Color3.fromRGB(160, 230, 160)
+                Tween(BarFill, { Size = UDim2.new(1, 0, 1, 0) }, 0.20, Enum.EasingStyle.Quint)
+                BarFill.BackgroundColor3 = Color3.fromRGB(120, 210, 120)
+                SubLabel.Text = ""
+                task.wait(0.5)
+                Dismiss()
+                break
+            end
+            task.wait(0.05)
+        end
+    end)
+
+    return Dismiss
+end
+
+local function LoadScript(tier, key)
     if tier == "Premium" and key then
         getgenv().script_key = key
+
+        local dismiss = ShowLoadingScreen()
+
+        getgenv().LoadedQuantum = nil
+
+        task.spawn(function()
+            local ok, err = pcall(function()
+                if _cachedAPI then
+                    _cachedAPI.load_script()
+                else
+                    local url = Scripts.Premium and Scripts.Premium[gameId]
+                    if url then
+                        loadstring(game:HttpGet(url))()
+                    else
+                        warn("[QO] No premium script for GameId: " .. tostring(gameId))
+                    end
+                end
+            end)
+            if not ok then
+                warn("[QO] Load error: " .. tostring(err))
+            end
+            getgenv().LoadedQuantum = true
+            task.wait(0.6)
+            dismiss()
+        end)
+
+    else
+        local url = Scripts.Free and Scripts.Free[gameId]
+        if url then
+            local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
+            if not ok then warn("[QO] Load error: " .. tostring(err)) end
+        else
+            warn("[QO] No free script for GameId: " .. tostring(gameId))
+        end
     end
-    local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
-    if not ok then warn("[Quantum Onyx] Error: " .. tostring(err)) end
 end
+
 local function ShowKeyUI()
     local done = false
     local isPremium = false
@@ -121,6 +363,7 @@ local function ShowKeyUI()
     }
     local UpdateLog = {
         { version = "v2.2", date = "2026", notes = "Added Linkvertise as key service" },
+        { version = "v2.3", date = "2026", notes = "API+SDK dual auth & loading screen" },
     }
     local SG = Instance.new("ScreenGui")
     SG.Name = "KL_" .. tostring(math.random(1e6))
@@ -128,6 +371,7 @@ local function ShowKeyUI()
     SG.ResetOnSpawn = false
     SG.IgnoreGuiInset = true
     Protect(SG)
+
     local Backdrop = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = 1,
@@ -136,6 +380,7 @@ local function ShowKeyUI()
         ZIndex = 200,
         Parent = SG,
     })
+
     local W, H = 450, 310
     local Card = New("Frame", {
         AnchorPoint = Vector2.new(0.5, 0.5),
@@ -157,6 +402,7 @@ local function ShowKeyUI()
             }),
         }
     })
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(80, 20, 160),
         BackgroundTransparency = 0.88,
@@ -167,6 +413,7 @@ local function ShowKeyUI()
         Parent = Card,
         Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
     })
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(40, 10, 110),
         BackgroundTransparency = 0.90,
@@ -177,6 +424,7 @@ local function ShowKeyUI()
         Parent = Card,
         Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
     })
+
     local Header = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BorderSizePixel = 0,
@@ -194,6 +442,7 @@ local function ShowKeyUI()
             }),
         }
     })
+
     New("ImageLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 13, 0.5, -8),
@@ -203,6 +452,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = Header
     })
+
     New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 35, 0, 0),
@@ -215,6 +465,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = Header
     })
+
     New("Frame", {
         AnchorPoint = Vector2.new(1, 0.5),
         BackgroundColor3 = Color3.fromRGB(30, 60, 20),
@@ -239,6 +490,7 @@ local function ShowKeyUI()
             }),
         }
     })
+
     local CloseBtn = New("ImageButton", {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(1, 0.5),
@@ -249,6 +501,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = Header
     })
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(110, 50, 210),
         BackgroundTransparency = 0.55,
@@ -266,9 +519,11 @@ local function ShowKeyUI()
             })
         }) }
     })
+
     local LW = 180
     local RX = LW + 18
     local RW = W - RX - 10
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(100, 50, 200),
         BackgroundTransparency = 0.65,
@@ -287,6 +542,7 @@ local function ShowKeyUI()
             })
         }) }
     })
+
     local InfoBox = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.20,
@@ -300,6 +556,7 @@ local function ShowKeyUI()
             New("UIStroke", { Color = Color3.fromRGB(100, 50, 190), Transparency = 0.58, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
         }
     })
+
     New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 9, 0, 5),
@@ -312,6 +569,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = InfoBox
     })
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(110, 60, 200),
         BackgroundTransparency = 0.72,
@@ -329,6 +587,7 @@ local function ShowKeyUI()
             })
         }) }
     })
+
     local rowY = 26
     for _, info in ipairs(supportInfo) do
         New("TextLabel", {
@@ -359,6 +618,7 @@ local function ShowKeyUI()
         rowY = rowY + 16
         if rowY > 96 then break end
     end
+
     local LogBox = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.20,
@@ -372,6 +632,7 @@ local function ShowKeyUI()
             New("UIStroke", { Color = Color3.fromRGB(100, 50, 190), Transparency = 0.58, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
         }
     })
+
     New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 9, 0, 5),
@@ -384,6 +645,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = LogBox
     })
+
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(110, 60, 200),
         BackgroundTransparency = 0.72,
@@ -401,6 +663,7 @@ local function ShowKeyUI()
             })
         }) }
     })
+
     local logY = 26
     for _, entry in ipairs(UpdateLog) do
         New("TextLabel", {
@@ -432,6 +695,7 @@ local function ShowKeyUI()
         logY = logY + 14
         if logY > 110 then break end
     end
+
     local NoticeBg = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.22,
@@ -453,6 +717,7 @@ local function ShowKeyUI()
             })
         }
     })
+
     New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 12, 0, 0),
@@ -467,6 +732,7 @@ local function ShowKeyUI()
         Text = "Freemium — key is optional.\nEnter a key to unlock premium features.",
         Parent = NoticeBg
     })
+
     local LRMBar = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.22,
@@ -480,6 +746,7 @@ local function ShowKeyUI()
             New("UIStroke", { Color = Color3.fromRGB(100, 50, 190), Transparency = 0.60, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
         }
     })
+
     New("ImageLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 8, 0.5, -6),
@@ -489,6 +756,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = LRMBar
     })
+
     local LRMStatusLabel = New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 25, 0, 0),
@@ -501,6 +769,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = LRMBar
     })
+
     local InputBg = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(4, 2, 9),
         BackgroundTransparency = 0,
@@ -514,6 +783,7 @@ local function ShowKeyUI()
             New("UIStroke", { Color = Color3.fromRGB(110, 55, 200), Transparency = 0.48, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
         }
     })
+
     New("ImageLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 10, 0.5, -7),
@@ -523,6 +793,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = InputBg
     })
+
     local KeyInput = New("TextBox", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 30, 0, 0),
@@ -538,6 +809,7 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = InputBg
     })
+
     local PasteBtn = New("ImageButton", {
         BackgroundColor3 = Color3.fromRGB(75, 35, 155),
         BackgroundTransparency = 0.62,
@@ -553,11 +825,13 @@ local function ShowKeyUI()
         Parent = InputBg,
         Children = { New("UICorner", { CornerRadius = UDim.new(0, 5) }) }
     })
+
     PasteBtn.MouseEnter:Connect(function() Tween(PasteBtn, { BackgroundTransparency = 0.30 }, 0.12) end)
     PasteBtn.MouseLeave:Connect(function() Tween(PasteBtn, { BackgroundTransparency = 0.62 }, 0.16) end)
     PasteBtn.MouseButton1Click:Connect(function()
         if getclipboard then KeyInput.Text = getclipboard() or "" end
     end)
+
     local StatusLabel = New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, RX, 0, 185),
@@ -570,10 +844,12 @@ local function ShowKeyUI()
         ZIndex = 202,
         Parent = Card
     })
+
     local function SetStatus(msg, col)
         StatusLabel.Text = msg
         StatusLabel.TextColor3 = col or Color3.fromRGB(155, 135, 190)
     end
+
     local function AnimateClose()
         Tween(Card, { Size = UDim2.new(0, W * 0.65, 0, H * 0.65), BackgroundTransparency = 0.75 }, 0.20, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
         Tween(Backdrop, { BackgroundTransparency = 1 }, 0.20, Enum.EasingStyle.Quint)
@@ -582,6 +858,7 @@ local function ShowKeyUI()
             done = true
         end)
     end
+
     local function SubmitKey(keyStr)
         if submitting then return end
         if not keyStr or keyStr == "" then
@@ -589,25 +866,19 @@ local function ShowKeyUI()
             return
         end
         submitting = true
-        SetStatus("Submitting key...", Color3.fromRGB(175, 150, 255))
+        SetStatus("Verifying key...", Color3.fromRGB(175, 150, 255))
+
         task.spawn(function()
-            local sdk, LuarmorAPI = pcall(function()
-                return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-            end)
-            if not sdk or type(LuarmorAPI) ~= "table" then
-                submitting = false
-                SetStatus("Failed to reach Luarmor SDK.", Color3.fromRGB(255, 90, 110))
-                return
-            end
-            LuarmorAPI.script_id = SCRIPT_ID
-            local check, status = pcall(function()
-                return LuarmorAPI.check_key(keyStr)
+            local ok, status = VerifyKey(keyStr, function(msg, col)
+                SetStatus(msg, col)
             end)
             submitting = false
-            if not check or type(status) ~= "table" then
-                SetStatus("Verification error — try again.", Color3.fromRGB(255, 90, 110))
+
+            if not ok then
+                SetStatus(tostring((status and status.message) or "Verification failed."), Color3.fromRGB(255, 90, 110))
                 return
             end
+
             local code = status.code or ""
             if code == "KEY_VALID" then
                 isPremium = true
@@ -616,7 +887,7 @@ local function ShowKeyUI()
                 getgenv().script_key = keyStr
                 LRMStatusLabel.Text = "Premium Active"
                 LRMStatusLabel.TextColor3 = Color3.fromRGB(80, 230, 130)
-                SetStatus("Key verified", Color3.fromRGB(80, 230, 130))
+                SetStatus("Key verified! Loading...", Color3.fromRGB(80, 230, 130))
                 task.wait(0.5)
                 AnimateClose()
             elseif code == "KEY_HWID_LOCKED" then
@@ -631,16 +902,20 @@ local function ShowKeyUI()
             elseif code == "KEY_INCORRECT" then
                 ClearKey()
                 SetStatus("Key not found.", Color3.fromRGB(255, 90, 110))
+            elseif code == "SDK_UNREACHABLE" or code == "SDK_ERROR" or code == "VERIFY_FAILED" then
+                SetStatus(tostring((status and status.message) or "Could not reach Luarmor."), Color3.fromRGB(255, 90, 110))
             else
                 ClearKey()
-                SetStatus(tostring(status.message or ("Unknown error: " .. code)), Color3.fromRGB(255, 90, 110))
+                SetStatus(tostring(status.message or ("Unknown: " .. code)), Color3.fromRGB(255, 90, 110))
             end
         end)
     end
+
     local BtnY = 202
     local BtnH = 30
     local BtnGap = 6
     local BtnW = math.floor((RW - BtnGap * 2) / 3)
+
     local function MakeBtn(label, px, w, bg, tc, cb)
         local btn = New("TextButton", {
             BackgroundColor3 = bg,
@@ -675,6 +950,7 @@ local function ShowKeyUI()
         end)
         return btn
     end
+
     MakeBtn("Free Version", RX, BtnW, Color3.fromRGB(35, 14, 70), Color3.fromRGB(170, 130, 255), function()
         if not Scripts.Free[gameId] then
             SetStatus("No free version for this game.", Color3.fromRGB(255, 150, 80))
@@ -683,6 +959,7 @@ local function ShowKeyUI()
             AnimateClose()
         end
     end)
+
     local panelOpen = false
     local OptionPanel = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(4, 2, 9),
@@ -704,6 +981,7 @@ local function ShowKeyUI()
             }),
         }
     })
+
     local function MakeOptionBtn(label, yPos, link, statusMsg)
         local btn = New("TextButton", {
             BackgroundColor3 = Color3.fromRGB(30, 10, 70),
@@ -733,12 +1011,15 @@ local function ShowKeyUI()
         end)
         return btn
     end
+
     MakeOptionBtn("Lootlabs", 4, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-FpNBDhxVzYzS", "Lootlabs Link Copied")
     MakeOptionBtn("Linkvertise", 38, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-TcgtEiNunUTO", "Linkvertise Link Copied")
+
     local getKeyBtn = MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW, Color3.fromRGB(12, 35, 70), Color3.fromRGB(105, 175, 255), function()
         panelOpen = not panelOpen
         OptionPanel.Visible = panelOpen
     end)
+
     UserInputService.InputBegan:Connect(function(input, processed)
         if not panelOpen then return end
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -755,9 +1036,11 @@ local function ShowKeyUI()
             end
         end
     end)
+
     MakeBtn("Enter Key", RX + (BtnW + BtnGap) * 2, BtnW, Color3.fromRGB(48, 14, 100), Color3.fromRGB(200, 150, 255), function()
         SubmitKey(KeyInput.Text)
     end)
+
     local SY = BtnY + BtnH + 14
     New("TextLabel", {
         BackgroundTransparency = 1,
@@ -771,6 +1054,7 @@ local function ShowKeyUI()
         ZIndex = 202,
         Parent = Card
     })
+
     local socials = {
         { img = "rbxassetid://129297846250682", col = Color3.fromRGB(100, 120, 255) },
         { img = "http://www.roblox.com/asset/?id=14620084334", col = Color3.fromRGB(185, 130, 255) },
@@ -797,14 +1081,17 @@ local function ShowKeyUI()
         ic.MouseEnter:Connect(function() Tween(ic, { BackgroundTransparency = 0.28 }, 0.12) end)
         ic.MouseLeave:Connect(function() Tween(ic, { BackgroundTransparency = 0.68 }, 0.16) end)
     end
+
     CloseBtn.MouseEnter:Connect(function() Tween(CloseBtn, { ImageColor3 = Color3.fromRGB(255, 70, 70) }, 0.12) end)
     CloseBtn.MouseLeave:Connect(function() Tween(CloseBtn, { ImageColor3 = Color3.fromRGB(200, 80, 80) }, 0.16) end)
     CloseBtn.MouseButton1Click:Connect(function()
         isPremium = false
         AnimateClose()
     end)
+
     Tween(Backdrop, { BackgroundTransparency = 0.50 }, 0.28, Enum.EasingStyle.Quint)
     Tween(Card, { Size = UDim2.new(0, W, 0, H), BackgroundTransparency = 0 }, 0.36, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+
     task.spawn(function()
         task.wait(1.5)
         if LRM_IsUserPremium == true then
@@ -819,6 +1106,7 @@ local function ShowKeyUI()
             LRMStatusLabel.TextColor3 = Color3.fromRGB(200, 100, 100)
         end
     end)
+
     local SavedKey = LoadSavedKey()
     if SavedKey ~= "" then
         KeyInput.Text = SavedKey
@@ -828,29 +1116,24 @@ local function ShowKeyUI()
             end
         end)
     end
+
     repeat task.wait(0.08) until done
     return isPremium, resultKey
 end
+
 local function AuthenticateAndLoad()
     local SavedKey = LoadSavedKey()
     if SavedKey and SavedKey ~= "" then
-        local sdk, LuarmorAPI = pcall(function()
-            return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-        end)
-        if sdk and type(LuarmorAPI) == "table" then
-            LuarmorAPI.script_id = SCRIPT_ID
-            local check, status = pcall(function()
-                return LuarmorAPI.check_key(SavedKey)
-            end)
-            if check and type(status) == "table" and status.code == "KEY_VALID" then
-                getgenv().script_key = SavedKey
-                LoadScript("Premium", SavedKey)
-                return
-            else
-                ClearKey()
-            end
+        local ok, status = VerifyKey(SavedKey, nil)
+        if ok and type(status) == "table" and status.code == "KEY_VALID" then
+            getgenv().script_key = SavedKey
+            LoadScript("Premium", SavedKey)
+            return
+        else
+            ClearKey()
         end
     end
+
     task.spawn(function()
         local premium, key = ShowKeyUI()
         if premium then
@@ -860,4 +1143,5 @@ local function AuthenticateAndLoad()
         end
     end)
 end
+
 AuthenticateAndLoad()
