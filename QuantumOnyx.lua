@@ -295,7 +295,7 @@ local function ShowLoadingScreen()
             local env = getgenv and getgenv()
             if env and env.LoadedQuantum == true then
                 animRunning = false
-                MsgLabel.Text = "✓  Loaded"
+                MsgLabel.Text = "Loaded"
                 MsgLabel.TextColor3 = Color3.fromRGB(160, 230, 160)
                 Tween(BarFill, { Size = UDim2.new(1, 0, 1, 0) }, 0.20, Enum.EasingStyle.Quint)
                 BarFill.BackgroundColor3 = Color3.fromRGB(120, 210, 120)
