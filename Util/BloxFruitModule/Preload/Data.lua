@@ -281,5 +281,53 @@ return {
 			Vector3.new(5651, 1018, -350),
 			Vector3.new(28286, 14897, 103)
 		}
+	},
+	SwordData = {
+		["Dark Blade"] = { Rarity = "Mythical", Order = 1 },
+		["True Triple Katana"] = { Rarity = "Mythical", Order = 1 },
+		["Cursed Dual Katana"] = { Rarity = "Mythical", Order = 1 },
+		["Hallow Scythe"] = { Rarity = "Mythical", Order = 1 },
+		["Triple Dark Blade"] = { Rarity = "Mythical", Order = 1 },
+		["Dog Blade"] = { Rarity = "Mythical", Order = 1 },
+
+		["Rengoku"] = { Rarity = "Legendary", Order = 2 },
+		["Yama"] = { Rarity = "Legendary", Order = 2 },
+		["Tushita"] = { Rarity = "Legendary", Order = 2 },
+		["Buddy Sword"] = { Rarity = "Legendary", Order = 2 },
+		["Shark Anchor"] = { Rarity = "Legendary", Order = 2 },
+		["Fox Lamp"] = { Rarity = "Legendary", Order = 2 },
+		["Dragon Trident"] = { Rarity = "Legendary", Order = 2 },
+		["Saber"] = { Rarity = "Legendary", Order = 2 },
+		["Canvander"] = { Rarity = "Legendary", Order = 2 },
+		["Dark Dagger"] = { Rarity = "Legendary", Order = 2 },
+		["Dragonheart"] = { Rarity = "Legendary", Order = 2 },
+		["Koko"] = { Rarity = "Legendary", Order = 2 },
+		["Midnight Blade"] = { Rarity = "Legendary", Order = 2 },
+		["Oroshi"] = { Rarity = "Legendary", Order = 2 },
+		["Pole (1st Form)"] = { Rarity = "Legendary", Order = 2 },
+		["Pole (2nd Form)"] = { Rarity = "Legendary", Order = 2 },
+		["Saishi"] = { Rarity = "Legendary", Order = 2 },
+		["Shizu"] = { Rarity = "Legendary", Order = 2 },
+		["Longsword"] = { Rarity = "Legendary", Order = 2 },
+		["Pipe"] = { Rarity = "Legendary", Order = 2 },
+		["Soul Cane"] = { Rarity = "Legendary", Order = 2 },
+		["Trident"] = { Rarity = "Legendary", Order = 2 },
+		["Wardens Sword"] = { Rarity = "Legendary", Order = 2 },
+		["Bisento"] = { Rarity = "Legendary", Order = 2 },
+		["Triple Katana"] = { Rarity = "Legendary", Order = 2 },
+		["Twin Hooks"] = { Rarity = "Legendary", Order = 2 },
+		["Dual-Headed Blade"] = { Rarity = "Legendary", Order = 2 },
+		["Flail"] = { Rarity = "Legendary", Order = 2 },
+		["Gravity Blade"] = { Rarity = "Legendary", Order = 2 },
+
+		["Spikey Trident"] = { Rarity = "Rare", Order = 3 },
+		["Fishing Trophy"] = { Rarity = "Rare", Order = 3 },
+		["Shark Saw"] = { Rarity = "Rare", Order = 3 },
+
+		["Iron Mace"] = { Rarity = "Uncommon", Order = 4 },
+
+		["Cutlass"] = { Rarity = "Common", Order = 5 },
+		["Katana"] = { Rarity = "Common", Order = 5 },
+		["Dual Katana"] = { Rarity = "Common", Order = 5 },
 	}
 }
