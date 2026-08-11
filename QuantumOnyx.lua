@@ -741,8 +741,8 @@ local function ShowKeyUI()
         end)
         return btn
     end
-    MakeOptionBtn("Lootlabs", 4, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-vFalnaHSkVkF", "Down will be back later")
-    MakeOptionBtn("Linkvertise", 38, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-TcgtEiNunUTO", "Down will be back later")
+    MakeOptionBtn("Lootlabs", 4, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-NdUqNPMGBobv", "Copied - go to browsers")
+    MakeOptionBtn("Linkvertise", 38, "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-KCyPvypRNlEm", "Copied - go to browsers")
     local getKeyBtn = MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW, Color3.fromRGB(12, 35, 70), Color3.fromRGB(105, 175, 255), function()
         panelOpen = not panelOpen
         OptionPanel.Visible = panelOpen
