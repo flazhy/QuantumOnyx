@@ -86,6 +86,29 @@ local function CircleRipple(btn, mx, my)
         c:Destroy()
     end)
 end
+local StarterGui = game:GetService("StarterGui")
+local function Notify(title, desc, accent, duration)
+    pcall(function()
+        StarterGui:SetCore("SendNotification", {
+            Title = title or "Quantum Onyx",
+            Text = desc or "",
+            Duration = duration or 5,
+        })
+    end)
+end
+
+local function ToTime(expire)
+    if not expire or expire <= 0 then return "Lifetime" end
+    local left = expire - os.time()
+    if left < 0 then return "Expired" end
+    local days = math.floor(left / 86400)
+    local hours = math.floor((left % 86400) / 3600)
+    local minutes = math.floor((left % 3600) / 60)
+    if days > 0 then return string.format("%dd %dh", days, hours) end
+    if hours > 0 then return string.format("%dh %dm", hours, minutes) end
+    return string.format("%dm", minutes)
+end
+
 local function SaveKey(key)
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({ key = key }))
@@ -103,6 +126,24 @@ local function ClearKey()
     if not isfolder(FOLDER) then makefolder(FOLDER) end
     pcall(writefile, KEY_FILE, HttpService:JSONEncode({}))
 end
+local function apply_script_key(key)
+    getgenv().script_key = key
+    getgenv().key = key
+    if type(_G) == "table" then
+        _G.script_key = key
+    end
+    if type(shared) == "table" then
+        shared.script_key = key
+    end
+    pcall(function()
+        if type(getrenv) == "function" then
+            local env = getrenv()
+            if type(env) == "table" then
+                env.script_key = key
+            end
+        end
+    end)
+end
 local function LoadScript(tier, key)
     local tbl = Scripts[tier]
     if not tbl then return end
@@ -112,7 +153,7 @@ local function LoadScript(tier, key)
         return
     end
     if tier == "Premium" and key then
-        getgenv().script_key = key
+        apply_script_key(key)
     end
     local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
     if not ok then warn("[Quantum Onyx] Error: " .. tostring(err)) end
@@ -126,9 +167,6 @@ local function ShowKeyUI()
         { label = "Discord", value = "discord.gg/quantumonyx" },
         { label = "Game", value = (pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name end) and game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) or "Unknown" },
         { label = "Version", value = "v.Freemium" },
-    }
-    local UpdateLog = {
-        { version = "v2.2", date = "2026", notes = "Added Linkvertise as key service" },
     }
     local SG = Instance.new("ScreenGui")
     SG.Name = "KL_" .. tostring(math.random(1e6))
@@ -367,7 +405,8 @@ local function ShowKeyUI()
         rowY = rowY + 16
         if rowY > 96 then break end
     end
-    local LogBox = New("Frame", {
+
+    local ProfileBox = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.20,
         BorderSizePixel = 0,
@@ -385,12 +424,12 @@ local function ShowKeyUI()
         Position = UDim2.new(0, 9, 0, 5),
         Size = UDim2.new(1, -14, 0, 13),
         Font = Enum.Font.GothamBold,
-        Text = "Update Log",
+        Text = "User Profile",
         TextColor3 = Color3.fromRGB(130, 85, 210),
         TextSize = 9,
         TextXAlignment = Enum.TextXAlignment.Left,
         ZIndex = 203,
-        Parent = LogBox
+        Parent = ProfileBox
     })
     New("Frame", {
         BackgroundColor3 = Color3.fromRGB(110, 60, 200),
@@ -399,7 +438,7 @@ local function ShowKeyUI()
         Position = UDim2.new(0, 7, 0, 20),
         Size = UDim2.new(1, -14, 0, 1),
         ZIndex = 203,
-        Parent = LogBox,
+        Parent = ProfileBox,
         Children = { New("UIGradient", {
             Transparency = NumberSequence.new({
                 NumberSequenceKeypoint.new(0, 1),
@@ -409,37 +448,71 @@ local function ShowKeyUI()
             })
         }) }
     })
-    local logY = 26
-    for _, entry in ipairs(UpdateLog) do
-        New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 9, 0, logY),
-            Size = UDim2.new(1, -14, 0, 12),
-            Font = Enum.Font.GothamBold,
-            RichText = true,
-            Text = string.format('<font color="#a855f7">%s</font>  <font color="#554466">%s</font>', entry.version or "", entry.date or ""),
-            TextSize = 9,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            ZIndex = 203,
-            Parent = LogBox
-        })
-        logY = logY + 13
-        New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 13, 0, logY),
-            Size = UDim2.new(1, -18, 0, 11),
-            Font = Enum.Font.Gotham,
-            Text = "• " .. (entry.notes or ""),
-            TextColor3 = Color3.fromRGB(150, 135, 185),
-            TextSize = 8,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            TextTruncate = Enum.TextTruncate.AtEnd,
-            ZIndex = 203,
-            Parent = LogBox
-        })
-        logY = logY + 14
-        if logY > 110 then break end
+    local AvatarRing = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(110, 55, 210),
+        BackgroundTransparency = 0.50,
+        BorderSizePixel = 0,
+        AnchorPoint = Vector2.new(0.5, 0),
+        Position = UDim2.new(0.5, 0, 0, 28),
+        Size = UDim2.new(0, 52, 0, 52),
+        ZIndex = 203,
+        Parent = ProfileBox,
+        Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
+    })
+    local AvatarImg = New("ImageLabel", {
+        BackgroundColor3 = Color3.fromRGB(20, 10, 40),
+        BackgroundTransparency = 0,
+        BorderSizePixel = 0,
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        Size = UDim2.new(0, 46, 0, 46),
+        Image = "",
+        ZIndex = 204,
+        Parent = AvatarRing,
+        Children = { New("UICorner", { CornerRadius = UDim.new(1, 0) }) }
+    })
+    local DisplayNameLbl = New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint = Vector2.new(0.5, 0),
+        Position = UDim2.new(0.5, 0, 0, 86),
+        Size = UDim2.new(1, -12, 0, 14),
+        Font = Enum.Font.GothamBold,
+        Text = LocalPlayer.DisplayName,
+        TextColor3 = Color3.fromRGB(210, 190, 255),
+        TextSize = 11,
+        TextXAlignment = Enum.TextXAlignment.Center,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+        ZIndex = 203,
+        Parent = ProfileBox
+    })
+    New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint = Vector2.new(0.5, 0),
+        Position = UDim2.new(0.5, 0, 0, 102),
+        Size = UDim2.new(1, -12, 0, 12),
+        Font = Enum.Font.Gotham,
+        Text = "@" .. LocalPlayer.Name,
+        TextColor3 = Color3.fromRGB(120, 100, 160),
+        TextSize = 9,
+        TextXAlignment = Enum.TextXAlignment.Center,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+        ZIndex = 203,
+        Parent = ProfileBox
+    })
+    task.spawn(function()
+        local ok, img = pcall(function()
+            return game:GetService("Players"):GetUserThumbnailAsync(
+                LocalPlayer.UserId,
+                Enum.ThumbnailType.HeadShot,
+                Enum.ThumbnailSize.Size100x100
+            )
+        end)
+        if ok and img then AvatarImg.Image = img end
+    end)
+    local function UpdateProfile()
+        DisplayNameLbl.TextColor3 = Color3.fromRGB(130, 220, 160)
     end
+
     local NoticeBg = New("Frame", {
         BackgroundColor3 = Color3.fromRGB(9, 5, 18),
         BackgroundTransparency = 0.22,
@@ -534,7 +607,7 @@ local function ShowKeyUI()
     local KeyInput = New("TextBox", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 30, 0, 0),
-        Size = UDim2.new(1, -54, 1, 0),
+        Size = UDim2.new(1, -38, 1, 0),
         Font = Enum.Font.GothamBold,
         PlaceholderText = "Enter premium key...",
         PlaceholderColor3 = Color3.fromRGB(85, 60, 125),
@@ -546,26 +619,6 @@ local function ShowKeyUI()
         ZIndex = 203,
         Parent = InputBg
     })
-    local PasteBtn = New("ImageButton", {
-        BackgroundColor3 = Color3.fromRGB(75, 35, 155),
-        BackgroundTransparency = 0.62,
-        BorderSizePixel = 0,
-        AnchorPoint = Vector2.new(1, 0.5),
-        Position = UDim2.new(1, -5, 0.5, 0),
-        Size = UDim2.new(0, 24, 0, 24),
-        Image = "rbxassetid://3926305904",
-        ImageRectOffset = Vector2.new(324, 684),
-        ImageRectSize = Vector2.new(36, 36),
-        ImageColor3 = Color3.fromRGB(155, 115, 225),
-        ZIndex = 204,
-        Parent = InputBg,
-        Children = { New("UICorner", { CornerRadius = UDim.new(0, 5) }) }
-    })
-    PasteBtn.MouseEnter:Connect(function() Tween(PasteBtn, { BackgroundTransparency = 0.30 }, 0.12) end)
-    PasteBtn.MouseLeave:Connect(function() Tween(PasteBtn, { BackgroundTransparency = 0.62 }, 0.16) end)
-    PasteBtn.MouseButton1Click:Connect(function()
-        if getclipboard then KeyInput.Text = getclipboard() or "" end
-    end)
     local StatusLabel = New("TextLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.new(0, RX, 0, 185),
@@ -592,7 +645,8 @@ local function ShowKeyUI()
     end
     local function SubmitKey(keyStr)
         if submitting then return end
-        if not keyStr or keyStr == "" then
+        keyStr = keyStr and keyStr:gsub("%s+", "") or ""
+        if keyStr == "" then
             SetStatus("Please enter a key first.", Color3.fromRGB(255, 175, 80))
             return
         end
@@ -605,6 +659,7 @@ local function ShowKeyUI()
             if not sdk or type(LuarmorAPI) ~= "table" then
                 submitting = false
                 SetStatus("Failed to reach Luarmor SDK.", Color3.fromRGB(255, 90, 110))
+                Notify("Quantum Onyx", "Couldnt reach the Luarmor SDK. Try again.", Color3.fromRGB(255, 90, 110))
                 return
             end
             LuarmorAPI.script_id = SCRIPT_ID
@@ -614,6 +669,7 @@ local function ShowKeyUI()
             submitting = false
             if not check or type(status) ~= "table" then
                 SetStatus("Verification error — try again.", Color3.fromRGB(255, 90, 110))
+                Notify("Quantum Onyx", "Verification error. Try again.", Color3.fromRGB(255, 90, 110))
                 return
             end
             local code = status.code or ""
@@ -621,27 +677,37 @@ local function ShowKeyUI()
                 isPremium = true
                 resultKey = keyStr
                 SaveKey(keyStr)
-                getgenv().script_key = keyStr
+                apply_script_key(keyStr)
+                getgenv().key_expire = status.data and status.data.auth_expire or 0
+                getgenv().key_note = status.data and status.data.note or ""
+                getgenv().key_executions = status.data and status.data.total_executions or 0
                 LRMStatusLabel.Text = "Premium Active"
                 LRMStatusLabel.TextColor3 = Color3.fromRGB(80, 230, 130)
                 SetStatus("Key verified", Color3.fromRGB(80, 230, 130))
+                UpdateProfile()
+                Notify("Key Verified", "Uses: " .. tostring(getgenv().key_executions) .. "  •  Expires: " .. ToTime(getgenv().key_expire), Color3.fromRGB(80, 230, 130))
                 task.wait(0.5)
                 AnimateClose()
             elseif code == "KEY_HWID_LOCKED" then
                 ClearKey()
                 SetStatus("HWID mismatch — reset your key.", Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", "HWID mismatch — reset your key in Discord.", Color3.fromRGB(255, 90, 110))
             elseif code == "KEY_EXPIRED" then
                 ClearKey()
                 SetStatus("Key expired — get a new one.", Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", "Your key has expired.", Color3.fromRGB(255, 90, 110))
             elseif code == "KEY_BANNED" then
                 ClearKey()
                 SetStatus("Key is banned.", Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", "This key is banned.", Color3.fromRGB(255, 90, 110))
             elseif code == "KEY_INCORRECT" then
                 ClearKey()
                 SetStatus("Key not found.", Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", "Key not found. Check it and try again.", Color3.fromRGB(255, 90, 110))
             else
                 ClearKey()
                 SetStatus(tostring(status.message or ("Unknown error: " .. code)), Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", tostring(status.message or ("Unknown error: " .. code)), Color3.fromRGB(255, 90, 110))
             end
         end)
     end
@@ -851,7 +917,11 @@ local function AuthenticateAndLoad()
                 return LuarmorAPI.check_key(SavedKey)
             end)
             if check and type(status) == "table" and status.code == "KEY_VALID" then
-                getgenv().script_key = SavedKey
+                apply_script_key(SavedKey)
+                getgenv().key_expire = status.data and status.data.auth_expire or 0
+                getgenv().key_note = status.data and status.data.note or ""
+                getgenv().key_executions = status.data and status.data.total_executions or 0
+                Notify("Welcome Back", "Uses: " .. tostring(getgenv().key_executions) .. "  •  Expires: " .. ToTime(getgenv().key_expire), Color3.fromRGB(80, 230, 130))
                 LoadScript("Premium", SavedKey)
                 return
             else
