@@ -107,13 +107,13 @@ function UITabs.BuildHome(Tab, ctx)
 	Funcs:CreateToggle(Settings_Menu, "Bypass Get Quest", "BypassGetQuest", false, { global = true, save = true, description = "Gets the quest without teleporting to the quest NPC" })
 	Funcs:CreateDropdown(Settings_Menu, "Select Team", "TeamSelectLoad", 1, { "Pirates", "Marines" }, { global = true })
 	Funcs:CreateToggle(Settings_Menu, "Auto Load Script on Load", "AutoLoadScriptonLoad", false, { global = true, save = true, description = "Works on higher unc executors", callback = Actions.OnAutoLoadScript })
-	Settings_Menu:addToggle("Disable Damage Counter", false, Actions.ToggleDamageCounter or function() end)
-	Settings_Menu:addToggle("Disable Notifications", false, Actions.ToggleNotifications or function() end)
-	Settings_Menu:addToggle("Walk in Water", true, Actions.ToggleWalkInWater or function() end)
+	Funcs:CreateToggle(Settings_Menu, "Disable Damage Counter", "DisableDamageCounter", false, { callback = Actions.ToggleDamageCounter })
+	Funcs:CreateToggle(Settings_Menu, "Disable Notifications", "DisableNotifications", false, { callback = Actions.ToggleNotifications })
+	Funcs:CreateToggle(Settings_Menu, "Walk in Water", "Water", true, { callback = Actions.ToggleWalkInWater })
 	Funcs:CreateSlider(Settings_Menu, "Server Hop Delay (s)", "HopDelay", 1, 60, 10, { global = true, save = true, description = "Delay in seconds before hopping servers" })
 	Funcs:CreateToggle(Settings_Menu, "Auto Hop when 30mins", "AutoHopwhen30mins", false, { locked = true, global = true, save = true, callback = Actions.OnAutoHop30Mins })
-	Settings_Menu:addToggle("Auto Hop When Admin Joined", true, Actions.ToggleHopAdmin or function() end)
-	Settings_Menu:addToggle("Anti Afk", true, Actions.ToggleAntiAFK or function() end)
+	Funcs:CreateToggle(Settings_Menu, "Auto Hop When Admin Joined", "HopWhenAdmin", true, { callback = Actions.ToggleHopAdmin })
+	Funcs:CreateToggle(Settings_Menu, "Anti Afk", "AntiAFK", true, { callback = Actions.ToggleAntiAFK })
 	if Actions.RemoveEffects then
 		Settings_Menu:addButton("Remove Effects", Actions.RemoveEffects)
 	end
@@ -281,15 +281,14 @@ function UITabs.BuildPlayer(Tab, ctx)
 	end)
 
 	Funcs:CreateSlider(PlayerStats_Menu, "Select Points", "PointsSlider", 0, 1000, 10, { global = true })
-	PlayerStats_Menu:addToggle("Melee", false, function(Value) Settings.Melee = Value end)
-	PlayerStats_Menu:addToggle("Defense", false, function(Value) Settings.Defense = Value end)
-	PlayerStats_Menu:addToggle("Sword", false, function(Value) Settings.Sword = Value end)
-	PlayerStats_Menu:addToggle("Gun", false, function(Value) Settings.Gun = Value end)
-	PlayerStats_Menu:addToggle("Devil Fruit", false, function(Value) Settings.DemonFruit = Value end)
-	PlayerStats_Menu:addToggle("Start Adding Stats", false, function(Value)
-		Settings.AutoStats = Value
-		if Settings.AutoStats and Actions.AutoStats then Actions.AutoStats() end
-	end)
+	Funcs:CreateToggle(PlayerStats_Menu, "Melee", "Melee", false, { global = true })
+	Funcs:CreateToggle(PlayerStats_Menu, "Defense", "Defense", false, { global = true })
+	Funcs:CreateToggle(PlayerStats_Menu, "Sword", "Sword", false, { global = true })
+	Funcs:CreateToggle(PlayerStats_Menu, "Gun", "Gun", false, { global = true })
+	Funcs:CreateToggle(PlayerStats_Menu, "Devil Fruit", "DemonFruit", false, { global = true })
+	Funcs:CreateToggle(PlayerStats_Menu, "Start Adding Stats", "AutoStats", false, { global = true, callback = function(Value)
+		if Value and Actions.AutoStats then Actions.AutoStats() end
+	end })
 
 	local Player_Right = Tab.Player:addSection()
 	local ESP_Menu = Player_Right:addMenu("ESP Menu")
@@ -301,14 +300,14 @@ function UITabs.BuildPlayer(Tab, ctx)
 		{ "Berries ESP", "ESP_Berries", "Berry", ctx.BerryESP },
 		{ "Natural Fruits ESP (Pineapple, etc.)", "ESP_RealFruits", "RealFruit", ctx.RealFruitESP }
 	} do
-		ESP_Menu:addToggle(esp[1], false, function(Value)
+		Funcs:CreateToggle(ESP_Menu, esp[1], esp[2], false, { callback = function(Value)
 			Settings[esp[2]] = Value
 			if not Value then
 				if ctx.ClearESP then ctx.ClearESP(esp[3]) end
 			else
 				if esp[4] then esp[4]() end
 			end
-		end)
+		end })
 	end
 
 	local PVP_Menu = Player_Right:addMenu("PVP Menu")
@@ -382,7 +381,7 @@ function UITabs.BuildDragon(Tab, ctx)
 	Funcs:CreateToggle(Prehistoric_Menu, "Use Shoot Gun for tree quest", "ShootGunBlaze", false, { global = true, save = true })
 	Prehistoric_Menu:addButton("Teleport to Dragon Hunter", Actions.TPDragonHunter or function() end)
 	Prehistoric_Menu:addButton("Teleport to Dragon Wizard", Actions.TPDragonWizard or function() end)
-	Prehistoric_Menu:addToggle("Auto Upgrade Dragon Talon", false, Actions.ToggleUpgradeDragonTalon or function() end)
+	Funcs:CreateToggle(Prehistoric_Menu, "Auto Upgrade Dragon Talon", "AutoUpgradeDragonTalon", false, { callback = Actions.ToggleUpgradeDragonTalon })
 	Prehistoric_Menu:addButton("Craft Volcanic Magnet", function() Actions.CraftPrehistoricItem("Volcanic Magnet") end)
 	Prehistoric_Menu:addButton("Craft Dragonheart", function() Actions.CraftPrehistoricItem("Dragonheart") end)
 	Prehistoric_Menu:addButton("Craft Dragonstorm", function() Actions.CraftPrehistoricItem("Dragonstorm") end)
@@ -406,7 +405,7 @@ function UITabs.BuildRaid(Tab, ctx)
 
 	local Raid_Left = Tab.Raid:addSection()
 	local Raid_Menu = Raid_Left:addMenu("Raid Menu")
-	Raid_Menu:addDropdown("Raid Chip", 1, Data.Raids_Chip or {}, function(Value) Settings.SelectRaid = Value end)
+	Funcs:CreateDropdown(Raid_Menu, "Raid Chip", "SelectRaid", 1, Data.Raids_Chip or {}, { global = true })
 	Funcs:CreateToggle(Raid_Menu, "Auto Buy Chip", "AutoBuyChip", false, { global = true, save = true })
 	local AutoRaidToggle = Funcs:CreateToggle(Raid_Menu, "Auto Complete Raid", "AutoRaidFull", false, { global = true, stop = true })
 	Module._AutoRaidToggle = AutoRaidToggle
@@ -521,7 +520,7 @@ function UITabs.BuildTravel(Tab, ctx)
 
 	local Island = Travel_Left:addMenu("Island Travel")
 	Module._ActiveIslands = Data.ActiveIslands or {}
-	Island:addDropdown("Select Island", "walang kayo sorry", Data.IslandsList or {}, function(Value) Settings.TeleportIslandSelect = Value end)
+	Funcs:CreateDropdown(Island, "Select Island", "TeleportIslandSelect", "walang kayo sorry", Data.IslandsList or {}, { global = true })
 	local TravelToggle = Funcs:CreateToggle(Island, "Start Traveling", "TeleportToIsland", false, { global = true, stop = true })
 	Module._TravelToggle = TravelToggle
 
@@ -629,12 +628,12 @@ function UITabs.BuildMisc(Tab, ctx)
 	local Misc_Right = Tab.Misc:addSection()
 	local Client_Menu = Misc_Right:addMenu("Players Clients")
 	Funcs:CreateToggle(Client_Menu, "Remove Observation Effect", "RemoveObservationEffect", false, { global = true, save = true })
-	Client_Menu:addSlider("Walk Speed", 50, 500, 50, Actions.SetWalkSpeed or function() end)
-	Client_Menu:addSlider("Jump Power", 50, 500, 50, Actions.SetJumpPower or function() end)
-	Client_Menu:addToggle("X-ray Vision", false, Actions.ToggleXray or function() end)
-	Client_Menu:addToggle("Infinite Zoom", false, Actions.ToggleInfiniteZoom or function() end)
-	Client_Menu:addToggle("White Screen", false, Actions.ToggleWhiteScreen or function() end)
-	Client_Menu:addToggle("Black Screen", false, Actions.ToggleBlackScreen or function() end)
+	Funcs:CreateSlider(Client_Menu, "Walk Speed", "WalkSpeed", 50, 500, 50, { callback = Actions.SetWalkSpeed })
+	Funcs:CreateSlider(Client_Menu, "Jump Power", "JumpPower", 50, 500, 50, { callback = Actions.SetJumpPower })
+	Funcs:CreateToggle(Client_Menu, "X-ray Vision", "XrayVision", false, { callback = Actions.ToggleXray })
+	Funcs:CreateToggle(Client_Menu, "Infinite Zoom", "InfiniteZoom", false, { callback = Actions.ToggleInfiniteZoom })
+	Funcs:CreateToggle(Client_Menu, "White Screen", "White_Screen", false, { callback = Actions.ToggleWhiteScreen })
+	Funcs:CreateToggle(Client_Menu, "Black Screen", "BlackScreen", false, { callback = Actions.ToggleBlackScreen })
 	Client_Menu:addButton("Redeem all Codes", Actions.RedeemAllCodes or function() end)
 	Funcs:CreateToggle(Client_Menu, "Remove Fog", "NoFog", false, { global = true, save = true })
 	Client_Menu:addButton("Force FPS BOOST", Actions.ForceFPSBoost or function() end)
