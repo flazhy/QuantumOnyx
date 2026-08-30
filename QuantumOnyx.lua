@@ -34,22 +34,29 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
-local gameId = game.GameId
+local GameId = game.GameId
+local gameId = GameId
 
-local httpRequest = (syn and syn.request) 
+local HttpRequest = (syn and syn.request) 
     or (http and http.request) 
     or http_request 
     or request 
     or (fluxus and fluxus.request)
     or (delta and delta.request)
+local httpRequest = HttpRequest
 
-local isFileFunc = isfile or function(file) return false end
-local readFileFunc = readfile or function(file) return "" end
-local writeFileFunc = writefile or function(file, content) end
-local makeFolderFunc = makefolder or function(folder) end
-local isFolderFunc = isfolder or function(folder) return false end
+local IsFileFunc = isfile or function(file) return false end
+local isFileFunc = IsFileFunc
+local ReadFileFunc = readfile or function(file) return "" end
+local readFileFunc = ReadFileFunc
+local WriteFileFunc = writefile or function(file, content) end
+local writeFileFunc = WriteFileFunc
+local MakeFolderFunc = makefolder or function(folder) end
+local makeFolderFunc = MakeFolderFunc
+local IsFolderFunc = isfolder or function(folder) return false end
+local isFolderFunc = IsFolderFunc
 
-local function getExecutorName()
+local function GetExecutorName()
     if identifyexecutor then return identifyexecutor() end
     if syn then return "Synapse X" end
     if KRNL_LOADED then return "Krnl" end
@@ -57,8 +64,9 @@ local function getExecutorName()
     if is_sirhurt_closure then return "SirHurt" end
     return "Unknown Executor"
 end
+local getExecutorName = GetExecutorName
 
-local function getHWID()
+local function GetHWID()
     local hwid = nil
     if gethwid then
         pcall(function() hwid = gethwid() end)
@@ -75,6 +83,7 @@ local function getHWID()
     end
     return tostring(hwid)
 end
+local getHWID = GetHWID
 
 local function Tween(obj, props, t, style, dir)
     style = style or Enum.EasingStyle.Quint
@@ -160,15 +169,15 @@ end
 
 local function SaveKey(key)
     pcall(function()
-        if not isFolderFunc(FOLDER) then makeFolderFunc(FOLDER) end
-        writeFileFunc(KEY_FILE, HttpService:JSONEncode({ key = tostring(key):gsub("%s+", "") }))
+        if not IsFolderFunc(FOLDER) then MakeFolderFunc(FOLDER) end
+        WriteFileFunc(KEY_FILE, HttpService:JSONEncode({ key = tostring(key):gsub("%s+", "") }))
     end)
 end
 
 local function LoadSavedKey()
-    if pcall(function() return isFolderFunc(FOLDER) and isFileFunc(KEY_FILE) end) and isFolderFunc(FOLDER) and isFileFunc(KEY_FILE) then
+    if pcall(function() return IsFolderFunc(FOLDER) and IsFileFunc(KEY_FILE) end) and IsFolderFunc(FOLDER) and IsFileFunc(KEY_FILE) then
         local ok, v = pcall(function()
-            return HttpService:JSONDecode(readFileFunc(KEY_FILE))
+            return HttpService:JSONDecode(ReadFileFunc(KEY_FILE))
         end)
         if ok and type(v) == "table" and v.key then return tostring(v.key):gsub("%s+", "") end
     end
@@ -177,12 +186,12 @@ end
 
 local function ClearKey()
     pcall(function()
-        if not isFolderFunc(FOLDER) then makeFolderFunc(FOLDER) end
-        writeFileFunc(KEY_FILE, HttpService:JSONEncode({}))
+        if not IsFolderFunc(FOLDER) then MakeFolderFunc(FOLDER) end
+        WriteFileFunc(KEY_FILE, HttpService:JSONEncode({}))
     end)
 end
 
-local function apply_script_key(key)
+local function ApplyScriptKey(key)
     getgenv().script_key = key
     getgenv().key = key
     if type(_G) == "table" then
@@ -202,12 +211,12 @@ local function apply_script_key(key)
 end
 
 local function VerifyWithServer(keyStr)
-    if not httpRequest then
+    if not HttpRequest then
         return false, nil, "Executor lacks HTTP request capability."
     end
 
-    local hwid = getHWID()
-    local executor = getExecutorName()
+    local hwid = GetHWID()
+    local executor = GetExecutorName()
     local payload = HttpService:JSONEncode({
         key = keyStr,
         hwid = hwid,
@@ -216,7 +225,7 @@ local function VerifyWithServer(keyStr)
     })
 
     local ok, res = pcall(function()
-        return httpRequest({
+        return HttpRequest({
             Url = API_CONFIG.BASE_URL .. "/api/v1/authenticate",
             Method = "POST",
             Headers = { ["Content-Type"] = "application/json" },
@@ -226,7 +235,7 @@ local function VerifyWithServer(keyStr)
 
     if not ok or not res or res.StatusCode == 0 or res.StatusCode == 522 then
         ok, res = pcall(function()
-            return httpRequest({
+            return HttpRequest({
                 Url = API_CONFIG.FALLBACK_URL .. "/api/v1/authenticate",
                 Method = "POST",
                 Headers = { ["Content-Type"] = "application/json" },
@@ -254,11 +263,11 @@ end
 
 local function LoadScript(tier, scriptPayload)
     if tier == "Free" then
-        local url = Scripts.Free[gameId]
+        local url = Scripts.Free[GameId]
         if url then
             pcall(function() loadstring(game:HttpGet(url))() end)
         else
-            warn("[Quantum Onyx] No free script found for GameId: " .. tostring(gameId))
+            warn("[Quantum Onyx] No free script found for GameId: " .. tostring(GameId))
         end
     elseif tier == "Premium" then
         if scriptPayload and type(scriptPayload) == "string" and #scriptPayload > 100 then
@@ -753,7 +762,7 @@ local function ShowKeyUI()
         Position = UDim2.new(0, RX, 0, 185),
         Size = UDim2.new(0, RW, 0, 13),
         Font = Enum.Font.GothamBold,
-        Text = "HWID: " .. getHWID():sub(1, 12) .. "...",
+        Text = "HWID: " .. GetHWID():sub(1, 12) .. "...",
         TextColor3 = Color3.fromRGB(175, 155, 210),
         TextSize = 9,
         TextXAlignment = Enum.TextXAlignment.Center,
@@ -824,7 +833,7 @@ local function ShowKeyUI()
                     isPremium = true
                     verifiedScript = authData.script
                     SaveKey(keyStr)
-                    apply_script_key(keyStr)
+                    ApplyScriptKey(keyStr)
 
                     getgenv().key_expire = status.data and status.data.auth_expire or 0
                     getgenv().key_note = status.data and status.data.note or ""
@@ -1020,7 +1029,7 @@ local function AuthenticateAndLoad()
             local elapsed = math.floor((os.clock() - startTime) * 100) / 100
             local elapsedStr = string.format("%.2fs", elapsed)
             if success and authData and authData.script then
-                apply_script_key(SavedKey)
+                ApplyScriptKey(SavedKey)
                 Notify("Welcome Back", "Auto-logged in in " .. elapsedStr .. ".", Color3.fromRGB(80, 230, 130))
                 LoadScript("Premium", authData.script)
                 return
@@ -1035,4 +1044,3 @@ local function AuthenticateAndLoad()
 end
 
 AuthenticateAndLoad()
-
