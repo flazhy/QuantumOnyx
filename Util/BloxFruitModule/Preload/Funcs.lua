@@ -1,44 +1,44 @@
 local FuncsModule = {}
 
-function FuncsModule.Init(context)
-	context = context or {}
-	local Settings = context.Settings or (getgenv and getgenv().Settings) or _G.Settings or {}
-	local Module = context.Module or (getgenv and getgenv().Module) or _G.Module or {}
-	local Tween = context.Tween or (Module and Module.TweenManager)
+function FuncsModule.Init(Context)
+	Context = Context or {}
+	local Settings = Context.Settings or (getgenv and getgenv().Settings) or _G.Settings or {}
+	local Module = Context.Module or (getgenv and getgenv().Module) or _G.Module or {}
+	local Tween = Context.Tween or (Module and Module.TweenManager)
 
 	local Funcs = {}
 
-	function Funcs:CreateToggle(section, label, key, default, options)
-		options = options or {}
-		if options.global then Settings[key] = default end
+	function Funcs:CreateToggle(Section, Label, Key, Default, Options)
+		Options = Options or {}
+		if Options.global then Settings[Key] = Default end
 		Module.FunctionDisplayNames = Module.FunctionDisplayNames or {}
-		Module.FunctionDisplayNames[key] = label
-		local saveKey = (options.save ~= false) and key or nil
-		return section:addToggle(label, default, function(value)
-			if options.global then Settings[key] = value end
-			Settings[key] = value
-			if value then
-				if Module.Functions and Module.Functions[key] and Module.Functions[key].Start then
-					Module.Functions[key].Start()
+		Module.FunctionDisplayNames[Key] = Label
+		local SaveKey = (Options.save ~= false) and Key or nil
+		return Section:addToggle(Label, Default, function(Value)
+			if Options.global then Settings[Key] = Value end
+			Settings[Key] = Value
+			if Value then
+				if Module.Functions and Module.Functions[Key] and Module.Functions[Key].Start then
+					Module.Functions[Key].Start()
 				end
-				if Module.Loops and Module.Loops[key] and Module.Loops[key].Start then
-					Module.Loops[key].Start()
+				if Module.Loops and Module.Loops[Key] and Module.Loops[Key].Start then
+					Module.Loops[Key].Start()
 				end
 			else
-				if Module.Functions and Module.Functions[key] and Module.Functions[key].Stop then
-					Module.Functions[key].Stop()
-				elseif Module.Functions and Module.Functions[key] then
-					Module.Functions[key].Running = false
+				if Module.Functions and Module.Functions[Key] and Module.Functions[Key].Stop then
+					Module.Functions[Key].Stop()
+				elseif Module.Functions and Module.Functions[Key] then
+					Module.Functions[Key].Running = false
 				end
-				if Module.Loops and Module.Loops[key] and Module.Loops[key].Stop then
-					Module.Loops[key].Stop()
-				elseif Module.Loops and Module.Loops[key] then
-					Module.Loops[key].Running = false
+				if Module.Loops and Module.Loops[Key] and Module.Loops[Key].Stop then
+					Module.Loops[Key].Stop()
+				elseif Module.Loops and Module.Loops[Key] then
+					Module.Loops[Key].Running = false
 				end
-				if Module.ActiveFunction == key then
+				if Module.ActiveFunction == Key then
 					Module.ActiveFunction = nil
 				end
-				if options.stop ~= false then
+				if Options.stop ~= false then
 					if Tween and Tween.StopTween then
 						Tween:StopTween()
 					end
@@ -49,58 +49,61 @@ function FuncsModule.Init(context)
 					end
 				end
 			end
-			if type(options.callback) == "function" then
-				options.callback(value)
+			if type(Options.callback) == "function" then
+				Options.callback(Value)
 			end
-		end, options.locked, options.description, saveKey)
+		end, Options.locked, Options.description, SaveKey)
 	end
 
-	function Funcs:CreateDropdown(tab, name, key, default, options, config, multimode)
-		config = config or {}
-		if config.global then Settings[key] = default end
-		local saveKey = (config.save ~= false) and key or nil
-		return tab:addDropdown(name, default, options, function(value)
-			if config.global then Settings[key] = value end
-			Settings[key] = value
-			if type(config.callback) == "function" then
-				config.callback(value)
+	function Funcs:CreateDropdown(Section, Name, Key, Default, Options, Config, MultiMode)
+		Config = Config or {}
+		if Config.global then Settings[Key] = Default end
+		local SaveKey = (Config.save ~= false) and Key or nil
+		return Section:addDropdown(Name, Default, Options, function(Value)
+			if Config.global then Settings[Key] = Value end
+			Settings[Key] = Value
+			if type(Config.callback) == "function" then
+				Config.callback(Value)
 			end
-		end, config.locked, multimode, saveKey)
+		end, Config.locked, MultiMode, SaveKey)
 	end
 
-	function Funcs:CreateSlider(section, label, key, min, max, default, options)
-		options = options or {}
-		if options.global then Settings[key] = default end
-		local saveKey = (options.save ~= false) and key or nil
-		return section:addSlider(label, min, max, default, function(value)
-			if options.global then Settings[key] = value end
-			Settings[key] = value
-			if type(options.callback) == "function" then
-				options.callback(value)
+	function Funcs:CreateSlider(Section, Label, Key, Min, Max, Default, Options)
+		Options = Options or {}
+		if Options.global then Settings[Key] = Default end
+		local SaveKey = (Options.save ~= false) and Key or nil
+		return Section:addSlider(Label, Min, Max, Default, function(Value)
+			if Options.global then Settings[Key] = Value end
+			Settings[Key] = Value
+			if type(Options.callback) == "function" then
+				Options.callback(Value)
 			end
-		end, options.locked, options.step, saveKey)
+		end, Options.locked, Options.step, SaveKey)
 	end
 
-	function Funcs:CreateTextbox(section, label, key, options)
-		options = options or {}
-		if options.global then Settings[key] = options.default or "" end
-		local saveKey = (options.save ~= false) and key or nil
-		return section:addTextbox(label, function(value)
-			if options.global then Settings[key] = value end
-			Settings[key] = value
-			if type(options.callback) == "function" then
-				options.callback(value)
+	function Funcs:CreateTextbox(Section, Label, Key, Options)
+		Options = Options or {}
+		if Options.global then Settings[Key] = Options.default or "" end
+		local SaveKey = (Options.save ~= false) and Key or nil
+		return Section:addTextbox(Label, function(Value)
+			if Options.global then Settings[Key] = Value end
+			Settings[Key] = Value
+			if type(Options.callback) == "function" then
+				Options.callback(Value)
 			end
-		end, options.confirmText, saveKey)
+		end, Options.confirmText, SaveKey)
 	end
 
 	return Funcs
 end
 
 setmetatable(FuncsModule, {
-	__call = function(_, context)
-		return FuncsModule.Init(context)
+	__call = function(_, Context)
+		return FuncsModule.Init(Context)
 	end
 })
+
+if getgenv then getgenv().FuncsModule = FuncsModule end
+_G.FuncsModule = FuncsModule
 
 return FuncsModule
