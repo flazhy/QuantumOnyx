@@ -1,8 +1,3 @@
---[[
-    Quantum Onyx - UI Element Helper Functions Module
-    Provides helper bindings for creating toggles, dropdowns, sliders, and textboxes.
-]]
-
 local FuncsModule = {}
 
 function FuncsModule.Init(context)
