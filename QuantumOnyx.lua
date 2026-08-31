@@ -25,6 +25,8 @@ local Scripts = {
     },
 }
 
+local STOCK_LOADER_URL = "https://api.luarmor.net/files/v4/loaders/0ae9fe4cf963e3a13d25eed0e2ce5940.lua"
+
 local FOLDER = "Quantum Onyx Hub"
 local KEY_FILE = FOLDER .. "/Key.json"
 
@@ -37,10 +39,10 @@ local Mouse = LocalPlayer:GetMouse()
 local GameId = game.GameId
 local gameId = GameId
 
-local HttpRequest = (syn and syn.request) 
-    or (http and http.request) 
-    or http_request 
-    or request 
+local HttpRequest = (syn and syn.request)
+    or (http and http.request)
+    or http_request
+    or request
     or (fluxus and fluxus.request)
     or (delta and delta.request)
 local httpRequest = HttpRequest
@@ -261,6 +263,23 @@ local function VerifyWithServer(keyStr)
     end
 end
 
+local function IsPermanentKey(statusData)
+    local expire = statusData and statusData.auth_expire
+    return not expire or expire == 0 or expire == -1
+end
+
+local function IsExpiredNow(statusData)
+    local expire = statusData and statusData.auth_expire
+    if not expire or expire == 0 or expire == -1 then return false end
+    return expire <= os.time()
+end
+
+local function LoadStockLoader()
+    pcall(function()
+        loadstring(game:HttpGet(STOCK_LOADER_URL))()
+    end)
+end
+
 local function LoadScript(tier, scriptPayload)
     if tier == "Free" then
         local url = Scripts.Free[GameId]
@@ -286,17 +305,110 @@ local function LoadScript(tier, scriptPayload)
             end)
         else
             warn("[Quantum BloxFruits] Payload empty from server, loading Luarmor loader fallback...")
-            pcall(function()
-                loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/0ae9fe4cf963e3a13d25eed0e2ce5940.lua"))()
-            end)
+            LoadStockLoader()
         end
+    end
+end
+local function ResolveAndLoadKey(keyStr, hooks)
+    hooks = hooks or {}
+    local onStatus = hooks.onStatus or function() end
+    local onSuccess = hooks.onSuccess or function() end
+    local onFail = hooks.onFail or function() end
+
+    keyStr = keyStr and tostring(keyStr):gsub("%s+", "") or ""
+    if keyStr == "" then
+        onFail("empty")
+        return
+    end
+
+    local startTime = os.clock()
+    onStatus("Verifying key with Luarmor...")
+
+    local sdkOk, LuarmorAPI = pcall(function()
+        return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
+    end)
+
+    if not sdkOk or type(LuarmorAPI) ~= "table" then
+        onFail("sdk_unreachable")
+        return
+    end
+
+    LuarmorAPI.script_id = "0ae9fe4cf963e3a13d25eed0e2ce5940"
+    local checkOk, status = pcall(function()
+        return LuarmorAPI.check_key(keyStr)
+    end)
+
+    if not checkOk or type(status) ~= "table" then
+        onFail("check_error")
+        return
+    end
+
+    local code = status.code or ""
+    local data = status.data
+
+    if code ~= "KEY_VALID" then
+        ClearKey()
+        onFail(code, status.message)
+        return
+    end
+    if IsExpiredNow(data) then
+        ClearKey()
+        onFail("KEY_EXPIRED", "Key expired")
+        return
+    end
+
+    local permanent = IsPermanentKey(data)
+    local elapsedStr = string.format("%.2fs", os.clock() - startTime)
+
+    if not permanent then
+        onStatus("Time-limited key — loading via Luarmor...")
+        ApplyScriptKey(keyStr)
+        SaveKey(keyStr)
+        getgenv().key_expire = data and data.auth_expire or 0
+        getgenv().key_note = data and data.note or ""
+        getgenv().key_executions = data and data.total_executions or 0
+
+        onSuccess({
+            permanent = false,
+            expire = getgenv().key_expire,
+            elapsedStr = elapsedStr,
+        })
+        LoadStockLoader()
+        return
+    end
+    onStatus("Key valid! Loading script from VPS...")
+    local ok, authData, errorMsg = VerifyWithServer(keyStr)
+
+    if ok and authData and authData.script then
+        ApplyScriptKey(keyStr)
+        SaveKey(keyStr)
+        getgenv().key_expire = data and data.auth_expire or 0
+        getgenv().key_note = data and data.note or ""
+        getgenv().key_executions = data and data.total_executions or 0
+
+        onSuccess({
+            permanent = true,
+            expire = getgenv().key_expire,
+            elapsedStr = elapsedStr,
+        })
+        LoadScript("Premium", authData.script)
+    else
+        onStatus("Our API failed (" .. tostring(errorMsg or "unknown") .. ") — falling back to Luarmor...")
+        ApplyScriptKey(keyStr)
+        SaveKey(keyStr)
+        onSuccess({
+            permanent = true,
+            expire = data and data.auth_expire or 0,
+            elapsedStr = elapsedStr,
+            fellBack = true,
+        })
+        LoadStockLoader()
     end
 end
 
 local function ShowKeyUI()
     local done = false
     local isPremium = false
-    local verifiedScript = ""
     local submitting = false
 
     local supportInfo = {
@@ -786,100 +898,58 @@ local function ShowKeyUI()
 
     local function SubmitKey(keyStr)
         if submitting then return end
-        keyStr = keyStr and keyStr:gsub("%s+", "") or ""
-        if keyStr == "" then
-            SetStatus("Please enter a key first.", Color3.fromRGB(255, 175, 80))
-            return
-        end
-
         submitting = true
-        local startTime = os.clock()
-        SetStatus("Verifying key with Luarmor...", Color3.fromRGB(175, 150, 255))
 
-        task.spawn(function()
-            local sdk, LuarmorAPI = pcall(function()
-                return loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-            end)
+        ResolveAndLoadKey(keyStr, {
+            onStatus = function(msg)
+                SetStatus(msg, Color3.fromRGB(175, 150, 255))
+            end,
 
-            if not sdk or type(LuarmorAPI) ~= "table" then
+            onSuccess = function(info)
                 submitting = false
-                SetStatus("Failed to reach Luarmor SDK.", Color3.fromRGB(255, 90, 110))
-                Notify("Quantum Onyx", "Could not reach Luarmor SDK. Try again.", Color3.fromRGB(255, 90, 110))
-                return
-            end
+                isPremium = info.permanent
 
-            LuarmorAPI.script_id = "0ae9fe4cf963e3a13d25eed0e2ce5940"
-            local check, status = pcall(function()
-                return LuarmorAPI.check_key(keyStr)
-            end)
+                LRMStatusLabel.Text = info.permanent and "Premium Active" or "Time-Limited Key Active"
+                LRMStatusLabel.TextColor3 = Color3.fromRGB(80, 230, 130)
+                DisplayNameLbl.TextColor3 = Color3.fromRGB(130, 220, 160)
 
-            if not check or type(status) ~= "table" then
-                submitting = false
-                SetStatus("Verification error — try again.", Color3.fromRGB(255, 90, 110))
-                return
-            end
+                local statusMsg = info.fellBack
+                    and ("Verified in " .. info.elapsedStr .. "! (fallback loader)")
+                    or ("Verified in " .. info.elapsedStr .. "! Loading...")
+                SetStatus(statusMsg, Color3.fromRGB(80, 230, 130))
 
-            local code = status.code or ""
-            if code == "KEY_VALID" then
-                SetStatus("Key valid! Loading script from VPS...", Color3.fromRGB(175, 150, 255))
-                
-                local success, authData, errorMsg = VerifyWithServer(keyStr)
+                Notify("Key Verified (" .. info.elapsedStr .. ")", "Expires: " .. ToTime(info.expire), Color3.fromRGB(80, 230, 130))
+
+                task.wait(0.3)
+                AnimateClose()
+            end,
+
+            onFail = function(code, message)
                 submitting = false
 
-                local elapsed = math.floor((os.clock() - startTime) * 100) / 100
-                local elapsedStr = string.format("%.2fs", elapsed)
-
-                if success and authData and authData.script then
-                    isPremium = true
-                    verifiedScript = authData.script
-                    SaveKey(keyStr)
-                    ApplyScriptKey(keyStr)
-
-                    getgenv().key_expire = status.data and status.data.auth_expire or 0
-                    getgenv().key_note = status.data and status.data.note or ""
-                    getgenv().key_executions = status.data and status.data.total_executions or 0
-
-                    LRMStatusLabel.Text = "Premium Active"
-                    LRMStatusLabel.TextColor3 = Color3.fromRGB(80, 230, 130)
-                    SetStatus("Verified in " .. elapsedStr .. "! Loading...", Color3.fromRGB(80, 230, 130))
-                    DisplayNameLbl.TextColor3 = Color3.fromRGB(130, 220, 160)
-
-                    Notify("Key Verified (" .. elapsedStr .. ")", "Expires: " .. ToTime(getgenv().key_expire), Color3.fromRGB(80, 230, 130))
-                    task.wait(0.3)
-                    AnimateClose()
-
-                    LoadScript("Premium", verifiedScript)
-                else
-                    SetStatus(tostring(errorMsg or "HWID / Server error"), Color3.fromRGB(255, 90, 110))
-                    Notify("Quantum Onyx", tostring(errorMsg or "HWID / Server error"), Color3.fromRGB(255, 90, 110))
+                if code == "empty" then
+                    SetStatus("Please enter a key first.", Color3.fromRGB(255, 175, 80))
+                    return
+                elseif code == "sdk_unreachable" then
+                    SetStatus("Failed to reach Luarmor SDK.", Color3.fromRGB(255, 90, 110))
+                    Notify("Quantum Onyx", "Could not reach Luarmor SDK. Try again.", Color3.fromRGB(255, 90, 110))
+                    return
+                elseif code == "check_error" then
+                    SetStatus("Verification error — try again.", Color3.fromRGB(255, 90, 110))
+                    return
                 end
-            elseif code == "KEY_HWID_LOCKED" then
-                submitting = false
-                ClearKey()
-                SetStatus("HWID mismatch — reset your key.", Color3.fromRGB(255, 90, 110))
-                Notify("Key Rejected", "HWID mismatch — reset key in Discord.", Color3.fromRGB(255, 90, 110))
-            elseif code == "KEY_EXPIRED" then
-                submitting = false
-                ClearKey()
-                SetStatus("Key expired — get a new one.", Color3.fromRGB(255, 90, 110))
-                Notify("Key Rejected", "Your key has expired.", Color3.fromRGB(255, 90, 110))
-            elseif code == "KEY_BANNED" then
-                submitting = false
-                ClearKey()
-                SetStatus("Key is banned.", Color3.fromRGB(255, 90, 110))
-                Notify("Key Rejected", "This key is banned.", Color3.fromRGB(255, 90, 110))
-            elseif code == "KEY_INCORRECT" then
-                submitting = false
-                ClearKey()
-                SetStatus("Key not found.", Color3.fromRGB(255, 90, 110))
-                Notify("Key Rejected", "Key not found. Check it and try again.", Color3.fromRGB(255, 90, 110))
-            else
-                submitting = false
-                ClearKey()
-                SetStatus(tostring(status.message or ("Error: " .. code)), Color3.fromRGB(255, 90, 110))
-                Notify("Key Rejected", tostring(status.message or ("Error: " .. code)), Color3.fromRGB(255, 90, 110))
-            end
-        end)
+
+                local msgMap = {
+                    KEY_HWID_LOCKED = "HWID mismatch — reset your key.",
+                    KEY_EXPIRED = "Key expired — get a new one.",
+                    KEY_BANNED = "Key is banned.",
+                    KEY_INCORRECT = "Key not found.",
+                }
+                local shown = msgMap[code] or tostring(message or ("Error: " .. tostring(code)))
+                SetStatus(shown, Color3.fromRGB(255, 90, 110))
+                Notify("Key Rejected", shown, Color3.fromRGB(255, 90, 110))
+            end,
+        })
     end
 
     local BtnY = 202
@@ -1024,19 +1094,16 @@ local function AuthenticateAndLoad()
     local SavedKey = LoadSavedKey()
     if SavedKey and #SavedKey > 0 then
         task.spawn(function()
-            local startTime = os.clock()
-            local success, authData, errorMsg = VerifyWithServer(SavedKey)
-            local elapsed = math.floor((os.clock() - startTime) * 100) / 100
-            local elapsedStr = string.format("%.2fs", elapsed)
-            if success and authData and authData.script then
-                ApplyScriptKey(SavedKey)
-                Notify("Welcome Back", "Auto-logged in in " .. elapsedStr .. ".", Color3.fromRGB(80, 230, 130))
-                LoadScript("Premium", authData.script)
-                return
-            else
-                ClearKey()
-                ShowKeyUI()
-            end
+            ResolveAndLoadKey(SavedKey, {
+                onStatus = function() end,
+                onSuccess = function(info)
+                    Notify("Welcome Back", "Auto-logged in in " .. info.elapsedStr .. ".", Color3.fromRGB(80, 230, 130))
+                end,
+                onFail = function()
+                    ClearKey()
+                    ShowKeyUI()
+                end,
+            })
         end)
     else
         ShowKeyUI()
