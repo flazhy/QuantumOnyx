@@ -155,18 +155,199 @@ return {
 			["Nightmare Catcher"] = { "Reborn Skeleton", "Living Zombie" },
 		}
 	},
+	Materials = {
+		Sea_1 = { "Leather + Scrap Metal", "Angel Wings", "Magma Ore", "Fish Tail" },
+		Sea_2 = { "Leather + Scrap Metal", "Radioactive Material", "Ectoplasm", "Mystic Droplet", "Magma Ore", "Vampire Fang" },
+		Sea_3 = { "Leather + Scrap Metal", "Demonic Wisp", "Conjured Cocoa", "Dragon Scale", "Gunpowder", "Fish Tail", "Mini Tusk", "Nightmare Catcher" }
+	},
+	BossNames = {
+		Sea_1 = { "The Gorilla King", "Chief", "Yeti", "Vice Admiral", "Warden", "Chief Warden", "Swan", "Magma Admiral", "Fishman Lord", "Wysper", "Thunder God", "Cyborg", "Saw" },
+		Sea_2 = { "Diamond", "Jeremy", "Orbitus", "Smoke Admiral", "Awakened Ice Admiral", "Tide Keeper", "Don Swan" },
+		Sea_3 = { "Stone", "Kilo Admiral", "Captain Elephant", "Beautiful Pirate", "Cake Queen" }
+	},
 	Melees = {
-	    ["Black Leg"] = { npc = "Dark Step Teacher", remote = {"BuyBlackLeg"} },
-	    ["Electro"] = { npc = "Mad Scientist", remote = {"BuyElectro"} },
-	    ["Fishman Karate"] = { npc = "Water Kung-fu Teacher", remote = {"BuyFishmanKarate"} },
-	    ["Dragon Claw"] = { npc = "Sabi", remote = {{"BlackbeardReward","DragonClaw","1"},{"BlackbeardReward","DragonClaw","2"}} },
-	    ["Superhuman"] = { npc = "Martial Arts Master", remote = {"BuySuperhuman"} },
-	    ["Death Step"] = { npc = "Phoeyu, the Reformed", remote = {"BuyDeathStep"} },
-	    ["Sharkman Karate"] = { npc = "Sharkman Teacher", remote = {"BuySharkmanKarate"} },
-	    ["Electric Claw"] = { npc = "Previous Hero", remote = {"BuyElectricClaw"} },
-	    ["Dragon Talon"] = { npc = "Uzoth", remote = {"BuyDragonTalon"} },
-	    ["Godhuman"] = { npc = "Ancient Monk", remote = {"BuyGodhuman"} },
-	    ["Sanguine Art"] = { npc = "Shafi", remote = {{"BuySanguineArt", true},{"BuySanguineArt"}} },
+		["Black Leg"] = {
+			Model = "Dark Step Teacher",
+			Npc = "Dark Step Teacher",
+			npc = "Dark Step Teacher",
+			CFrame = CFrame.new(-4752.432, 33.930, -4848.039),
+			cframe = CFrame.new(-4752.432, 33.930, -4848.039),
+			CFrames = {
+				Sea_1 = CFrame.new(-1147.284, 4.752, 3816.326),
+				Sea_2 = CFrame.new(-4752.432, 33.930, -4848.039),
+			},
+			cframes = {
+				Sea_1 = CFrame.new(-1147.284, 4.752, 3816.326),
+				Sea_2 = CFrame.new(-4752.432, 33.930, -4848.039),
+			},
+			Remote = { "BuyBlackLeg" },
+			remote = { "BuyBlackLeg" },
+			Sea = 2
+		},
+		["Electro"] = {
+			Model = "Mad Scientist",
+			Npc = "Mad Scientist",
+			npc = "Mad Scientist",
+			CFrame = CFrame.new(-4866.150, 33.930, -4767.103),
+			cframe = CFrame.new(-4866.150, 33.930, -4767.103),
+			CFrames = {
+				Sea_1 = CFrame.new(-4842.112, 717.670, -2623.149),
+				Sea_2 = CFrame.new(-4866.150, 33.930, -4767.103),
+			},
+			cframes = {
+				Sea_1 = CFrame.new(-4842.112, 717.670, -2623.149),
+				Sea_2 = CFrame.new(-4866.150, 33.930, -4767.103),
+			},
+			Remote = { "BuyElectro" },
+			remote = { "BuyElectro" },
+			Sea = 2
+		},
+		["Fishman Karate"] = {
+			Model = "Water Kung-fu Teacher",
+			Npc = "Water Kung-fu Teacher",
+			npc = "Water Kung-fu Teacher",
+			CFrame = CFrame.new(-4957.670, 35.950, -4665.600),
+			cframe = CFrame.new(-4957.670, 35.950, -4665.600),
+			CFrames = {
+				Sea_1 = CFrame.new(61122.652, 18.497, 1568.351),
+				Sea_2 = CFrame.new(-4957.670, 35.950, -4665.600),
+			},
+			cframes = {
+				Sea_1 = CFrame.new(61122.652, 18.497, 1568.351),
+				Sea_2 = CFrame.new(-4957.670, 35.950, -4665.600),
+			},
+			Remote = { "BuyFishmanKarate" },
+			remote = { "BuyFishmanKarate" },
+			Sea = 2
+		},
+		["Dragon Claw"] = {
+			Model = "Sabi",
+			Npc = "Sabi",
+			npc = "Sabi",
+			CFrame = CFrame.new(699.029, 185.661, 654.895),
+			cframe = CFrame.new(699.029, 185.661, 654.895),
+			CFrames = {
+				Sea_2 = CFrame.new(699.029, 185.661, 654.895),
+			},
+			cframes = {
+				Sea_2 = CFrame.new(699.029, 185.661, 654.895),
+			},
+			Remote = { { "BlackbeardReward", "DragonClaw", "1" }, { "BlackbeardReward", "DragonClaw", "2" } },
+			remote = { { "BlackbeardReward", "DragonClaw", "1" }, { "BlackbeardReward", "DragonClaw", "2" } },
+			Sea = 2
+		},
+		["Superhuman"] = {
+			Model = "Martial Arts Master",
+			Npc = "Martial Arts Master",
+			npc = "Martial Arts Master",
+			CFrame = CFrame.new(1377.125, 246.542, -5189.951),
+			cframe = CFrame.new(1377.125, 246.542, -5189.951),
+			CFrames = {
+				Sea_2 = CFrame.new(1377.125, 246.542, -5189.951),
+			},
+			cframes = {
+				Sea_2 = CFrame.new(1377.125, 246.542, -5189.951),
+			},
+			Remote = { "BuySuperhuman" },
+			remote = { "BuySuperhuman" },
+			Sea = 2
+		},
+		["Death Step"] = {
+			Model = "Phoeyu, the Reformed",
+			Npc = "Phoeyu, the Reformed",
+			npc = "Phoeyu, the Reformed",
+			CFrame = CFrame.new(6356.472, 296.100, -6762.771),
+			cframe = CFrame.new(6356.472, 296.100, -6762.771),
+			CFrames = {
+				Sea_2 = CFrame.new(6356.472, 296.100, -6762.771),
+			},
+			cframes = {
+				Sea_2 = CFrame.new(6356.472, 296.100, -6762.771),
+			},
+			Remote = { "BuyDeathStep" },
+			remote = { "BuyDeathStep" },
+			Sea = 2
+		},
+		["Sharkman Karate"] = {
+			Model = "Sharkman Teacher",
+			Npc = "Sharkman Teacher",
+			npc = "Sharkman Teacher",
+			CFrame = CFrame.new(-2599.622, 238.198, -10315.998),
+			cframe = CFrame.new(-2599.622, 238.198, -10315.998),
+			CFrames = {
+				Sea_2 = CFrame.new(-2599.622, 238.198, -10315.998),
+			},
+			cframes = {
+				Sea_2 = CFrame.new(-2599.622, 238.198, -10315.998),
+			},
+			Remote = { "BuySharkmanKarate" },
+			remote = { "BuySharkmanKarate" },
+			Sea = 2
+		},
+		["Electric Claw"] = {
+			Model = "Previous Hero",
+			Npc = "Previous Hero",
+			npc = "Previous Hero",
+			CFrame = CFrame.new(-10368.514, 331.788, -10134.120),
+			cframe = CFrame.new(-10368.514, 331.788, -10134.120),
+			CFrames = {
+				Sea_3 = CFrame.new(-10368.514, 331.788, -10134.120),
+			},
+			cframes = {
+				Sea_3 = CFrame.new(-10368.514, 331.788, -10134.120),
+			},
+			Remote = { "BuyElectricClaw" },
+			remote = { "BuyElectricClaw" },
+			Sea = 3
+		},
+		["Dragon Talon"] = {
+			Model = "Uzoth",
+			Npc = "Uzoth",
+			npc = "Uzoth",
+			CFrame = CFrame.new(-9515.372, 142.130, 5535.089),
+			cframe = CFrame.new(-9515.372, 142.130, 5535.089),
+			CFrames = {
+				Sea_3 = CFrame.new(-9515.372, 142.130, 5535.089),
+			},
+			cframes = {
+				Sea_3 = CFrame.new(-9515.372, 142.130, 5535.089),
+			},
+			Remote = { "BuyDragonTalon" },
+			remote = { "BuyDragonTalon" },
+			Sea = 3
+		},
+		["Godhuman"] = {
+			Model = "Ancient Monk",
+			Npc = "Ancient Monk",
+			npc = "Ancient Monk",
+			CFrame = CFrame.new(-12463.870, 374.910, -7523.770),
+			cframe = CFrame.new(-12463.870, 374.910, -7523.770),
+			CFrames = {
+				Sea_3 = CFrame.new(-12463.870, 374.910, -7523.770),
+			},
+			cframes = {
+				Sea_3 = CFrame.new(-12463.870, 374.910, -7523.770),
+			},
+			Remote = { "BuyGodhuman" },
+			remote = { "BuyGodhuman" },
+			Sea = 3
+		},
+		["Sanguine Art"] = {
+			Model = "Shafi",
+			Npc = "Shafi",
+			npc = "Shafi",
+			CFrame = CFrame.new(-16548.800, 12.000, 412.300),
+			cframe = CFrame.new(-16548.800, 12.000, 412.300),
+			CFrames = {
+				Sea_3 = CFrame.new(-16548.800, 12.000, 412.300),
+			},
+			cframes = {
+				Sea_3 = CFrame.new(-16548.800, 12.000, 412.300),
+			},
+			Remote = { { "BuySanguineArt", true }, { "BuySanguineArt" } },
+			remote = { { "BuySanguineArt", true }, { "BuySanguineArt" } },
+			Sea = 3
+		},
 	},
 	ItemsToBuy = {
 		["Frags"] = {
@@ -208,55 +389,55 @@ return {
 		}
 	},
 	Islands = {
-	    ["Sea 1"] = {
-	        ["Pirate Starter"] = CFrame.new(889, 17, 1434),
-	        ["Marine Starter"] = CFrame.new(-2728, 25, 2056),
-	        ["Middle Town"] = CFrame.new(-688, 15, 1585),
-	        ["Jungle"] = CFrame.new(-1614, 37, 146),
-	        ["Pirate Village"] = CFrame.new(-1173, 45, 3837),
-	        ["Desert"] = CFrame.new(944, 21, 4373),
-	        ["Frozen Village"] = CFrame.new(1298, 87, -1344),
-	        ["Marine Fortress"] = CFrame.new(-4810, 21, 4359),
-	        ["Colosseum"] = CFrame.new(-1535, 7, -3014),
-	        ["Lower Skylands"] = CFrame.new(-4814, 718, -2551),
-	        ["Skylands"] = CFrame.new(-4652, 873, -1754),
-	        ["Upper Skylands"] = CFrame.new(-7895, 5547, -380),
-	        ["Prison"] = CFrame.new(4870, 6, 736),
-	        ["Magma Village"] = CFrame.new(-5290, 9, 8349),
-	        ["Underwater City"] = CFrame.new(61164, 5, 1820),
-	        ["Fountain City"] = CFrame.new(5287, 54, 4108),
-	        ["Jean-Luc Island"] = CFrame.new(-2850, 7, 5355),
-	    },
-	    ["Sea 2"] = {
-	        ["The Cafe"] = CFrame.new(-382, 73, 290),
-	        ["First Spot"] = CFrame.new(-11, 29, 2771),
-	        ["Dark Arena"] = CFrame.new(3494, 13, -3259),
-	        ["Don Swan Mansion"] = CFrame.new(-317, 331, 597),
-	        ["Don Swan Room"] = CFrame.new(2285, 15, 905),
-	        ["Green Zone"] = CFrame.new(-2258, 73, -2696),
-	        ["Graveyard"] = CFrame.new(-5552, 194, -776),
-	        ["Snow Mountain"] = CFrame.new(752, 408, -5277),
-	        ["Hot and Cold"] = CFrame.new(-6008, 29, -5018),
-	        ["Cursed Ship"] = CFrame.new(919, 125, 32869),
-	        ["Ice Castle"] = CFrame.new(5505, 40, -6178),
-	        ["Forgotten Island"] = CFrame.new(-3050, 240, -10178),
-	        ["Remote Island"] = CFrame.new(4816, 8, 2863),
-	    },
-	    ["Sea 3"] = {
-	        ["Mansion"] = CFrame.new(-12471, 374, -7551),
-	        ["Port Town"] = CFrame.new(-340, 21, 5524),
-	        ["Great Tree"] = CFrame.new(2205, 22, -6766),
-	        ["Castle On The Sea"] = CFrame.new(-4980, 314, -3018),
-	        ["Hydra Island"] = CFrame.new(5294, 1005, 391),
-	        ["Floating Turtle"] = CFrame.new(-12528, 332, -8658),
-	        ["Haunted Castle"] = CFrame.new(-9517, 142, 5528),
-	        ["Ice Cream Land"] = CFrame.new(-843, 66, -10944),
-	        ["Peanut Land"] = CFrame.new(-2082, 38, -10190),
-	        ["Cake Land"] = CFrame.new(-1897, 14, -11576),
-	        ["Candy Cane Land"] = CFrame.new(-1094, 64, -14519),
-	        ["Chocolate Land"] = CFrame.new(219, 127, -12604),
-	        ["Tiki Outpost"] = CFrame.new(-16224, 9, 439),
-	    }
+		["Sea 1"] = {
+			["Pirate Starter"] = CFrame.new(889, 17, 1434),
+			["Marine Starter"] = CFrame.new(-2728, 25, 2056),
+			["Middle Town"] = CFrame.new(-688, 15, 1585),
+			["Jungle"] = CFrame.new(-1614, 37, 146),
+			["Pirate Village"] = CFrame.new(-1173, 45, 3837),
+			["Desert"] = CFrame.new(944, 21, 4373),
+			["Frozen Village"] = CFrame.new(1298, 87, -1344),
+			["Marine Fortress"] = CFrame.new(-4810, 21, 4359),
+			["Colosseum"] = CFrame.new(-1535, 7, -3014),
+			["Lower Skylands"] = CFrame.new(-4814, 718, -2551),
+			["Skylands"] = CFrame.new(-4652, 873, -1754),
+			["Upper Skylands"] = CFrame.new(-7895, 5547, -380),
+			["Prison"] = CFrame.new(4870, 6, 736),
+			["Magma Village"] = CFrame.new(-5290, 9, 8349),
+			["Underwater City"] = CFrame.new(61164, 5, 1820),
+			["Fountain City"] = CFrame.new(5287, 54, 4108),
+			["Jean-Luc Island"] = CFrame.new(-2850, 7, 5355),
+		},
+		["Sea 2"] = {
+			["The Cafe"] = CFrame.new(-382, 73, 290),
+			["First Spot"] = CFrame.new(-11, 29, 2771),
+			["Dark Arena"] = CFrame.new(3494, 13, -3259),
+			["Don Swan Mansion"] = CFrame.new(-317, 331, 597),
+			["Don Swan Room"] = CFrame.new(2285, 15, 905),
+			["Green Zone"] = CFrame.new(-2258, 73, -2696),
+			["Graveyard"] = CFrame.new(-5552, 194, -776),
+			["Snow Mountain"] = CFrame.new(752, 408, -5277),
+			["Hot and Cold"] = CFrame.new(-6008, 29, -5018),
+			["Cursed Ship"] = CFrame.new(919, 125, 32869),
+			["Ice Castle"] = CFrame.new(5505, 40, -6178),
+			["Forgotten Island"] = CFrame.new(-3050, 240, -10178),
+			["Remote Island"] = CFrame.new(4816, 8, 2863),
+		},
+		["Sea 3"] = {
+			["Mansion"] = CFrame.new(-12471, 374, -7551),
+			["Port Town"] = CFrame.new(-340, 21, 5524),
+			["Great Tree"] = CFrame.new(2205, 22, -6766),
+			["Castle On The Sea"] = CFrame.new(-4980, 314, -3018),
+			["Hydra Island"] = CFrame.new(5294, 1005, 391),
+			["Floating Turtle"] = CFrame.new(-12528, 332, -8658),
+			["Haunted Castle"] = CFrame.new(-9517, 142, 5528),
+			["Ice Cream Land"] = CFrame.new(-843, 66, -10944),
+			["Peanut Land"] = CFrame.new(-2082, 38, -10190),
+			["Cake Land"] = CFrame.new(-1897, 14, -11576),
+			["Candy Cane Land"] = CFrame.new(-1094, 64, -14519),
+			["Chocolate Land"] = CFrame.new(219, 127, -12604),
+			["Tiki Outpost"] = CFrame.new(-16224, 9, 439),
+		}
 	},
 	PortalLocations = {
 		Sea_1 = {
@@ -273,10 +454,9 @@ return {
 		},
 		Sea_3 = {
 			Vector3.new(-5058.77, 314.52, -3155.88),
-			-- Vector3.new(5756.84, 610.42, -253.93), [blacklisted]
 			Vector3.new(-12463.87, 374.91, -7523.77),
 			Vector3.new(28282.57, 14896.85, 105.1),
-			Vector3.new(5661.5322265625, 1013.0907592773438, -334.9649963378906),
+			Vector3.new(5661.53, 1013.09, -334.96),
 			Vector3.new(5319, 23, -93),
 			Vector3.new(5651, 1018, -350),
 			Vector3.new(28286, 14897, 103)
@@ -329,5 +509,156 @@ return {
 		["Cutlass"] = { Rarity = "Common", Order = 5 },
 		["Katana"] = { Rarity = "Common", Order = 5 },
 		["Dual Katana"] = { Rarity = "Common", Order = 5 },
+	},
+	BoatsList = {
+		'Dinghy',
+		'PirateSloop',
+		'PirateBrigade',
+		'PirateGrandBrigade',
+		'MarineSloop',
+		'MarineBrigade',
+		'MarineGrandBrigade',
+		'Beast Hunter',
+		'Lantern',
+		'Guardian',
+		'Grand Brigade',
+		'Sloop',
+		'The Sentinel'
+	},
+	ZoneList = {
+		'Level 1',
+		'Level 2',
+		'Level 3',
+		'Level 4',
+		'Level 5',
+		'Level 6',
+		'Infinite'
+	},
+	SeaEventTargets = {
+		"Terror Shark",
+		"Sea Beast",
+		"Shark",
+		"Piranha",
+		"Fish Crew Member",
+		"Pirate Brigade",
+		"Pirate Grand Brigade",
+		"Ghost Ship"
+	},
+	RodsList = {
+		"Fishing Rod",
+		"Gold Rod",
+		"Shark Rod",
+		"Shell Rod",
+		"Treasure Rod",
+		"Shark (Corrupted)",
+		"Shell (Celestial)"
+	},
+	BaitsList = {
+		"Basic Bait",
+		"Kelp Bait",
+		"Good Bait",
+		"Abyssal Bait",
+		"Frozen Bait",
+		"Epic Bait",
+		"Carnivore Bait"
+	},
+	DungeonCards = {
+		"Hyper",
+		"Overflow",
+		"Fortress",
+		"Shadow",
+		"Sniper",
+		"Lifesteal",
+		"Unbreakable",
+		"Health",
+		"Defense",
+		"Armor",
+		"Melee",
+		"Sword",
+		"Fruit",
+		"Gun"
+	},
+	TrainMethods = {
+		"Bones",
+		"Cakes"
+	},
+	LegendarySwordNames = {
+		"Shizu",
+		"Oroshi",
+		"Saishi"
+	},
+	BossHopNames = {
+		"Greybeard",
+		"Darkbeard",
+		"Cursed Captain",
+		"rip_indra True Form",
+		"Soul Reaper",
+		"Cake Prince",
+		"Dough King",
+		"Tyrant of the Skies"
+	},
+	BossMap = {
+		["Greybeard"] = "Greybeard",
+		["Darkbeard"] = "Darkbeard",
+		["Cursed Captain"] = "CursedCaptain",
+		["rip_indra True Form"] = "Ripindra",
+		["Soul Reaper"] = "SoulReaper",
+		["Cake Prince"] = "CakePrince",
+		["Dough King"] = "DoughKing",
+		["Tyrant of the Skies"] = "Tyrant"
+	},
+	ScrollList = {
+		"Common Scroll",
+		"Rare Scroll",
+		"Legendary Scroll",
+		"Mythical Scroll"
+	},
+	ChestTiers = {
+		"Diamond",
+		"Gold",
+		"Silver"
+	},
+	DealerFruitList = {
+		"Rocket-Rocket",
+		"Spin-Spin",
+		"Blade-Blade",
+		"Spring-Spring",
+		"Bomb-Bomb",
+		"Smoke-Smoke",
+		"Spike-Spike",
+		"Flame-Flame",
+		"Ice-Ice",
+		"Sand-Sand",
+		"Dark-Dark",
+		"Eagle-Eagle",
+		"Diamond-Diamond",
+		"Light-Light",
+		"Rubber-Rubber",
+		"Ghost-Ghost",
+		"Magma-Magma",
+		"Quake-Quake",
+		"Buddha-Buddha",
+		"Love-Love",
+		"Creation-Creation",
+		"Spider-Spider",
+		"Sound-Sound",
+		"Phoenix-Phoenix",
+		"Portal-Portal",
+		"Lightning-Lightning",
+		"Pain-Pain",
+		"Blizzard-Blizzard",
+		"Gravity-Gravity",
+		"Mammoth-Mammoth",
+		"T-Rex-T-Rex",
+		"Dough-Dough",
+		"Shadow-Shadow",
+		"Venom-Venom",
+		"Gas-Gas",
+		"Spirit-Spirit",
+		"Tiger-Tiger",
+		"Yeti-Yeti",
+		"Kitsune-Kitsune",
+		"Control-Control",
+		"Dragon-Dragon"
 	}
 }
