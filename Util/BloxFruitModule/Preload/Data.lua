@@ -165,60 +165,41 @@ return {
 		Sea_2 = { "Diamond", "Jeremy", "Orbitus", "Smoke Admiral", "Awakened Ice Admiral", "Tide Keeper", "Don Swan" },
 		Sea_3 = { "Stone", "Kilo Admiral", "Captain Elephant", "Beautiful Pirate", "Cake Queen" }
 	},
+	MeleeNames = {
+		Sea_1 = { "Black Leg", "Electro", "Fishman Karate" },
+		Sea_2 = { "Death Step", "Dragon Claw", "Sharkman Karate", "Superhuman" },
+		Sea_3 = { "Dragon Talon", "Electric Claw", "Godhuman", "Sanguine Art" }
+	},
 	Melees = {
 		["Black Leg"] = {
 			Model = "Dark Step Teacher",
 			Npc = "Dark Step Teacher",
 			npc = "Dark Step Teacher",
-			CFrame = CFrame.new(-4752.432, 33.930, -4848.039),
-			cframe = CFrame.new(-4752.432, 33.930, -4848.039),
-			CFrames = {
-				Sea_1 = CFrame.new(-1147.284, 4.752, 3816.326),
-				Sea_2 = CFrame.new(-4752.432, 33.930, -4848.039),
-			},
-			cframes = {
-				Sea_1 = CFrame.new(-1147.284, 4.752, 3816.326),
-				Sea_2 = CFrame.new(-4752.432, 33.930, -4848.039),
-			},
+			CFrame = CFrame.new(-1147.284, 4.752, 3816.326),
+			cframe = CFrame.new(-1147.284, 4.752, 3816.326),
 			Remote = { "BuyBlackLeg" },
 			remote = { "BuyBlackLeg" },
-			Sea = 2
+			Sea = 1
 		},
 		["Electro"] = {
 			Model = "Mad Scientist",
 			Npc = "Mad Scientist",
 			npc = "Mad Scientist",
-			CFrame = CFrame.new(-4866.150, 33.930, -4767.103),
-			cframe = CFrame.new(-4866.150, 33.930, -4767.103),
-			CFrames = {
-				Sea_1 = CFrame.new(-4842.112, 717.670, -2623.149),
-				Sea_2 = CFrame.new(-4866.150, 33.930, -4767.103),
-			},
-			cframes = {
-				Sea_1 = CFrame.new(-4842.112, 717.670, -2623.149),
-				Sea_2 = CFrame.new(-4866.150, 33.930, -4767.103),
-			},
+			CFrame = CFrame.new(-4842.112, 717.670, -2623.149),
+			cframe = CFrame.new(-4842.112, 717.670, -2623.149),
 			Remote = { "BuyElectro" },
 			remote = { "BuyElectro" },
-			Sea = 2
+			Sea = 1
 		},
 		["Fishman Karate"] = {
 			Model = "Water Kung-fu Teacher",
 			Npc = "Water Kung-fu Teacher",
 			npc = "Water Kung-fu Teacher",
-			CFrame = CFrame.new(-4957.670, 35.950, -4665.600),
-			cframe = CFrame.new(-4957.670, 35.950, -4665.600),
-			CFrames = {
-				Sea_1 = CFrame.new(61122.652, 18.497, 1568.351),
-				Sea_2 = CFrame.new(-4957.670, 35.950, -4665.600),
-			},
-			cframes = {
-				Sea_1 = CFrame.new(61122.652, 18.497, 1568.351),
-				Sea_2 = CFrame.new(-4957.670, 35.950, -4665.600),
-			},
+			CFrame = CFrame.new(61122.652, 18.497, 1568.351),
+			cframe = CFrame.new(61122.652, 18.497, 1568.351),
 			Remote = { "BuyFishmanKarate" },
 			remote = { "BuyFishmanKarate" },
-			Sea = 2
+			Sea = 1
 		},
 		["Dragon Claw"] = {
 			Model = "Sabi",
