@@ -359,23 +359,6 @@ local function ResolveAndLoadKey(keyStr, hooks)
 
     local permanent = IsPermanentKey(data)
     local elapsedStr = string.format("%.2fs", os.clock() - startTime)
-
-    if not permanent then
-        onStatus("Time-limited key — loading via Luarmor...")
-        ApplyScriptKey(keyStr)
-        SaveKey(keyStr)
-        getgenv().key_expire = data and data.auth_expire or 0
-        getgenv().key_note = data and data.note or ""
-        getgenv().key_executions = data and data.total_executions or 0
-
-        onSuccess({
-            permanent = false,
-            expire = getgenv().key_expire,
-            elapsedStr = elapsedStr,
-        })
-        LoadStockLoader()
-        return
-    end
     onStatus("Key valid! Loading script from VPS...")
     local ok, authData, errorMsg = VerifyWithServer(keyStr)
 
@@ -387,17 +370,17 @@ local function ResolveAndLoadKey(keyStr, hooks)
         getgenv().key_executions = data and data.total_executions or 0
 
         onSuccess({
-            permanent = true,
+            permanent = permanent,
             expire = getgenv().key_expire,
             elapsedStr = elapsedStr,
         })
         LoadScript("Premium", authData.script)
     else
-        onStatus("Our API failed (" .. tostring(errorMsg or "unknown") .. ") — falling back to Luarmor...")
+        onStatus("VPS fallback — loading via Luarmor...")
         ApplyScriptKey(keyStr)
         SaveKey(keyStr)
         onSuccess({
-            permanent = true,
+            permanent = permanent,
             expire = data and data.auth_expire or 0,
             elapsedStr = elapsedStr,
             fellBack = true,
@@ -405,6 +388,7 @@ local function ResolveAndLoadKey(keyStr, hooks)
         LoadStockLoader()
     end
 end
+
 
 local function ShowKeyUI()
     local done = false
