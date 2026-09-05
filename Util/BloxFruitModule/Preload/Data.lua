@@ -618,6 +618,24 @@ return {
 		"Gold",
 		"Silver"
 	},
+	IgnoreNPC = {
+		"Quest",
+		"Boat",
+		"Home"
+	},
+	DracoSequence = {
+		"Relic1",
+		"EndRelic1",
+		"Relic2",
+		"EndRelic2",
+		"Relic3",
+		"EndRelic3"
+	},
+	SwordList = {
+		"Shizu",
+		"Saishi",
+		"Oroshi"
+	},
 	DealerFruitList = {
 		"Rocket-Rocket",
 		"Spin-Spin",
