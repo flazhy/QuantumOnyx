@@ -386,7 +386,7 @@ return {
 			["Prison"] = CFrame.new(4870, 6, 736),
 			["Magma Village"] = CFrame.new(-5290, 9, 8349),
 			["Underwater City"] = CFrame.new(61164, 5, 1820),
-			["Fountain City"] = CFrame.new(5287, 54, 4108),
+			["Fountain City"] = CFrame.new(5757, 91, 4017),
 			["Jean-Luc Island"] = CFrame.new(-2850, 7, 5355),
 		},
 		["Sea 2"] = {
