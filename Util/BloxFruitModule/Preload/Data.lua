@@ -371,7 +371,7 @@ return {
 	},
 	Islands = {
 		["Sea 1"] = {
-			["Pirate Starter"] = CFrame.new(889, 17, 1434),
+			["Pirate Starter"] = CFrame.new(1047, 15, 1506),
 			["Marine Starter"] = CFrame.new(-2728, 25, 2056),
 			["Middle Town"] = CFrame.new(-688, 15, 1585),
 			["Jungle"] = CFrame.new(-1614, 37, 146),
