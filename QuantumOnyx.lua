@@ -11,8 +11,8 @@ local API_CONFIG = {
     FALLBACK_URL = "http://165.232.169.51:22527",
     DISCORD_INVITE = "https://discord.gg/quantumonyx",
     KEY_LINKS = {
-        Lootlabs = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-NdUqNPMGBobv",
-        Linkvertise = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-KCyPvypRNlEm",
+        Lootlabs = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Keysytem-kHpMaTAIVYzX",
+        Linkvertise = "https://ads.luarmor.net/get_key?for=Quantum_Onyx_Key_Sytem-BlvCDdtfIvfJ",
     }
 }
 
@@ -897,9 +897,7 @@ local function ShowKeyUI()
                 LRMStatusLabel.TextColor3 = Color3.fromRGB(80, 230, 130)
                 DisplayNameLbl.TextColor3 = Color3.fromRGB(130, 220, 160)
 
-                local statusMsg = info.fellBack
-                    and ("Verified in " .. info.elapsedStr .. "! (fallback loader)")
-                    or ("Verified in " .. info.elapsedStr .. "! Loading...")
+                local statusMsg = info.fellBack and ("Verified in " .. info.elapsedStr .. "! (fallback loader)") or ("Verified in " .. info.elapsedStr .. "! Loading...")
                 SetStatus(statusMsg, Color3.fromRGB(80, 230, 130))
 
                 Notify("Key Verified (" .. info.elapsedStr .. ")", "Expires: " .. ToTime(info.expire), Color3.fromRGB(80, 230, 130))
