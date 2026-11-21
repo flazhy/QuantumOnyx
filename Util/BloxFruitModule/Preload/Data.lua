@@ -156,7 +156,7 @@ return {
 			["Gunpowder"] = { "Pistol Billionaire" },
 			["Mini Tusk"] = { "Mythological Pirate" },
 			["Nightmare Catcher"] = { "Reborn Skeleton", "Living Zombie" },
-			["Volt Capsule"] = {"Sea Chanter", "Ocean Prophet"}
+			["Volt Capsule"] = { "Sea Chanter", "Ocean Prophet" },
 		}
 	},
 	Materials = {
